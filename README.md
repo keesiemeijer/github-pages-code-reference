@@ -74,7 +74,7 @@ Open the package.json file in the `github-pages-code-reference` directory and ch
 * `deploy` - Change the repository in `--repo=https://github.com/keesiemeijer/github-pages-code-reference.git`
 * `parsed_name` - The name of the parsed code.
 * `parsed_type` - The type of code that was parsed ("plugin" or "theme")
-* `parsed_version` - The version of the code that was parsed (e.g. |1.0.0")
+* `parsed_version` - The version of the code that was parsed (e.g. "1.0.0")
 
 Now we are set up to parse some PHP code.
 
