@@ -60,7 +60,7 @@ Open a terminal and go the site's plugins directory (`/www/wp-reference/public/w
 git clone https://github.com/keesiemeijer/wp-parser-json.git
 ```
 
-Go to the site's themes directory (`/www/wp-reference/public/wp-content/themes`) and install this repository as a child theme.
+Go to the site's themes directory (`/www/wp-reference/public/wp-content/themes`) and install this repository there.
 ```
 git clone https://github.com/keesiemeijer/github-pages-code-reference.git
 ```
