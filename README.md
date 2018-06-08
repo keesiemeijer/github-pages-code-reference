@@ -65,7 +65,7 @@ Go to the site's themes directory (`/www/wp-reference/public/wp-content/themes`)
 git clone https://github.com/keesiemeijer/github-pages-code-reference.git
 ```
 
-Log in at [wp-reference.test/wp-admin](http://wp-reference.test/wp-admin) with user `admin` and password `password`. Go to Plugins and de-activate the `WP Parser` plugin and activate the `WP Parser Json` plugin. Go to Appearance -> Themes and activate the `wporg-developer Child Theme`.
+Log in at [wp-reference.test/wp-admin](http://wp-reference.test/wp-admin) with user `admin` and password `password`. Go to Plugins and de-activate the `WP Parser` plugin and activate the `WP Parser Json` plugin. Go to Appearance -> Themes and activate the `wporg-developer-child` theme.
 
 Open the package.json file in the `github-pages-code-reference` directory and change these values for your code reference.
 
@@ -92,6 +92,7 @@ bash vvv-init.sh
 ```
 
 ## Generate the Code Reference
+Go to Appearance -> Theme and activate the `wporg-developer-child` theme.
 
 Go to Settings -> WP Parser Json and generate the JSON files used by the generated code reference.
 
