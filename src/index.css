@@ -1,0 +1,115 @@
+.site-header {
+  text-align: center;
+  padding-bottom: 0;
+  padding-top: 2em;
+  
+}
+
+.site-header nav {
+  background-color: #666;
+  padding: .6em;
+}
+
+.site-header a {
+  padding: 1em;
+  color: #fff;
+}
+
+.site-title {
+  color: #fff;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1;
+  border-bottom: 0;
+}
+
+form {
+  margin-bottom: 1em;
+  margin-top: .5em;
+}
+
+#submit { 
+  border-style: none;
+  border: 1px solid rgba(27,31,35,0.2);
+  padding: 0;
+  background-color: #e6ebf1;
+  background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
+  background-position: -.5em;
+  background-size: 110% 110%;
+  border-color: rgba(27,31,35,0.35);
+  padding: 10px 10px;
+  font-size: 16px;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-radius: 0.25em;
+}
+
+.devhub-wrap .react-autosuggest__container {
+  position: relative;
+  display: inline-block;
+  
+  margin-bottom: 1em;
+  text-align: left;
+}
+
+.devhub-wrap input[type="text"].react-autosuggest__input {
+  display: inline-block;
+  width: 280px;
+  padding: 10px 20px;
+  margin-right: 20px; 
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.devhub-wrap input[type="text"].react-autosuggest__input--focused {
+  outline: none;
+}
+
+.devhub-wrap input[type="text"].react-autosuggest__input--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.devhub-wrap .react-autosuggest__suggestions-container {
+  display: none;
+}
+
+.devhub-wrap .react-autosuggest__suggestions-container--open {
+  display:         block;
+  position: absolute;
+  top: 38px;
+  width: 280px;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 2;
+}
+
+.devhub-wrap .react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.devhub-wrap .react-autosuggest__suggestion {
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.devhub-wrap .react-autosuggest__suggestion--highlighted {
+  background-color: #ddd;
+}
+
+.devhub-wrap .react-autosuggest__suggestion-match {
+  color: red;
+  font-weight: bold;
+}
