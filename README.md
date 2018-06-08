@@ -10,12 +10,12 @@ This reference generator is WordPress oriented as I use it for my plugins, but c
 [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV) or [Local by Flywheel](https://local.getflywheel.com/).
 
 ## Setup GitHub Pages
-Open a terminal and go to your local repository where you would like to have a PHP code reference generated. Create the `gh-pages` branch and add a index.html file.
+Open a terminal and go to your local repository where you would like to have a PHP code reference generated. Create the `gh-pages` branch and add an index.html file.
 ```
-# Create new Branch.
+# Create the gh-pages Branch.
 git checkout -b gh-pages
 
-# Create index.html file with some content.
+# Create an index.html file with some content.
 echo "Hello World!" > index.html
 ```
 
@@ -49,33 +49,25 @@ sites:
     source_code_wp_version: ""
 ```
 
-If your Vagrant is running, from the Vagrant directory run `vagrant halt`. To setup the reference site run `vagrant up --provision`. This site is used to generate a PHP code reference.
+If your Vagrant is running, from the Vagrant directory run `vagrant halt`. To setup the reference site run `vagrant up --provision`. This site can be used to create a WordPress PHP code reference. But for our purposes its used to generate the PHP code reference for GitHub pages. 
 
 You should now be able to visit the [wp-reference.test](http://wp-reference.test) site. 
 
-In the `vvv-custom.yml` file change `parse_source_code: false` to `parse_source_code: true`. Be aware that with the current `vvv-custom.yml` settings the database for this site is deleted before you parse PHP code.
+In the `vvv-custom.yml` file change `parse_source_code: false` to `parse_source_code: true`. Be aware that with the current `vvv-custom.yml` settings the database for this site is deleted every time before you parse PHP code.
 
-Open a terminal and go the site's plugins directory. Install the [WP Parser JSON](https://github.com/keesiemeijer/wp-parser-json) plugin.
+Open a terminal and go the site's plugins directory (`/www/wp-reference/public/wp-content/plugins`). Install the [WP Parser JSON](https://github.com/keesiemeijer/wp-parser-json) plugin.
 ```
-# Go to plugins directory
-cd /vagrant/www/wp-reference/public/wp-content/plugins
-
-# Install WP Parser Json plugin
 git clone https://github.com/keesiemeijer/wp-parser-json.git
 ```
 
-Go to the site's themes directory and install this repository as a child theme.
+Go to the site's themes directory (`/www/wp-reference/public/wp-content/themes`) and install this repository as a child theme.
 ```
-# Go to themes directory
-cd /vagrant/www/wp-reference/public/wp-content/themes
-
-# Install GitHub Pages Code Reference
 git clone https://github.com/keesiemeijer/github-pages-code-reference.git
 ```
 
-Log in the [wp-reference.test](http://wp-reference.test/wp-admin) with user `admin` and password `password`. Go to Plugins and de-activate the `WP Parser` plugin and activate the `WP Parser Json` plugin. Go to Appearance -> Themes and activate the `wporg-developer Child Theme`.
+Log in at [wp-reference.test/wp-admin](http://wp-reference.test/wp-admin) with user `admin` and password `password`. Go to Plugins and de-activate the `WP Parser` plugin and activate the `WP Parser Json` plugin. Go to Appearance -> Themes and activate the `wporg-developer Child Theme`.
 
-Open the package.json file in the github-pages-code-reference directory and change the `homepage`, `appname` and `deploy` values to point to your `gh-pages` branch and `repository`. The `appname` value is your GitHub repository slug.
+Open the package.json file in the github-pages-code-reference directory and change the `homepage`, `appname` and `deploy` values to point to your `GitHub pages` and `repository`. The `appname` value is your GitHub repository slug.
 
 Change the values `parsed_name` `parsed_type` and `parsed_version` to show up in the generated reference. 
 
