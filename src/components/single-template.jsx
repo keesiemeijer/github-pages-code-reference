@@ -13,6 +13,10 @@ const SingleTemplate = props => {
 	window.scrollTo(0, 0);
 	const appName = props['package']['appname'];
 	const typeElements = props['parsedData'][props.postType]['content'];
+	if( ! typeElements.length ) {
+		return ( <Redirect to={"/" + appName} /> );
+	}
+
 	const index = findIndex( typeElements, value => value.slug === props.slug );
 
 	let element;

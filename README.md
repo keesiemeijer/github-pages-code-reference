@@ -126,12 +126,3 @@ Run the following command to push the generated code reference to your GitHub pa
 ```
 npm run deploy
 ```
-
-
-
-
-
-
-
-
-

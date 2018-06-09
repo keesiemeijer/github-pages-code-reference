@@ -7,20 +7,25 @@ import Search from './search'
 const PrimaryHeader = ( props) => {
 	const location = '/' + props.appName;
 
+	const nav = ['functions', 'hooks', 'classes'].filter( (item, index) => {
+		const exists = typeof props['parsedData'][item]['content'] !== 'undefined';
+		return exists && props['parsedData'][item]['content'];
+	} );
+
 	return (
 	  <header className="site-header">
 		<h1 className="site-title">{props.strings.page_title }</h1>
-		<Search 
+		{-1 !== nav.indexOf( props.postType ) && <Search 
 			parsedData={props['parsedData'][props.postType]['content'] }
 			postType={props.postType}
 			appName={props.appName}
 			strings={props.strings}
-		/>
+		/>}
 		<nav>
 			<NavLink to={location} exact activeClassName="active">{props.strings.home}</NavLink>
-			<NavLink to={location + '/functions'}  activeClassName="active">{props.strings.functions}</NavLink>
-			<NavLink to={location + '/classes'} activeClassName="active">{props.strings.classes}</NavLink>
-			<NavLink to={location + '/hooks'} activeClassName="active">{props.strings.hooks}</NavLink>
+			{ nav.map( (item, index) =>
+				<NavLink to={location + '/' + item} key={index} activeClassName="active">{props.strings[item]}</NavLink>
+			)}
 		</nav>
 	  </header>
 	)

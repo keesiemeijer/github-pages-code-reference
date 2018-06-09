@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { flowRight } from 'lodash';
 
 import PrimaryHeader from './primary-header';
@@ -8,7 +8,11 @@ import WithPackageData from '../data/package-data';
 
 const ArchiveTemplate = props => {
 	let appName = props['package']['appname'];
+
 	let typeElements = props['parsedData'][props.postType]['content'];
+	if( ! typeElements.length ) {
+		return ( <Redirect to={"/" + appName} /> );
+	}
 
 	typeElements = typeElements.sort(function(a, b) {
 	    var textA = a.title.toUpperCase();
