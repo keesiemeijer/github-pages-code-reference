@@ -101,7 +101,7 @@ Check if your code was imported by visiting the reference site [wp-reference.tes
 ## Generate the Code Reference
 Go to Settings -> WP Parser JSON and generate the JSON files used by the generated code reference.
 
-To see the code reference before deploying open your terminal and go to the theme directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`)
+To see the code reference before deploying open your terminal and go to this repository in the themes directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`)
 
 Install the dependencies (if not already installed).
 ```
@@ -114,7 +114,7 @@ npm run start
 ```
 
 ## Deploy the Generated Code Reference
-Open your terminal and go to the child theme directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`).
+Open your terminal and and go to this repository in the themes directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`).
 
 **NOTE** Check before deploying if the `homepage`, `appname` and `deploy` values point to the correct `homepage` and `repository`. Also check if the `parsed_name` `parsed_type` and `parsed_version` values are correct.
 
