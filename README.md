@@ -32,9 +32,8 @@ You should now be able to visit the GitHub page `https://user-name.github.io/rep
 
 ## Installation with VVV
 
-If you have VVV set up use the [wp-reference](https://github.com/keesiemeijer/wp-reference) auto site setup script to parse your PHP codebase.
+If you have VVV set up add a reference site with this in your [vvv-custom.yml file](https://varyingvagrantvagrants.org/docs/en-US/adding-a-new-site/).
 
-Setup your site with these settings in your `vvv-custom.yml` file:
 ```
 ---
 sites:
