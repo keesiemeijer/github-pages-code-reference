@@ -44,10 +44,11 @@ sites:
       - wp-reference.test
     parse_source_code: false
     wp_parser_quick_mode: true
-    reset_wordpress: true
+    reset_wordpress: 'empty'
     update_assets: false
     exclude_wp_external_libs: true
     source_code_wp_version: ""
+    theme: "github-pages-code-reference"
 ```
 
 If your Vagrant is running, from the Vagrant directory run `vagrant halt`. To setup the reference site run `vagrant up --provision`. This site can be used to create a WordPress PHP code reference. But for our purposes its used to generate the PHP code reference for GitHub pages. 
@@ -95,9 +96,6 @@ bash vvv-init.sh
 Check if your code was imported by visiting the reference site [wp-reference.test](http://wp-reference.test).
 
 ## Generate the Code Reference
-Go to Appearance -> Theme and activate the `wporg-developer-child` theme.
-Go to Plugins and activate the `WP Parser JSON` plugin.
-
 Go to Settings -> WP Parser JSON and generate the JSON files used by the generated code reference.
 
 To see the code reference before deploying open your terminal and go to the theme directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`)
