@@ -35,7 +35,6 @@ You should now be able to visit the GitHub page `https://user-name.github.io/rep
 If you have VVV set up add a reference site with this in your [vvv-custom.yml file](https://varyingvagrantvagrants.org/docs/en-US/adding-a-new-site/).
 
 ```
----
 sites:
   wp-reference:
     repo: https://github.com/keesiemeijer/wp-reference.git
