@@ -68,6 +68,7 @@ git clone https://github.com/keesiemeijer/github-pages-code-reference.git
 ```
 
 Log in at [wp-reference.test/wp-admin](http://wp-reference.test/wp-admin) with user `admin` and password `password`.
+
 Go to Plugins and activate the `WP Parser JSON` plugin.  
 Go to Appearance -> Themes and activate the `wporg-developer-child` theme.
 
