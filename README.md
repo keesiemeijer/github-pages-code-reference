@@ -82,7 +82,7 @@ Open the package.json file in the `www/wp-reference/public/wp-content/themes/git
 
 Now we are set up to parse some PHP code.
 
-## Parsing Code
+## Parse Code
 Put the code you want to parse in the `/www/wp-reference/source-code` directory.  
 From the Vagrant directory run `vagrant ssh` and go the site (root) directory.
 
