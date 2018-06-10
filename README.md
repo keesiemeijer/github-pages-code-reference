@@ -55,7 +55,7 @@ If your Vagrant is running, from the Vagrant directory run `vagrant halt`. To se
 
 You should now be able to visit the [wp-reference.test](http://wp-reference.test) site. 
 
-In the `vvv-custom.yml` file change `parse_source_code: false` to `parse_source_code: true`. Be aware that with the current `vvv-custom.yml` settings the database for this site is deleted every time before you parse PHP code.
+In the `vvv-custom.yml` file change `parse_source_code: false` to `parse_source_code: true`. Be aware that with the current `vvv-custom.yml` settings the post data (posts, terms, meta, etc) is deleted every time (before) you parse PHP code.
 
 Open a terminal and go the site's plugins directory (`www/wp-reference/public/wp-content/plugins`). Install the [WP Parser JSON](https://github.com/keesiemeijer/wp-parser-json) plugin.
 ```
