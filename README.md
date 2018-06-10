@@ -72,6 +72,7 @@ Log in at [wp-reference.test/wp-admin](http://wp-reference.test/wp-admin) with u
 Go to Plugins and activate the `WP Parser JSON` plugin.  
 Go to Appearance -> Themes and activate the `wporg-developer-child` theme.
 
+### Code Reference Settings
 Open the package.json file in the `www/wp-reference/public/wp-content/themes/github-pages-code-reference` directory and change these values for your code reference.
 
 * `homepage` - Point it to your GitHub pages (e.g. `https://keesiemeijer.github.io/github-pages-code-reference`)
@@ -116,7 +117,7 @@ npm run start
 ## Deploy the Generated Code Reference
 Open your terminal and and go to this repository in the themes directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`).
 
-**NOTE** Check before deploying if the `homepage`, `appname` and `deploy` values point to the correct `homepage` and `repository`. Also check if the `parsed_name` `parsed_type` and `parsed_version` values are correct.
+**NOTE** Check before deploying if the [settings in the package.json](#code-reference-settings) file are correct.
 
 Install the dependencies (if not already installed).
 ```
