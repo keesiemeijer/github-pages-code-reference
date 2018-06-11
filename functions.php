@@ -120,8 +120,10 @@ function wporg_developer_child_update_site_permalink( $permalink ) {
 		return $permalink;
 	}
 
+	$homepage = $wp_parser_json_package['homepage'];
+
 	$url = site_url( '/reference/' );
-	$permalink = str_replace( $url, trailingslashit( $has_homepage ), $permalink );
+	$permalink = str_replace( $url, trailingslashit( $homepage ), $permalink );
 	return $permalink;
 }
 
