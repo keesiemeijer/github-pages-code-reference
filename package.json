@@ -2,11 +2,11 @@
   "name": "github-pages-code-reference",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://keesiemeijer.github.io/github-pages-code-reference",
-  "appname": "github-pages-code-reference",
-  "parsed_name": "Name for your code reference",
-  "parsed_version": "Version for your code reference e.g. 1.0.0",
-  "parsed_type": "Type of what was parsed (plugin, theme or empty string)",
+  "homepage": "https://username.github.io/example-reference",
+  "appname": "example-reference",
+  "parsed_name": "Example Reference Name",
+  "parsed_version": "1.0.0",
+  "parsed_type": "",
   "dependencies": {
     "react": "^16.4.0",
     "react-autosuggest": "^9.3.4",
@@ -21,7 +21,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build --repo=https://github.com/keesiemeijer/github-pages-code-reference.git"
+    "deploy": "gh-pages -d build --repo=https://github.com/username/example-reference"
   },
   "devDependencies": {
     "gh-pages": "^1.1.0"
