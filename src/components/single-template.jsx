@@ -1,27 +1,27 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { flowRight, findIndex } from 'lodash';
+import { findIndex } from 'lodash';
 
 import PrimaryHeader from './primary-header';
 import WithParsedData from '../data/parsed-data';
-import WithPackageData from '../data/package-data';
 import Signature from '../templates/signature';
 import Summary from '../templates/summary';
 import Content from '../templates/content';
+import Strings from '../json-files/wp-parser-json-strings.json';
 
 const SingleTemplate = props => {
 	window.scrollTo(0, 0);
-	const appName = props['package']['appname'];
-	const typeElements = props['parsedData'][props.postType]['content'];
+	const typeElements = props['parsedData']['content'];
+
 	if( ! typeElements.length ) {
-		return ( <Redirect to={"/" + appName} /> );
+		return ( <Redirect to={props.home} /> );
 	}
 
 	const index = findIndex( typeElements, value => value.slug === props.slug );
 
 	let element;
 	if( -1 === index) {
-		return ( <Redirect to={"/" + appName} /> );
+		return ( <Redirect to={props.home} /> );
 	} else {
 		element = typeElements[index];
 	}
@@ -29,11 +29,9 @@ const SingleTemplate = props => {
 	let post_class = props.postType.substring(0, props.postType.length - 1);
 	post_class = ('classe' === post_class ) ? 'class' : post_class;
 
-	const strings = require('../json-files/wp-parser-json-strings.json');
-
 	return (	
 		<div id="page" className="hfeed site devhub-wrap">
-			<PrimaryHeader appName={appName} postType={props.postType} strings={strings}/>
+			<PrimaryHeader {...props} strings={Strings}/>
 			<div id="content" className="site-content">
 				<div id="content-area" className="code-reference">
 					<main id="main" className="site-main" role="main">
@@ -49,7 +47,4 @@ const SingleTemplate = props => {
 	)
 }
 
-export default flowRight(
-	WithPackageData,
-	WithParsedData,
-)( SingleTemplate );
+export default WithParsedData( SingleTemplate );

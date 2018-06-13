@@ -73,12 +73,16 @@ Go to Plugins and activate the `WP Parser JSON` plugin.
 Open the package.json file in the `www/wp-reference/public/wp-content/themes/github-pages-code-reference` directory and change these values for your code reference.
 
 * `homepage` - Point it to your GitHub pages (e.g. `https://keesiemeijer.github.io/github-pages-code-reference`)
-* `appname` - Your repository slug (e.g. `github-pages-code-reference`)
-* `deploy` - Change the repository in `--repo=https://github.com/keesiemeijer/github-pages-code-reference.git`
-* `parsed_name` - The name of the parsed code.
-* `parsed_type` - The type of code that was parsed ("plugin" or "theme")
-* `parsed_version` - The version of the code that was parsed (e.g. "1.0.0")
-
+* `reference`
+  * `app_basename` - Basename of your GitHup pages slug (e.g. `github-pages-code-reference`)
+  * `app_url` - For linking to code home page (with link text `parsed_name` below)
+  * `repo_url` - For linking to a repository
+  * `parsed_branch_url` - For linking to code in a GitHub repository.
+  * `parsed_name` - The name of the parsed code.
+  * `parsed_type` - The type of code that was parsed ("plugin" or "theme")
+  * `parsed_version` - The version of the code that was parsed (e.g. "1.0.0")
+* `scripts`
+  * `deploy` - Change the repository in `--repo=https://github.com/keesiemeijer/github-pages-code-reference.git`
 Now we are set up to parse some PHP code.
 
 ## Parse Code

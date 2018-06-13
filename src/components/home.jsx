@@ -1,10 +1,8 @@
 import React from 'react';
 import HomeTemplate from './home-template';
 
-function Home() {
-	return (
-		<HomeTemplate />
-	);
-}
 
+const Home = props => {
+	return (<HomeTemplate {...props} postType="functions" />)
+}
 export default Home;

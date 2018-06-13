@@ -1,27 +1,38 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
-import WithPackageData from './data/package-data';
+import PackageData from '../package.json';
 import Home from './components/home';
-import ArchiveRoute from './components/archive-route';
+import Router from './components/router';
 
 import './devhub.css';
 import './index.css';
 
 const App = (props) => {
-	const appName = '/' + props['package']['appname'];
+	const appName = PackageData['reference']['app_basename'];
+
+	let location = '/' + appName;
+	location = ('/' === appName) ? '': location;
+	const homeLocation = ! location ? '/' + appName : location;
+
+	const data = {
+		appName: appName,
+		packageData: PackageData,
+		home: homeLocation
+	};
 
 	return (
 		<BrowserRouter>
 			<Switch>
-				<Route path={appName} exact component={Home} />
-				<Route path={appName + '/functions'} component={ArchiveRoute} />
-				<Route path={appName + '/classes'} component={ArchiveRoute} />
-				<Route path={appName + '/hooks'} component={ArchiveRoute} />
-				<Redirect to={appName} />
+				<Route path={homeLocation} exact render={(props) => (<Home {...props} {...data}/>)} />
+				<Route path={location + '/functions'} render={(props) => (<Router {...props} {...data} />)} />
+				<Route path={location + '/classes'} render={(props) => (<Router {...props} {...data} />)} />
+				<Route path={location + '/hooks'} render={(props) => (<Router {...props} {...data} />)}
+				/>
+				<Redirect to={homeLocation} />
 			</Switch>
 		</BrowserRouter>
 	)
 }
 
-export default WithPackageData( App );
+export default App;

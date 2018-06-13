@@ -1,18 +1,15 @@
 import React from 'react';
-import { trim } from 'lodash';
 
 import ArchiveTemplate from './archive-template';
+import {getPostType} from '../data/post-type-data';
 
 const Archive = props => {
-	let pathParts = trim( props.location.pathname, '/' ).split( '/' );
-	pathParts = pathParts.filter( value => value !== '' );
-
-	const type = pathParts[1].toLowerCase();
-	const title = type.charAt(0).toUpperCase() + type.slice(1);
+	const postType = getPostType( props.location.pathname );
+	const title = postType.charAt(0).toUpperCase() + postType.slice(1);
 	
 	return (
-		<ArchiveTemplate 
-			postType={type} 
+		<ArchiveTemplate {...props}
+			postType={postType}
 			title={title}
 		/>
 	);

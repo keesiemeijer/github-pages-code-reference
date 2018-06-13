@@ -1,6 +1,18 @@
 <?php
 global $wp_parser_json_html, $wp_parser_json_types, $wp_parser_json_package;
 
+
+add_filter( 'wp_parser_exclude_directories', 'callbacksss' );
+function callbacksss( $dirs ) {
+	return array( 'vendor', 'tests' );
+}
+
+
+
+
+
+
+
 include 'settings.php';
 
 add_filter( 'wp_parser_json_skip_deprecated', '__return_false' );
@@ -65,6 +77,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		'params',
 		'return',
 		'changelog',
+		'methods',
 	);
 
 	$html = '';
@@ -88,7 +101,8 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 	if ( $post->post_parent && ( 'wp-parser-method' === $post->post_type ) ) {
 		$parent = get_post( $post->post_parent );
 
-		$slug = $parent->post_name . '::' . $item['slug'];
+		$item['slug'] = $parent->post_name . '::' . $item['slug'];
+		$item['parent'] = $parent->post_name;
 	}
 
 	$wp_parser_json_types[ $post_types[ $post->post_type ] ][] = $slug;
@@ -140,16 +154,28 @@ function wporg_developer_child_get_template( $template, $post_item ) {
 function wporg_developer_child_get_home_template() {
 	$strings = wporg_developer_child_get_localized_strings();
 
+	//'homepage'       => '',
 	$defaults = array(
-		'homepage'       => '',
-		'appname'        => '',
-		'parsed_name'    => '',
-		'parsed_version' => '',
-		'parsed_type'    => '',
+		'app_basename'      => '',
+		'app_url'           => '',
+		'repo_url'          => '',
+		'parsed_branch_url' => '',
+		'parsed_name'       => '',
+		'parsed_version'    => '',
+		'parsed_type'       => '',
 	);
 
+
 	$package = wporg_developer_child_get_package();
-	$package = array_merge( $defaults, $package );
+	$package['reference'] = array_merge( $defaults, $package['reference'] );
+	if(isset($package['homepage'])) {
+		$package['reference']['homepage'] = $package['homepage'];
+	}
+	$package = $package['reference'];
+
+	echo '<pre>';
+print_r($package);
+echo '</pre>';
 
 	ob_start();
 	include 'reference/template-home.php';

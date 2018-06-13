@@ -1,22 +1,24 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { trim } from 'lodash';
 
 import SingleTemplate from './single-template';
+import { getPostType, isSingle, getSlug} from '../data/post-type-data';
 
 const Single = props => {
-	let pathParts = trim( props.location.pathname, '/' ).split( '/' );
-	pathParts = pathParts.filter( value => value !== '' );
 
-	if ( !( 3 === pathParts.length ) ) {
-		return ( <Redirect to={"/" + pathParts[0] } /> );
+	if( ! isSingle( props.location.pathname )) {
+		return ( <Redirect to={props.home } /> );
 	}
 
-	const postType = pathParts[1];
-	const slug = pathParts[2];
+	const postType = getPostType( props.location.pathname );
+
+	let slug = getSlug( props.location.pathname, 2);
+	if('methods' === postType) {
+		slug += '::' + getSlug( props.location.pathname, 3);
+	}
 
 	return (
-		<SingleTemplate 
+		<SingleTemplate {...props}
 			postType={postType} 
 			slug={slug}
 		/>

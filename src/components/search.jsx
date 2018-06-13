@@ -79,11 +79,10 @@ class Search extends Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		let location = '/' + this.props.appName + '/' + this.props.postType;
-		let index = findIndex(this.props.parsedData, value => value.title === this.state.value );
-
+		let location = this.props.home + '/' + this.props.postType;
+		let index = findIndex(this.props.searchData.content, value => value.title === this.state.value );
 		if(-1 !== index) {
-			location = location + '/' + this.props.parsedData[index].slug;
+			location = location + '/' + this.props.searchData.content[index].slug;
 		} else {
 			location = location + '/' + this.state.value;
 		}
@@ -96,7 +95,7 @@ class Search extends Component {
 		const inputLength = inputValue.length;
 
 		return inputLength === 0 ? [] : 
-		this.props.parsedData.filter( value =>
+		this.props.searchData.content.filter( value =>
 			getSuggestions( value.title.toLowerCase(), inputValue )
 		).sort( sortByLength );
 	};

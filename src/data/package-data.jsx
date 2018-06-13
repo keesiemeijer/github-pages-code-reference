@@ -6,7 +6,7 @@ const WithPackageData = ( ComponentToWrap ) => {
 	return class PackageJsonComponent extends Component {
 		render() {
 			return (
-				<ComponentToWrap {...this.props} package={PackageData} />
+				<ComponentToWrap {...this.props} packageData={PackageData} />
 			)
 		}
 	}

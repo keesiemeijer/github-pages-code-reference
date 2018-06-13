@@ -1,18 +1,16 @@
 import React from 'react';
 
+import WithParsedData from '../data/parsed-data';
 import PrimaryHeader from './primary-header';
-import WithPackageData from '../data/package-data';
 import HomeContent from '../templates/home-content';
+import Strings from '../json-files/wp-parser-json-strings.json';
+
 
 const HomeTemplate = props => {
-	let appName = props['package']['appname'];
-	const postType = 'functions';
-
-	const strings = require('../json-files/wp-parser-json-strings.json');
 
 	return (
 		<div id="page" className="hfeed site devhub-wrap">
-			<PrimaryHeader appName={appName} postType={postType} strings={strings}/>
+			<PrimaryHeader {...props} strings={Strings} isHome={true}/>
 			<div id="content" className="site-content">
 				<div id="content-area" className="code-reference">
 					<main id="main" className="site-main" role="main">
@@ -24,4 +22,4 @@ const HomeTemplate = props => {
 	)
 }
 
-export default WithPackageData(HomeTemplate);
+export default WithParsedData( HomeTemplate );

@@ -2,11 +2,16 @@
   "name": "github-pages-code-reference",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://username.github.io/example-reference",
-  "appname": "example-reference",
-  "parsed_name": "Example Reference Name",
-  "parsed_version": "1.0.0",
-  "parsed_type": "",
+  "homepage": "https://keesiemeijer.github.io/related-posts-by-taxonomy",
+  "reference": {
+    "app_basename": "related-posts-by-taxonomy",
+    "app_url": "https://keesiemeijer.wordpress.com/related-posts-by-taxonomy",
+    "repo_url": "https://github.com/keesiemeijer/related-posts-by-taxonomy",
+    "parsed_branch_url": "",
+    "parsed_name": "Related Posts by Taxonomy",
+    "parsed_version": "1.0.0",
+    "parsed_type": "plugin"
+  },
   "dependencies": {
     "react": "^16.4.0",
     "react-autosuggest": "^9.3.4",
@@ -21,7 +26,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build --repo=https://github.com/username/example-reference"
+    "deploy": "gh-pages -d build --repo=https://github.com/keesiemeijer/related-posts-by-taxonomy"
   },
   "devDependencies": {
     "gh-pages": "^1.1.0"

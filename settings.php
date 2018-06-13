@@ -16,6 +16,7 @@ function wporg_developer_child_get_localized_strings() {
 		'methods_search'   => __( 'Search methods', 'wporg-developer-child' ),
 		'source'           => __( 'Source', 'wporg-developer-child' ),
 		'submit'           => __( 'Submit', 'wporg-developer-child' ),
+		'repo'             => __( 'Github Repository', 'wporg-developer-child'),
 	);
 }
 
