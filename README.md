@@ -72,9 +72,9 @@ Go to Plugins and activate the `WP Parser JSON` plugin.
 ### Code Reference Settings
 Open the package.json file in the `www/wp-reference/public/wp-content/themes/github-pages-code-reference` directory and change these values for your code reference.
 
-* `homepage` - Point it to your GitHub pages (e.g. `https://username.github.io/example-reference`)
+* `homepage` - Point it to your GitHub pages (e.g. `https://username.github.io/example-repository`)
 * `reference`
-  * `app_basename` - Basename of your GitHup pages slug (e.g. `example-reference`)
+  * `app_basename` - Basename of your GitHup pages slug (e.g. `example-repository`)
   * `app_url` - For linking to code home page (with link text `parsed_name` below)
   * `repo_url` - For linking to a repository
   * `repo_release_url` - For linking to code in a GitHub repository 
