@@ -8,11 +8,26 @@
 .site-header nav {
   background-color: #666;
   padding: .6em;
+  overflow: hidden;
 }
 
 .site-header a {
   padding: 1em;
   color: #fff;
+  text-decoration: none;
+}
+
+.site-header a.active {
+  background: #383333;
+  
+}
+
+.site-header a:hover {
+   background: #545454;
+}
+
+.site-header a.active:hover {
+  background: #383333;
 }
 
 .site-title {
@@ -23,6 +38,13 @@
   border-bottom: 0;
 }
 
+.site-title a {
+  font-size: 3rem;
+}
+
+.site-title a:hover {
+  background:none;
+}
 form {
   margin-bottom: 1em;
   margin-top: .5em;
@@ -42,6 +64,14 @@ form {
   white-space: nowrap;
   vertical-align: middle;
   border-radius: 0.25em;
+}
+
+.devhub-wrap .wp-parser-class,
+.devhub-wrap .wp-parser-function, 
+.devhub-wrap .wp-parser-hook,
+.devhub-wrap .wp-parser-method {
+    border-bottom: none;
+    margin-bottom: 2em;
 }
 
 .devhub-wrap .react-autosuggest__container {

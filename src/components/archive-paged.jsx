@@ -4,8 +4,8 @@ import { trim } from 'lodash';
 import WithParsedData from '../data/parsed-data';
 
 const ArchivePaged = props => {
-	let pathParts = trim( props.location.pathname, '/' ).split( '/' );
-	pathParts = pathParts.filter( value => value !== '' );
+	let pathParts = trim(props.location.pathname, '/').split('/');
+	pathParts = pathParts.filter(value => value !== '');
 
 	const type = pathParts[0];
 	//const slug = pathParts[1];
@@ -18,4 +18,4 @@ const ArchivePaged = props => {
 	);
 }
 
-export default WithParsedData( ArchivePaged );
+export default WithParsedData(ArchivePaged);

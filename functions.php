@@ -1,18 +1,6 @@
 <?php
 global $wp_parser_json_html, $wp_parser_json_types, $wp_parser_json_package;
 
-
-add_filter( 'wp_parser_exclude_directories', 'callbacksss' );
-function callbacksss( $dirs ) {
-	return array( 'vendor', 'tests' );
-}
-
-
-
-
-
-
-
 include 'settings.php';
 
 add_filter( 'wp_parser_json_skip_deprecated', '__return_false' );
@@ -62,7 +50,9 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 	$item['summary']     = \DevHub\get_summary( $post_item );
 	$item['signature']   = \DevHub\get_signature( $post_item->ID );
 	$item['source_file'] = \DevHub\get_source_file( $post_item->ID );
+	$item['line_num'] = get_post_meta( $post_item->ID, '_wp-parser_line_num', true );
 	$item['source']      = sprintf( __( 'Source: %s', 'wporg-developer-child' ), $item['source_file'] );
+
 
 	$json_file = str_replace( '/', '-', $item['source_file'] );
 	if ( substr( $json_file, -4 ) == '.php' ) {
@@ -78,6 +68,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		'return',
 		'changelog',
 		'methods',
+		'related',
 	);
 
 	$html = '';
@@ -95,17 +86,18 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 	$wp_parser_json_html = is_array( $wp_parser_json_html ) ? $wp_parser_json_html : array();
 	$wp_parser_json_types = is_array( $wp_parser_json_types ) ? $wp_parser_json_types : array();
 
-	$wp_parser_json_html[ $item['json_file'] ][ $item['slug'] ] = $html;
 
 	$slug = $item['slug'];
-	if ( $post->post_parent && ( 'wp-parser-method' === $post->post_type ) ) {
-		$parent = get_post( $post->post_parent );
+	if ( $post_item->post_parent && ( 'wp-parser-method' === $post_item->post_type ) ) {
+		$parent = get_post( $post_item->post_parent );
 
 		$item['slug'] = $parent->post_name . '::' . $item['slug'];
 		$item['parent'] = $parent->post_name;
 	}
 
-	$wp_parser_json_types[ $post_types[ $post->post_type ] ][] = $slug;
+	$wp_parser_json_html[ $item['json_file'] ][ $item['slug'] ] = $html;
+
+	$wp_parser_json_types[ $post_types[ $post_item->post_type ] ][] = $slug;
 
 	remove_filter( 'the_permalink', 'wporg_developer_child_update_site_permalink', 101 );
 	remove_filter( 'post_link', 'wporg_developer_child_update_site_permalink', 101 );
@@ -135,6 +127,10 @@ function wporg_developer_child_update_site_permalink( $permalink ) {
 	}
 
 	$homepage = $wp_parser_json_package['homepage'];
+
+	$method = site_url( '/method/' );
+
+	$permalink = str_replace( $method, trailingslashit( $homepage ) . 'classes/', $permalink );
 
 	$url = site_url( '/reference/' );
 	$permalink = str_replace( $url, trailingslashit( $homepage ), $permalink );
@@ -168,14 +164,14 @@ function wporg_developer_child_get_home_template() {
 
 	$package = wporg_developer_child_get_package();
 	$package['reference'] = array_merge( $defaults, $package['reference'] );
-	if(isset($package['homepage'])) {
+	if ( isset( $package['homepage'] ) ) {
 		$package['reference']['homepage'] = $package['homepage'];
 	}
 	$package = $package['reference'];
 
 	echo '<pre>';
-print_r($package);
-echo '</pre>';
+	print_r( $package );
+	echo '</pre>';
 
 	ob_start();
 	include 'reference/template-home.php';

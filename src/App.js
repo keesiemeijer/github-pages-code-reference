@@ -12,8 +12,8 @@ const App = (props) => {
 	const appName = PackageData['reference']['app_basename'];
 
 	let location = '/' + appName;
-	location = ('/' === appName) ? '': location;
-	const homeLocation = ! location ? '/' + appName : location;
+	location = ('/' === appName) ? '' : location;
+	const homeLocation = !location ? '/' + appName : location;
 
 	const data = {
 		appName: appName,

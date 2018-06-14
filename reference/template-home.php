@@ -3,12 +3,12 @@
 	$repo_url    = $package['repo_url'];
 	$app_url     = '';
 	$title       = '';
-	
+
 	if( ( $parsed_name ) ) {
 		$title = $strings['page_title'];
 		$app_url = $package['app_url'];
 	}
-	
+
 	$repo        = $strings['repo'] ? $strings['repo'] : 'GitHub';
 	$parsed_type = $package['parsed_type'] ? $package['parsed_type'] : 'code base';
 

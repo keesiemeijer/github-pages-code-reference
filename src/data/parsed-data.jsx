@@ -14,28 +14,28 @@ const parsedData = {
 
 export
 
-const WithParsedData = ( ComponentToWrap, {...props} ) => {
+const WithParsedData = (ComponentToWrap, {...props }) => {
 	return class JsonDataComponent extends Component {
 		render() {
 
 			let { postType } = this.props;
 
 			let searchData = {};
-			if( ( 'SingleTemplate' === ComponentToWrap.name ) && ( 'methods' === postType ) ) {
-				if( parsedData.hasOwnProperty('classes') ) {
+			if (('SingleTemplate' === ComponentToWrap.name) && ('methods' === postType)) {
+				if (parsedData.hasOwnProperty('classes')) {
 					searchData = parsedData['classes'];
 				}
 			}
 
 			let data = {}
-			if( postType && parsedData.hasOwnProperty(postType)) {
+			if (postType && parsedData.hasOwnProperty(postType)) {
 				data = parsedData[postType];
 			}
 
-			const withData = Object.keys(parsedData).filter( (item, index) => {
+			const withData = Object.keys(parsedData).filter((item, index) => {
 				const exists = typeof parsedData[item]['content'] !== 'undefined';
 				return exists && parsedData[item]['content'];
-			} );
+			});
 
 			return (
 				<ComponentToWrap {...this.props}

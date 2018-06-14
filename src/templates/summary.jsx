@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Summary = props => { 
+const Summary = props => {
 	return (
 		<section className="summary" dangerouslySetInnerHTML={{ __html: props.element.summary }}></section>
 	)
