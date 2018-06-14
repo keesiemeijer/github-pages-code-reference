@@ -79,6 +79,7 @@ Open the package.json file in the `www/wp-reference/public/wp-content/themes/git
   * `repo_url` - For linking to a repository
   * `repo_release_url` - For linking to code in a GitHub repository 
     * for example (tags): `https://github.com/username/example-repo/tree/1.0.0`.
+    * for example (branch): `https://github.com/username/example-repo/tree/master`.
   * `parsed_name` - The name of the parsed code.
   * `parsed_type` - The type of code that was parsed ("plugin" or "theme")
   * `parsed_version` - The version of the code that was parsed (e.g. "1.0.0")
