@@ -76,7 +76,9 @@ Open the package.json file in the `www/wp-reference/public/wp-content/themes/git
 * `reference`
   * `app_basename` - Basename of your GitHup pages slug (e.g. `example-repository`)
   * `app_url` - For linking to code home page (with link text `parsed_name` below)
+    * for example: `https://example.com/code-homepage`
   * `repo_url` - For linking to a repository
+    * for example: `https://github.com/username/example-repository`
   * `repo_release_url` - For linking to code in a GitHub repository 
     * for example (tags): `https://github.com/username/example-repository/tree/1.0.0`.
     * for example (branch): `https://github.com/username/example-repository/tree/master`.
