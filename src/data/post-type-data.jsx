@@ -24,6 +24,13 @@ export function postTypeExists(postType) {
 	return postTypes.length === 1;
 }
 
+export function getPostClass( postType ) {
+	let post_class = postType.substring(0, postType.length - 1);
+	post_class = ('classe' === post_class) ? 'class' : post_class;
+
+	return 'wp-parser-' + post_class;
+}
+
 export function getPathParts(route) {
 	return trim(route, '/').split('/').filter(value => value !== '');
 }

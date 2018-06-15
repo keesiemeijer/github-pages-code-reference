@@ -7,8 +7,7 @@ const Content = props => {
 		return null;
 	}
 
-	const fileContent = require('../json-files/html/' + props.element.json_file + '.json');
-	const content = fileContent[props.element.slug];
+	const content = props.data[props.element.slug]['html'];
 
 	return (
 		<div dangerouslySetInnerHTML={{ __html: content }}></div>

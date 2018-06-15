@@ -21,6 +21,13 @@ function wporg_developer_child_get_localized_strings() {
 		'submit'           => __( 'Submit', 'wporg-developer-child' ),
 		'repo'             => __( 'Github Repository', 'wporg-developer-child' ),
 		'docs'             => __( 'Documentation', 'wporg-developer-child' ),
+		'related'          => __( 'Related', 'wporg-developer-child' ),
+		'used_by'          => __( 'Used By', 'wporg-developer-child' ),
+		'uses'             => __( 'Uses', 'wporg-developer-child' ),
+		'changelog'        => __( 'Changelog', 'wporg-developer-child' ),
+		'version'          => __( 'Version', 'wporg-developer-child' ),
+		'description'      => __( 'Description', 'wporg-developer-child' ),
+
 	);
 }
 

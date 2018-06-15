@@ -26,19 +26,19 @@ const PrimaryHeader = (props) => {
 
 	return (
 		<header className="site-header">
-		<h1 className="site-title">{title}</h1>
-		{-1 !== props.withData.indexOf( searchPostType ) && <Search
-			postType={searchPostType}
-			searchData={searchData}
-			strings={props.strings}
-			home={props.home}
-		/>}
-		<nav>
-			<NavLink to={props.home} exact activeClassName="active">{props.strings.home}</NavLink>
-			{ props.withData.map( (item, index) =>
-				'methods' !== item && <NavLink to={props.home + '/' + item} key={index} activeClassName="active">{props.strings[item]}</NavLink>
-			)}
-		</nav>
+			<h1 className="site-title">{title}</h1>
+			{-1 !== props.withData.indexOf( searchPostType ) && <Search
+				postType={searchPostType}
+				searchData={searchData}
+				strings={props.strings}
+				home={props.home}
+			/>}
+			<nav>
+				<NavLink to={props.home} exact activeClassName="active">{props.strings.home}</NavLink>
+				{ props.withData.map( (item, index) =>
+					'methods' !== item && <NavLink to={props.home + '/' + item} key={index} activeClassName="active">{props.strings[item]}</NavLink>
+				)}
+			</nav>
 	  </header>
 	)
 }

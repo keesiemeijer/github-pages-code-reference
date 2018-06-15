@@ -1,7 +1,10 @@
 <?php
-global $wp_parser_json_html, $wp_parser_json_types, $wp_parser_json_package;
+global $wp_parser_json_, $wp_parser_json_types, $wp_parser_json_package;
 
 include 'settings.php';
+include 'related.php';
+include 'changelog.php';
+include 'methods.php';
 
 add_filter( 'wp_parser_json_skip_deprecated', '__return_false' );
 
@@ -21,7 +24,7 @@ function wporg_developer_child_parse_post_types() {
 add_filter( 'wp_parser_json_content_item', 'wporg_developer_child_get_plugin_data', 10, 2 );
 
 function wporg_developer_child_get_plugin_data( $item, $post_item ) {
-	global $wp_parser_json_html, $wp_parser_json_types, $post;
+	global $wp_parser_json_, $wp_parser_json_types, $post;
 
 	add_filter( 'the_permalink', 'wporg_developer_child_update_site_permalink', 101 );
 	add_filter( 'post_link', 'wporg_developer_child_update_site_permalink', 101 );
@@ -42,15 +45,13 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 			$first_version = $version['version'];
 		}
 	}
-	$description = \DevHub\get_description( $post );
 
 	$item['since']       = $first_version;
-	$item['description'] = $description ? $description : '';
 	$item['deprecated']  = \DevHub\is_deprecated( $post_item->ID );
 	$item['summary']     = \DevHub\get_summary( $post_item );
 	$item['signature']   = \DevHub\get_signature( $post_item->ID );
 	$item['source_file'] = \DevHub\get_source_file( $post_item->ID );
-	$item['line_num'] = get_post_meta( $post_item->ID, '_wp-parser_line_num', true );
+	$item['line_num']    = get_post_meta( $post_item->ID, '_wp-parser_line_num', true );
 	$item['source']      = sprintf( __( 'Source: %s', 'wporg-developer-child' ), $item['source_file'] );
 
 
@@ -66,9 +67,6 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		'description',
 		'params',
 		'return',
-		'changelog',
-		'methods',
-		'related',
 	);
 
 	$html = '';
@@ -76,14 +74,9 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		$html .= wporg_developer_child_get_template( $part, $post_item );
 	}
 
-	$post_types =  array(
-		'wp-parser-class'    => 'classes',
-		'wp-parser-function' => 'functions',
-		'wp-parser-hook'     => 'hooks',
-		'wp-parser-method'   => 'methods',
-	);
+	$post_types =  wporg_developer_child_get_post_types();
 
-	$wp_parser_json_html = is_array( $wp_parser_json_html ) ? $wp_parser_json_html : array();
+	$wp_parser_json_ = is_array( $wp_parser_json_ ) ? $wp_parser_json_ : array();
 	$wp_parser_json_types = is_array( $wp_parser_json_types ) ? $wp_parser_json_types : array();
 
 
@@ -95,7 +88,10 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		$item['parent'] = $parent->post_name;
 	}
 
-	$wp_parser_json_html[ $item['json_file'] ][ $item['slug'] ] = $html;
+	$wp_parser_json_[ $item['json_file'] ][ $item['slug'] ][ 'html' ] = $html;
+	$wp_parser_json_[ $item['json_file'] ][ $item['slug'] ][ 'methods' ] = \DevHub\get_method_items();
+	$wp_parser_json_[ $item['json_file'] ][ $item['slug'] ][ 'related' ] = \DevHub\get_related_items();
+	$wp_parser_json_[ $item['json_file'] ][ $item['slug'] ][ 'changelog' ] = \DevHub\get_changelog_items();
 
 	$wp_parser_json_types[ $post_types[ $post_item->post_type ] ][] = $slug;
 
@@ -146,6 +142,40 @@ function wporg_developer_child_get_template( $template, $post_item ) {
 	wp_reset_postdata();
 	return $template;
 }
+
+function wporg_developer_child_get_post_types(){
+	return  array(
+		'wp-parser-class'    => 'classes',
+		'wp-parser-function' => 'functions',
+		'wp-parser-hook'     => 'hooks',
+		'wp-parser-method'   => 'methods',
+	);
+}
+
+function wporg_developer_child_get_permalink($post ){
+
+	$post = get_post( $post);
+	$package = wporg_developer_child_get_package();
+
+	$app_name = $package['reference']['app_basename'];
+	$location = '/' . $app_name;
+	$location = ('/' === $app_name) ? '' : $location;
+	$home = !$location ? '/' . $app_name : $location;
+
+	$post_types = wporg_developer_child_get_post_types();
+	$post_type = $post_types[ $post->post_type ];
+
+	$slug = basename( get_the_permalink( $post->ID ) );
+	if ($post->post_parent && ( 'methods' === $post_type ) ) {
+		$parent = get_post($post->post_parent );
+
+		$slug = $parent->post_name . '/' . $slug;
+	}
+	$post_type = ('methods' === $post_type ) ? 'classes' : $post_type;
+
+	return $home . '/' . $post_type . '/' .$slug;
+}
+
 
 function wporg_developer_child_get_home_template() {
 	$strings = wporg_developer_child_get_localized_strings();
@@ -246,8 +276,8 @@ function wporg_developer_child_copy_dir( $old, $new ) {
 }
 
 function wporg_developer_child_generate_files() {
-	global $wp_parser_json_html, $wp_parser_json_types;
-	if ( ! is_array( $wp_parser_json_html ) || empty( $wp_parser_json_html ) ) {
+	global $wp_parser_json_, $wp_parser_json_types;
+	if ( ! is_array( $wp_parser_json_ ) || empty( $wp_parser_json_ ) ) {
 		return;
 	}
 
@@ -328,7 +358,7 @@ function wporg_developer_child_generate_files() {
 	}
 
 	// Create the html files.
-	foreach ( $wp_parser_json_html as $slug => $content ) {
+	foreach ( $wp_parser_json_ as $slug => $content ) {
 		$file = $theme_dir . '/json-files/html/' . $slug . '.json';
 		$content = json_encode( $content );
 		if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {

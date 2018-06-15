@@ -2,17 +2,21 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { findIndex } from "lodash";
 
-import PrimaryHeader from "./primary-header";
+import { getPostClass } from "../data/post-type-data";
+import PrimaryTemplate from "./primary-template";
 import WithParsedData from "../data/parsed-data";
 import Signature from "../templates/signature";
 import Summary from "../templates/summary";
 import Content from "../templates/content";
 import Source from "../templates/source";
-import Strings from "../json-files/wp-parser-json-strings.json";
+import Related from "../templates/related";
+import Changelog from "../templates/changelog";
+import Methods from "../templates/methods";
 
 const SingleTemplate = props => {
 	window.scrollTo(0, 0);
 	const typeElements = props["parsedData"]["content"];
+
 
 	if (!typeElements.length) {
 		return <Redirect to={props.home} />;
@@ -27,25 +31,21 @@ const SingleTemplate = props => {
 		element = typeElements[index];
 	}
 
-	let post_class = props.postType.substring(0, props.postType.length - 1);
-	post_class = "classe" === post_class ? "class" : post_class;
+	let postClass = getPostClass( props.postType );
+	const data = require('../json-files/html/' + element.json_file + '.json');
 
 	return (
-		<div id="page" className="hfeed site devhub-wrap">
-			<PrimaryHeader {...props} strings={Strings} />
-			<div id="content" className="site-content">
-				<div id="content-area" className="code-reference">
-					<main id="main" className="site-main" role="main">
-						<article className={"wp-parser-" + post_class}>
-							<Signature element={element} />
-							<Summary element={element} />
-							<Source {...props} element={element} />
-							<Content element={element} />
-						</article>
-					</main>
-				</div>
-			</div>
-		</div>
+		<PrimaryTemplate {...props}>
+			<article className={postClass}>
+				<Signature element={element} />
+				<Summary element={element} />
+				<Source {...props} element={element}  />
+				<Content element={element} data={data} />
+				<Changelog element={element} data={data} />
+				<Methods element={element} data={data} />
+				<Related element={element} data={data} />
+			</article>
+		</PrimaryTemplate>
 	);
 };
 

@@ -11,9 +11,6 @@ const Source = props => {
 	}
 
 	let view = Strings['source_file'].replace('%1$s', source_file);
-
-	// /soursce/file.php
-
 	let url = '';
 	let urlText = '';
 	let link = false;
