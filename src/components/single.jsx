@@ -5,15 +5,18 @@ import SingleTemplate from "./single-template";
 import { getPostType, isSingle, getSlug } from "../data/post-type-data";
 
 const Single = props => {
-	if (!isSingle(props.location.pathname)) {
+	const route = props.location.pathname;
+	const postTypeIndex = props.postTypeIndex;
+
+	if (!isSingle(route, postTypeIndex)) {
 		return <Redirect to={props.home} />;
 	}
 
-	const postType = getPostType(props.location.pathname);
+	const postType = getPostType(route, postTypeIndex);
 
-	let slug = getSlug(props.location.pathname, 2);
+	let slug = getSlug(route, postTypeIndex + 1);
 	if ("methods" === postType) {
-		slug += "::" + getSlug(props.location.pathname, 3);
+		slug += "::" + getSlug(route, postTypeIndex + 2);
 	}
 
 	return <SingleTemplate {...props} postType={postType} slug={slug} />;

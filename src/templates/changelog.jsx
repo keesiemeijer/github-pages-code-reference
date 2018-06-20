@@ -1,15 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
 import { isEmpty } from 'lodash';
+
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Changelog = props => {
 	const changelog = props.data[props.element.slug]['changelog'];
-
 	if (isEmpty(changelog)) {
 		return null;
 	}
+
 	return (
 		<div>
 			<hr />

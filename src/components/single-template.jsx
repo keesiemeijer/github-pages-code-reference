@@ -17,7 +17,6 @@ const SingleTemplate = props => {
 	window.scrollTo(0, 0);
 	const typeElements = props["parsedData"]["content"];
 
-
 	if (!typeElements.length) {
 		return <Redirect to={props.home} />;
 	}
@@ -31,7 +30,7 @@ const SingleTemplate = props => {
 		element = typeElements[index];
 	}
 
-	let postClass = getPostClass( props.postType );
+	let postClass = getPostClass(props.postType);
 	const data = require('../json-files/html/' + element.json_file + '.json');
 
 	return (
@@ -42,8 +41,8 @@ const SingleTemplate = props => {
 				<Source {...props} element={element}  />
 				<Content element={element} data={data} />
 				<Changelog element={element} data={data} />
-				<Methods element={element} data={data} />
-				<Related element={element} data={data} />
+				<Methods element={element} data={data} home={props.home} />
+				<Related element={element} data={data} home={props.home} />
 			</article>
 		</PrimaryTemplate>
 	);

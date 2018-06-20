@@ -85,7 +85,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		$parent = get_post( $post_item->post_parent );
 
 		$item['slug'] = $parent->post_name . '::' . $item['slug'];
-		$item['parent'] = $parent->post_name;
+		$item['parent'] = $parent->post_title;
 	}
 
 	$wp_parser_json_[ $item['json_file'] ][ $item['slug'] ][ 'html' ] = $html;
@@ -159,7 +159,7 @@ function wporg_developer_child_get_permalink($post ){
 
 	$app_name = $package['reference']['app_basename'];
 	$location = '/' . $app_name;
-	$location = ('/' === $app_name) ? '' : $location;
+	$location = ('/' === $location) ? '' : $location;
 	$home = !$location ? '/' . $app_name : $location;
 
 	$post_types = wporg_developer_child_get_post_types();
@@ -173,7 +173,7 @@ function wporg_developer_child_get_permalink($post ){
 	}
 	$post_type = ('methods' === $post_type ) ? 'classes' : $post_type;
 
-	return $home . '/' . $post_type . '/' .$slug;
+	return '/' . $post_type . '/' . $slug;
 }
 
 

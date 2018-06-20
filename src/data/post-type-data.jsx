@@ -1,30 +1,34 @@
 import { trim } from 'lodash';
 
-export function getPostType(route) {
+export function getPostType(route, postTypeIndex) {
 	let postType = '';
 	let pathParts = getPathParts(route);
 
-	if (2 <= pathParts.length) {
-		postType = pathParts[1].toLowerCase();
+	if (postTypeIndex + 1 <= pathParts.length) {
+		postType = pathParts[postTypeIndex].toLowerCase();
 	}
 
 	if (!postType || !postTypeExists(postType)) {
 		return '';
 	}
 
-	postType = (4 === pathParts.length) ? 'methods' : postType;
+	postType = (postTypeIndex + 3 === pathParts.length) ? 'methods' : postType;
 
 	return postType;
 }
 
 export function postTypeExists(postType) {
-	const allowed = ['functions', 'hooks', 'classes'];
+	const allowed = ['functions', 'hooks', 'classes', 'methods'];
 	const postTypes = allowed.filter((item) => postType === item);
 
 	return postTypes.length === 1;
 }
 
-export function getPostClass( postType ) {
+export function getPostClass(postType) {
+	if (!postTypeExists(postType)) {
+		return '';
+	}
+
 	let post_class = postType.substring(0, postType.length - 1);
 	post_class = ('classe' === post_class) ? 'class' : post_class;
 
@@ -46,16 +50,20 @@ export function getSlug(route, index) {
 	return slug
 }
 
-export function isSingle(route) {
+export function isSingle(route, postTypeIndex) {
 	const pathParts = getPathParts(route);
-	const postType = getPostType(route);
+	const postType = getPostType(route, postTypeIndex);
+
+	if (!postType.length) {
+		return false;
+	}
 
 	if ('methods' === postType) {
-		if (4 === pathParts.length) {
+		if ((postTypeIndex + 3) === pathParts.length) {
 			return true
 		}
 	} else {
-		if (3 === pathParts.length) {
+		if ((postTypeIndex + 2) === pathParts.length) {
 			return true;
 		}
 	}

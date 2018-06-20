@@ -8,10 +8,10 @@ const HomeContent = props => {
 	Want to know what's going on inside this plugin.	Search the Code Reference for more information about functions, classes, methods, and hooks.</p>
 <ul>
 			<li>
-			<a href="https://keesiemeijer.wordpress.com/related-posts-by-taxonomy">Related Posts by Taxonomy</a>
+			<a href="https://example.com/code-homepage">Example Repository Reference</a>
 		</li>
 				<li>
-			<a href="https://github.com/keesiemeijer/related-posts-by-taxonomy">Github Repository</a>
+			<a href="https://github.com/username/example-repository">Github Repository</a>
 		</li>
 	</ul>
 

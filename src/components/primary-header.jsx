@@ -7,6 +7,7 @@ import Search from './search'
 const PrimaryHeader = (props) => {
 	let searchPostType = props.postType;
 	let searchData = props.parsedData;
+
 	if (!isEmpty(props.searchData) && ('methods' === props.postType)) {
 		searchPostType = 'classes';
 		searchData = props.searchData
@@ -24,6 +25,8 @@ const PrimaryHeader = (props) => {
 		}
 	}
 
+	const archiveHome = ('/' === props.home) ? '' : props.home;
+
 	return (
 		<header className="site-header">
 			<h1 className="site-title">{title}</h1>
@@ -31,12 +34,12 @@ const PrimaryHeader = (props) => {
 				postType={searchPostType}
 				searchData={searchData}
 				strings={props.strings}
-				home={props.home}
+				home={archiveHome}
 			/>}
 			<nav>
 				<NavLink to={props.home} exact activeClassName="active">{props.strings.home}</NavLink>
 				{ props.withData.map( (item, index) =>
-					'methods' !== item && <NavLink to={props.home + '/' + item} key={index} activeClassName="active">{props.strings[item]}</NavLink>
+					'methods' !== item && <NavLink to={archiveHome + '/' + item} key={index} activeClassName="active">{props.strings[item]}</NavLink>
 				)}
 			</nav>
 	  </header>

@@ -5,9 +5,8 @@ import { isEmpty } from 'lodash';
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Related = props => {
-	const related = props.data[ props.element.slug ]['related'];
-
-	if(isEmpty( related )) {
+	const related = props.data[props.element.slug]['related'];
+	if (isEmpty(related)) {
 		return null;
 	}
 
@@ -18,8 +17,10 @@ const Related = props => {
 		return null;
 	}
 
+	const relatedHome = ('/' === props.home) ? '' : props.home;
+
 	let usesElements = '';
-	if( !isEmpty(uses) ) {
+	if (!isEmpty(uses)) {
 		usesElements = (
 			<article className="uses">
 				<h3>{Strings.uses}</h3>
@@ -27,7 +28,7 @@ const Related = props => {
 					{ uses.map( (item, index) =>
 						<li key={index} >
 							<span>{item.source}</span>{' '}
-							<Link to={item.url}>{item.text}</Link>
+							<Link to={relatedHome + item.url}>{item.text}</Link>
 						</li>
 					)}
 			    </ul>
@@ -36,7 +37,7 @@ const Related = props => {
 	}
 
 	let usedByElements = '';
-	if( !isEmpty(usedBy) ) {
+	if (!isEmpty(usedBy)) {
 		usedByElements = (
 			<div>
 			<hr />
@@ -46,7 +47,7 @@ const Related = props => {
 					{ usedBy.map( (item, index) =>
 						<li key={index}>
 							<span>{item.source}</span>{' '}
-							<Link to={item.url}>{item.text}</Link>
+							<Link to={relatedHome + item.url}>{item.text}</Link>
 						</li>
 					)}
 			    </ul>

@@ -6,10 +6,11 @@ import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Methods = props => {
 	const methods = props.data[ props.element.slug ]['methods'];
-
 	if (isEmpty(methods)) {
 		return null;
 	}
+
+	const methodsHome = ('/' === props.home) ? '' : props.home;
 
 	return (
 		<div>
@@ -19,7 +20,7 @@ const Methods = props => {
 				<ul>
 				{ methods.map( (item, index) =>
 					<li key={index}>
-						<Link to={item.url}>{item.title}</Link>
+						<Link to={methodsHome + item.url}>{item.title}</Link>
 						{' — '}
 						<div className="class-methods-excerpt" dangerouslySetInnerHTML={{ __html: item.excerpt }}></div>			
 					</li>		

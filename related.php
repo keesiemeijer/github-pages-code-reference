@@ -51,7 +51,7 @@ function get_related_items() {
 
 			$related['used_by'][] = array(
 				'source' => get_source_file(),
-				'url'    => untrailingslashit( $parsed_url['path'] ),
+				'url'    => wporg_developer_child_get_permalink(get_the_ID()),
 				'text'   => get_the_title() . $suffix,
 			);
 		}

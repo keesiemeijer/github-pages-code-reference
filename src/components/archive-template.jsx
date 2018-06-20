@@ -8,6 +8,7 @@ import PrimaryTemplate from "./primary-template";
 
 const ArchiveTemplate = props => {
 	let typeElements = props['parsedData']['content'];
+
 	if (!typeElements.length) {
 		return (<Redirect to={props.home} />);
 	}
@@ -18,14 +19,15 @@ const ArchiveTemplate = props => {
 		return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
 	});
 
-	let postClass = getPostClass( props.postType );
+	let postClass = getPostClass(props.postType);
+	const postTypeHome = ('/' === props.home) ? '' : props.home;
 
 	return (
 		<PrimaryTemplate {...props}>
 			<h2>{Strings[ props.postType ]}</h2>
 			{typeElements.map( (item, index) =>
 				<article key={index} className={postClass}>
-				<h1><Link to={props.home + '/' + props.postType + '/' + item.slug}>{item.title}</Link></h1>
+				<h1><Link to={postTypeHome + '/' + props.postType + '/' + item.slug}>{item.title}</Link></h1>
 				<div className="description" dangerouslySetInnerHTML={{ __html: item.summary}}></div>
 				<div className="sourcefile"><p>{Strings['source_file'].replace( '%1$s', item.source_file )}</p></div>
 				</article>
