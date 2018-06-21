@@ -12,7 +12,7 @@ import './index.css';
 const App = (props) => {
 	const appName = PackageData['reference']['app_basename'];
 
-	let location = trim( '/' + appName );
+	let location = trim( '/' + appName);
 
 	const data = {
 		appName: appName,

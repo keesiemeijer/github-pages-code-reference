@@ -1,0 +1,1 @@
+vagrant ssh -c "cd /vagrant/www/wp-reference/public; wp plugin activate wp-parser-json; wp parser-json generate"

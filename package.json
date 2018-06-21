@@ -26,6 +26,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "generate": "bash generate.sh",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build --repo=https://github.com/username/example-repository.git"
   },
