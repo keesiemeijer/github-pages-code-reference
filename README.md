@@ -83,6 +83,7 @@ Open the package.json file in the `www/wp-reference/public/wp-content/themes/git
   * `parsed_version` - The version of the code that was parsed (e.g. "1.0.0")
 * `scripts`
   * `deploy` - Change the repository in `--repo=https://github.com/username/example-repository.git`
+
 Now we are set up to parse some PHP code and generate the code reference for GitHub pages.
 
 ## Generate the Code Reference
