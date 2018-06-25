@@ -182,50 +182,6 @@ function wporg_developer_child_get_permalink( $post ) {
 	return '/' . $post_type . '/' . $slug;
 }
 
-
-function wporg_developer_child_get_home_template() {
-	$strings = wporg_developer_child_get_localized_strings();
-
-	//'homepage'       => '',
-	$defaults = array(
-		'app_basename'      => '',
-		'app_url'           => '',
-		'repo_url'          => '',
-		'parsed_branch_url' => '',
-		'parsed_name'       => '',
-		'parsed_version'    => '',
-		'parsed_type'       => '',
-	);
-
-
-	$package = wporg_developer_child_get_package();
-	$package['reference'] = array_merge( $defaults, $package['reference'] );
-	if ( isset( $package['homepage'] ) ) {
-		$package['reference']['homepage'] = $package['homepage'];
-	}
-	$package = $package['reference'];
-
-	ob_start();
-	include get_stylesheet_directory() . '/child-theme/reference/template-home.php';
-	$content = ob_get_clean();
-
-	$js = <<<EOT
-import React from 'react';
-
-const HomeContent = props => {
-	return (
-		<div>
-		{$content}
-		</div>
-	)
-}
-
-export default HomeContent;
-EOT;
-
-	return $js;
-}
-
 function wporg_developer_child_get_package() {
 	global $wp_parser_json_package;
 
@@ -368,16 +324,6 @@ function wporg_developer_child_generate_files() {
 			add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );
 			return false;
 		}
-	}
-
-	$file =  $theme_dir . '/templates/home-content.jsx';
-	$content = wporg_developer_child_get_home_template();
-
-	// Create the home content file
-	if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
-		$error = esc_html__( "Unable to create the file: {$file}", 'wporg-developer-child' );
-		add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );
-		return false;
 	}
 
 	$file = $theme_dir . '/json-files/wp-parser-json-strings.json';

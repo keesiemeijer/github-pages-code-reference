@@ -1,9 +1,23 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Loadable from 'react-loadable';
 
-import Single from './single';
 import ArchivePaged from './archive-paged';
-import Archive from './archive';
+import LoadComponent from "./load-component";
+
+const Single = Loadable({
+	loader: () =>
+		import ('./single'),
+	loading: LoadComponent,
+	delay: 500,
+});
+
+const Archive = Loadable({
+	loader: () =>
+		import ('./archive'),
+	loading: LoadComponent,
+	delay: 500,
+});
 
 const Router = props => {
 	return (

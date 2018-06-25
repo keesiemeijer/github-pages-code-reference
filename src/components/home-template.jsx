@@ -7,7 +7,7 @@ import HomeContent from "../templates/home-content";
 const HomeTemplate = props => {
 	return (
 		<PrimaryTemplate {...props} isHome={true}>
-			<HomeContent />
+			<HomeContent {...props} />
 		</PrimaryTemplate>
 	);
 };

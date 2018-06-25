@@ -89,10 +89,9 @@ Open the package.json file in the `www/wp-reference/public/wp-content/themes/git
   * `deploy` - Change the repository in `--repo=https://github.com/username/example-repository.git`
 Now we are set up to parse some PHP code.
 
-## Parse Code
+## Generate the Code Reference
 Put the code you want to parse in the `/www/wp-reference/source-code` directory.  
-From the Vagrant directory run `vagrant ssh` and go the site (root) directory.
-
+From the Vagrant directory run `vagrant ssh` and go the site root directory.
 ```
 cd /vagrant/www/wp-reference/
 ```
@@ -104,8 +103,20 @@ bash vvv-init.sh
 
 Check if your code was imported by visiting the reference site [wp-reference.test](http://wp-reference.test).
 
-## Generate the Code Reference
-Go to Settings -> WP Parser JSON and generate the JSON files used by the generated code reference. Or from the Vagrant directory run `vagrant ssh` followed by `wp parser-json generate`.
+Go the public directory.
+```
+cd /vagrant/www/wp-reference/public/
+```
+
+Activate the parser plugin.
+```
+wp plugin activate wp-parser
+```
+
+And generate the JSON files for the reference.
+```
+wp parser-json generate
+```
 
 To see the code reference before deploying open your terminal and go to this repository in the themes directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`)
 

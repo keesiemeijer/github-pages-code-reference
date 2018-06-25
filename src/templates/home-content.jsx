@@ -1,20 +1,38 @@
 import React from 'react';
 
+import Strings from '../json-files/wp-parser-json-strings.json';
+
 const HomeContent = props => {
+	const { parsed_name, repo_url, app_url, parsed_type } = props.packageData.reference;
+	let title = '';
+
+	if (parsed_name.length) {
+		title = Strings['page_title'];
+	}
+
+	const repo = Strings['repo'] ? Strings['repo'] : 'GitHub';
+	const type = parsed_type.length ? parsed_type : Strings['code_base'];
+
+	let description = '';
+	if (type.length) {
+		description = Strings['home_desc'].replace('%1$s', type);
+	}
+
+	let appLink = '';
+	if (app_url && parsed_name) {
+		appLink = (<li><a href={app_url}>{parsed_name}</a></li>)
+	}
+
+	let repoLink = '';
+	if (repo_url && repo.length) {
+		repoLink = (<li><a href={repo_url}>{repo}</a></li>)
+	}
+
 	return (
 		<div>
-			<h2>Search The Code Reference!</h2>
-<p>
-	Want to know what's going on inside this plugin.	Search the Code Reference for more information about functions, classes, methods, and hooks.</p>
-<ul>
-			<li>
-			<a href="https://example.com/code-homepage">Example Repository Reference</a>
-		</li>
-				<li>
-			<a href="https://github.com/username/example-repository">Github Repository</a>
-		</li>
-	</ul>
-
+			{title && <h2>{title}</h2>}
+			<p>{description} {Strings['home_desc-2']}</p>
+			{(appLink || repoLink) && <ul>{appLink}{repoLink}</ul>}
 		</div>
 	)
 }

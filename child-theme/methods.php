@@ -14,6 +14,7 @@ function get_method_items() {
 	$args = array(
 		'post_parent' => $post->ID,
 		'post_status' => 'publish',
+		''
 	);
 
 	$children = get_children( $args );
@@ -26,6 +27,7 @@ function get_method_items() {
 
 	foreach ( $children as $child ) {
 		$post = $child;
+		setup_postdata($child);
 		$methods[ $i ]['url'] = wporg_developer_child_get_permalink( $post );
 		$title                  = get_the_title( $post );
 		$pos                    = ( $j = strrpos( $title, ':' ) ) ? $j + 1 : 0;

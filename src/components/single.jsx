@@ -1,8 +1,16 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import Loadable from 'react-loadable';
 
-import SingleTemplate from "./single-template";
+import LoadComponent from "./load-component";
 import { getPostType, isSingle, getSlug } from "../data/post-type-data";
+
+const SingleTemplate = Loadable({
+	loader: () =>
+		import ('./single-template'),
+	loading: LoadComponent,
+	delay: 500,
+});
 
 const Single = props => {
 	const route = props.location.pathname;
