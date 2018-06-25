@@ -32,7 +32,7 @@ You should now be able to visit the GitHub page `https://user-name.github.io/rep
 
 ## Installation with VVV
 
-If you have VVV set up add a reference site with this in your [vvv-custom.yml file](https://varyingvagrantvagrants.org/docs/en-US/adding-a-new-site/).
+If VVV is installed add a new reference site with this in your [vvv-custom.yml file](https://varyingvagrantvagrants.org/docs/en-US/adding-a-new-site/).
 
 ```
 sites:
@@ -49,18 +49,18 @@ sites:
     theme: "github-pages-code-reference"
 ```
 
-If your Vagrant is running, from the Vagrant directory run `vagrant halt`. To setup the reference site run `vagrant up --provision`. This site can be used to create a WordPress PHP code reference. But for our purposes its used to generate the PHP code reference for GitHub pages. 
+If your Vagrant is running, from the Vagrant directory run `vagrant halt`. To setup the reference site run `vagrant up --provision`. This new site can be used to create a WordPress PHP code reference. But for our purposes its used to generate the PHP code reference for GitHub pages.
 
 You should now be able to visit the [wp-reference.test](http://wp-reference.test) site. 
 
 In the `vvv-custom.yml` file change `parse_source_code: false` to `parse_source_code: true`. Be aware that with the current `vvv-custom.yml` settings the post data (posts, terms, meta, etc) is deleted every time (before) you parse PHP code.
 
-Open a terminal and go the site's plugins directory (`www/wp-reference/public/wp-content/plugins`). Install the [WP Parser JSON](https://github.com/keesiemeijer/wp-parser-json) plugin.
+Clone the [WP Parser JSON](https://github.com/keesiemeijer/wp-parser-json) plugin in the site's plugins directory (`www/wp-reference/public/wp-content/plugins`).
 ```
 git clone https://github.com/keesiemeijer/wp-parser-json.git
 ```
 
-Go to the site's themes directory (`www/wp-reference/public/wp-content/themes`) and install this repository there.
+Clone this repository in the site's themes directory (`www/wp-reference/public/wp-content/themes`).
 ```
 git clone https://github.com/keesiemeijer/github-pages-code-reference.git
 ```
@@ -83,7 +83,7 @@ Open the package.json file in the `www/wp-reference/public/wp-content/themes/git
   * `parsed_version` - The version of the code that was parsed (e.g. "1.0.0")
 * `scripts`
   * `deploy` - Change the repository in `--repo=https://github.com/username/example-repository.git`
-Now we are set up to parse some PHP code.
+Now we are set up to parse some PHP code and generate the code reference for GitHub pages.
 
 ## Generate the Code Reference
 Put the code you want to parse in the `/www/wp-reference/source-code` directory.  
