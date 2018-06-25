@@ -115,6 +115,8 @@ wp plugin activate wp-parser-json
 ```
 
 And generate the JSON files for the reference.
+
+**NOTE** Check before generating the JSON files if the [settings in the package.json](#code-reference-settings) file are correct.
 ```
 wp parser-json generate
 ```
