@@ -65,10 +65,6 @@ Go to the site's themes directory (`www/wp-reference/public/wp-content/themes`) 
 git clone https://github.com/keesiemeijer/github-pages-code-reference.git
 ```
 
-Log in at [wp-reference.test/wp-admin](http://wp-reference.test/wp-admin) with user `admin` and password `password`.
-
-Go to Plugins and activate the `WP Parser JSON` plugin.  
-
 ### Code Reference Settings
 Open the package.json file in the `www/wp-reference/public/wp-content/themes/github-pages-code-reference` directory and change these values for your code reference.
 
@@ -108,9 +104,13 @@ Go the public directory.
 cd /vagrant/www/wp-reference/public/
 ```
 
-Activate the parser plugin.
-```
+Activate the WP Parser and WP Parser JSON plugin.
+```bash
+# Activate WP Parser
 wp plugin activate wp-parser
+
+# Activate WP Parser JSON
+wp plugin activate wp-parser-json
 ```
 
 And generate the JSON files for the reference.
