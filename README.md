@@ -128,7 +128,7 @@ Generate the JSON files for the reference.
 wp parser-json generate
 ```
 
-To see the code reference before deploying open your terminal and go to this repository in the themes directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`)
+To see the code reference before deploying open your terminal and go to this repository in the themes directory (`www/wp-reference/public/wp-content/themes/github-pages-code-reference`)
 
 With this command a new tab is opened in your browser with the locally generated code reference.
 ```
