@@ -100,7 +100,7 @@ From the Vagrant directory run `vagrant ssh` and go the site root directory.
 cd /vagrant/www/wp-reference/
 ```
 
-And parse the code with the `vvv-init.sh` file.
+And parse the code with the following command.
 ```
 bash vvv-init.sh
 ```
@@ -136,7 +136,7 @@ npm run start
 ```
 
 ## Deploy the Generated Code Reference
-Deploy your reference to GitHup pages after you've generated the [JSON files](#generate-the-code-reference). 
+Deploy your reference to GitHub pages after you've generated the [JSON files](#generate-the-code-reference). 
 
 **NOTE** Check before deploying if the [settings in the package.json](#code-reference-settings) file were correct before generating the reference.
 
