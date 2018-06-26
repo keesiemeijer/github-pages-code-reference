@@ -138,7 +138,7 @@ npm run start
 ## Deploy the Generated Code Reference
 Deploy your reference to GitHup pages after you've generated the [JSON files](#generate-the-code-reference). 
 
-**NOTE** Check before generating the JSON files if the [settings in the package.json](#code-reference-settings) file are correct.
+**NOTE** Check before deploying if the [settings in the package.json](#code-reference-settings) file were correct before generating the reference.
 
 Open your terminal and and go to this repository in the themes directory (`www/wp-reference/public/wp-content/themes/github-pages-code-reference`).
 
