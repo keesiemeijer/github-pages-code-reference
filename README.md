@@ -4,14 +4,14 @@ Generate a PHP code reference of a repository and host it on GitHub pages (gh-pa
 
 [Demo code reference](https://keesiemeijer.github.io/related-posts-by-taxonomy/)
 
-This reference generator is WordPress oriented as I use it for my plugins, but can be used to generate a reference for any PHP code base. It uses the [WP Parser](https://github.com/WordPress/phpdoc-parser) for parsing PHP files.
+This reference generator is WordPress oriented because I use it for my plugins, but it can be used to generate a reference for any PHP code base. The [WP Parser](https://github.com/WordPress/phpdoc-parser) plugin is used for parsing PHP DocBlocks in files.
 
 ## Requirements
 [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV) or [Local by Flywheel](https://local.getflywheel.com/).
 
 ## Setup GitHub Pages
-Open a terminal and go to your local repository where you would like to have a PHP code reference generated. Create the `gh-pages` branch and add an index.html file.
-```
+Open a terminal and go to a local repository where you would like to have GitHub pages (reference). Create the `gh-pages` branch and add an index.html file.
+```bash
 # Create the gh-pages Branch.
 git checkout -b gh-pages
 
@@ -20,7 +20,7 @@ echo "Hello World!" > index.html
 ```
 
 Push the changes to the remote GitHub repository.
-```
+```bash
 # Commit all changes (index.html).
 git add -A && git commit -m "Add index.html file"
 
@@ -49,7 +49,7 @@ sites:
     theme: "github-pages-code-reference"
 ```
 
-If your Vagrant is running, from the Vagrant directory run `vagrant halt`. To setup the reference site run `vagrant up --provision`. This new site can be used to create a WordPress PHP code reference. But for our purposes its used to generate the PHP code reference for GitHub pages.
+If your Vagrant is running, from the Vagrant directory run `vagrant halt`. To setup the reference site run `vagrant up --provision`. This new site is used to create a WordPress PHP code reference. But for our purposes its used to generate the PHP code reference for GitHub pages.
 
 You should now be able to visit the [wp-reference.test](http://wp-reference.test) site. 
 
@@ -65,12 +65,19 @@ Clone this repository in the site's themes directory (`www/wp-reference/public/w
 git clone https://github.com/keesiemeijer/github-pages-code-reference.git
 ```
 
+Go to the `github-pages-code-reference` directory and install the dependencies.
+```
+npm install
+```
+
 ### Code Reference Settings
 Open the package.json file in the `www/wp-reference/public/wp-content/themes/github-pages-code-reference` directory and change these values for your code reference.
 
-* `homepage` - Point it to your GitHub pages (e.g. `https://username.github.io/example-repository`)
+* `homepage` - Point it to your GitHub pages
+  * for example `https://username.github.io/example-repository`
 * `reference`
-  * `app_basename` - Basename of your GitHup pages slug (e.g. `example-repository`)
+  * `app_basename` - Basename of your GitHup pages slug
+    * for example `example-repository`
   * `app_url` - For linking to code home page (with link text `parsed_name` below)
     * for example: `https://example.com/code-homepage`
   * `repo_url` - For linking to a repository
@@ -114,21 +121,16 @@ wp plugin activate wp-parser
 wp plugin activate wp-parser-json
 ```
 
-And generate the JSON files for the reference.
+**Note** Check before generating the JSON files if the [settings in the package.json](#code-reference-settings) file are correct.
 
-**NOTE** Check before generating the JSON files if the [settings in the package.json](#code-reference-settings) file are correct.
+Generate the JSON files for the reference.
 ```
 wp parser-json generate
 ```
 
 To see the code reference before deploying open your terminal and go to this repository in the themes directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`)
 
-Install the dependencies (if not already installed).
-```
-npm install
-```
-
-To see the local generated code reference in your browser use the following command
+With this command a new tab is opened in your browser with the locally generated code reference.
 ```
 npm run start
 ```
@@ -140,12 +142,7 @@ Deploy your reference to GitHup pages after you've generated the [JSON files](#g
 
 Open your terminal and and go to this repository in the themes directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`).
 
-Install the dependencies (if not already installed).
-```
-npm install
-```
-
-Run the following command to push the generated code reference to your GitHub pages.
+Deploy (push) the generated code reference to the GitHub pages branch (in the packagage.json file).
 ```
 npm run deploy
 ```
