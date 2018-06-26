@@ -18,20 +18,20 @@ const SingleTemplate = props => {
 	const typeElements = props["parsedData"]["content"];
 
 	if (!typeElements.length) {
-		return <Redirect to={props.home} />;
+		return (<Redirect to={props.home} />);
 	}
 
 	const index = findIndex(typeElements, value => value.slug === props.slug);
 
 	let element;
 	if (-1 === index) {
-		return <Redirect to={props.home} />;
+		return (<Redirect to={props.home} />);
 	} else {
 		element = typeElements[index];
 	}
 
 	let postClass = getPostClass(props.postType);
-	const data = require('../json-files/html/' + element.json_file + '.json');
+	const data = require('../json-files/files/' + element.json_file + '.json');
 
 	return (
 		<PrimaryTemplate {...props}>

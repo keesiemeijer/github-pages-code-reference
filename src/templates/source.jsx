@@ -4,7 +4,7 @@ import { trim } from 'lodash';
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Source = props => {
-	const { line_num, source_file, parent } = props.element;
+	const { line_num, source_file, parent, namespace } = props.element;
 	const { repo_release_url } = props.packageData.reference;
 	const { slug, home } = props;
 	const postTypeHome = ('/' === home) ? '' : home;
@@ -19,6 +19,7 @@ const Source = props => {
 	let link = false;
 	let parentClass = '';
 	let parentEl = '';
+	let namespaceEl = '';
 
 	if (repo_release_url.length) {
 		urlText = Strings.view_source_file;
@@ -37,13 +38,16 @@ const Source = props => {
 		}
 		parentClass = (<li>{Strings.class}: {parentEl}</li>)
 	}
+	if (namespace.length && ('global' !== namespace.toLowerCase())) {
+		namespaceEl = (<li>{Strings['namespace'].replace('%1$s', namespace )}</li>);
+	}
 
 	if (url.length && urlText) {
 		link = (<a href={url} target="_blank">{urlText}</a>);
-		return (<ul className="source-info">{parentClass}<li>{view}{' ('}{link}{')'}</li></ul>);
+		return (<ul className="source-info">{parentClass}{namespaceEl}<li>{view}{' ('}{link}{')'}</li></ul>);
 	}
 
-	return (<ul className="source-info">{parentClass}<li>{view}</li></ul>);
+	return (<ul className="source-info">{parentClass}{namespaceEl}<li>{view}</li></ul>);
 }
 
 export default Source;

@@ -13,7 +13,7 @@
     "parsed_version": "v1.0",
     "parsed_type": "plugin"
   },
- "dependencies": {
+  "dependencies": {
     "react": "^16.4.1",
     "react-autosuggest": "^9.3.4",
     "react-dom": "^16.4.1",

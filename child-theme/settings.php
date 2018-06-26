@@ -35,6 +35,7 @@ function wporg_developer_child_get_localized_strings() {
 		'retry'            => __( 'Retry', 'wporg-developer-child' ),
 		'timeout'          => __( 'Taking a long time...', 'wporg-developer-child' ),
 		'error'            => __( 'Error!', 'wporg-developer-child' ),
+		'namespace'        => __( 'Namespace: %1$s', 'wporg-developer-child' ),
 	);
 }
 
