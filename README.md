@@ -140,7 +140,7 @@ Deploy your reference to GitHup pages after you've generated the [JSON files](#g
 
 **NOTE** Check before generating the JSON files if the [settings in the package.json](#code-reference-settings) file are correct.
 
-Open your terminal and and go to this repository in the themes directory (`www/wp-reference/source-code/wp-content/themes/github-pages-code-reference`).
+Open your terminal and and go to this repository in the themes directory (`www/wp-reference/public/wp-content/themes/github-pages-code-reference`).
 
 Deploy (push) the generated code reference to the GitHub pages branch (in the packagage.json file).
 ```
