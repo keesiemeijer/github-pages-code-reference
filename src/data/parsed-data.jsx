@@ -1,47 +1,115 @@
+// Todo: remove this file
 import React, { Component } from "react"
+import { isEmpty } from 'lodash';
 
-import Functions from '../json-files/functions.json';
-import Classes from '../json-files/classes.json';
-import Hooks from '../json-files/hooks.json';
-import Methods from '../json-files/methods.json';
-
-const parsedData = {
-	functions: Functions,
-	classes: Classes,
-	hooks: Hooks,
-	methods: Methods,
-}
-
-export
+import LoadComponent from "../components/load-component";
+import withData from '../json-files/with-data.json';
 
 const WithParsedData = (ComponentToWrap, {...props }) => {
 	return class JsonDataComponent extends Component {
-		render() {
+		constructor(props) {
+			super(props);
+			this.state = {
+				searchData: {},
+				isMounted: false,
+				functions: {},
+				classes: {},
+				hooks: {},
+				methods: {},
+			}
+		}
 
-			let { postType } = this.props;
+		request() {
+			const postType = this.props.postType;
+			//this._asyncRequest = this.props.postType;
+			if (!isEmpty(this.state[postType])) {
+				return;
+			}
 
-			let searchData = {};
-			if (('SingleTemplate' === ComponentToWrap.name) && ('methods' === postType)) {
-				if (parsedData.hasOwnProperty('classes')) {
-					searchData = parsedData['classes'];
+			console.log("do request", this.state);
+			import ('../json-files/' + this.props.postType + '.json').then((data) => {
+				this._asyncRequest = null;
+				//let state = this.state;
+				let state = Object.assign({}, this.state);
+				state['postType'] = postType;
+				state[postType] = data;
+
+				this.setState(state);
+			});
+		}
+
+		static getDerivedStateFromProps(nextProps, prevState) {
+			if (nextProps.postType !== prevState.postType) {
+
+				if (!isEmpty(prevState[nextProps.postType])) {
+					return null;
+				}
+
+				let state = Object.assign({}, prevState);
+
+				// state[prevState.postType] = nextProps.data;
+
+				withData.map((item, index) => {
+					if (!isEmpty(prevState[item])) {
+						state[item] = prevState[item]
+					}
+				});
+				state['postType'] = nextProps.postType;
+				console.log('post type change pref', state);
+				return state;
+			}
+
+			return null;
+		}
+
+
+		componentDidUpdate(prevProps, prevState) {
+			if (prevProps.postType !== this.state.postType) {
+				if (isEmpty(this.state[this.state.postType])) {
+
+					this.request();
 				}
 			}
+		}
 
-			let data = {}
-			if (postType && parsedData.hasOwnProperty(postType)) {
-				data = parsedData[postType];
+		componentDidMount() {
+			console.log('mount', this.state);
+			this.request();
+
+		}
+
+		componentWillUnmount() {
+			if (this._asyncRequest) {
+				//this._asyncRequest.cancel();
+			}
+		}
+
+		render() {
+			let { postType } = this.props;
+
+			console.log('state', this.state);
+
+			let data = {};
+			if (!isEmpty(this.state[postType])) {
+				data = this.state[postType];
 			}
 
-			const withData = Object.keys(parsedData).filter((item, index) => {
-				const exists = typeof parsedData[item]['content'] !== 'undefined';
-				return exists && parsedData[item]['content'];
-			});
+			// let searchData = {};
+			// if (('SingleTemplate' === ComponentToWrap.name) && ('methods' === postType)) {
+			// 	if (parsedData.hasOwnProperty('classes')) {
+			// 		searchData = parsedData['classes'];
+			// 	}
+			// }
+
+			if (isEmpty(data)) {
+				console.log('DATA EMPTY');
+				return (<LoadComponent {...props} />);
+			}
 
 			return (
 				<ComponentToWrap {...this.props}
 					parsedData={data}
-					searchData={searchData}
-					withData={withData}
+					searchData={this.state.searchData}
 				/>
 			)
 		}

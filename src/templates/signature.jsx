@@ -1,8 +1,14 @@
 import React from 'react';
+import { isEmpty } from 'lodash';
 
 const Signature = props => {
+	const signature = props.data[ props.element.slug ]['signature'];
+	if (isEmpty(signature)) {
+		return null;
+	}
+
 	return (
-		<h1 dangerouslySetInnerHTML={{ __html: props.element.signature }}></h1>
+		<h1 dangerouslySetInnerHTML={{ __html: signature }}></h1>
 	)
 }
 

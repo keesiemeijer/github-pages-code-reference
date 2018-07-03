@@ -1,7 +1,13 @@
+// Todo: add pagination to archive pages
+// <Route path={`${props.match.path}/page/:page(\\d+)`} component={ArchivePaged} />
+
 import React from 'react';
 import { trim } from 'lodash';
 
 import WithParsedData from '../data/parsed-data';
+
+
+
 
 const ArchivePaged = props => {
 	let pathParts = trim(props.location.pathname, '/').split('/');

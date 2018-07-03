@@ -11,7 +11,7 @@ import './index.css';
 
 const Home = Loadable({
 	loader: () =>
-		import ('./components/home'),
+		import ('./components/home/'),
 	loading: LoadComponent,
 	delay: 500,
 });

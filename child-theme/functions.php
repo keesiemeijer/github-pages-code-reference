@@ -46,7 +46,6 @@ function wporg_developer_child_method_permalink( $link, $post ) {
 		return $link;
 	}
 
-
 	$parent = get_post( $post->post_parent );
 	if ( ! $parent ) {
 		return $link;
@@ -100,13 +99,12 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 
 	$item['since']       = $first_version;
 	$item['deprecated']  = \DevHub\is_deprecated( $post_item->ID );
-	$item['summary']     = \DevHub\get_summary( $post_item );
-	$item['signature']   = \DevHub\get_signature( $post_item->ID );
 	$item['source_file'] = \DevHub\get_source_file( $post_item->ID );
 	$item['line_num']    = get_post_meta( $post_item->ID, '_wp-parser_line_num', true );
 	$item['namespace']   = get_post_meta( $post_item->ID, '_wp_parser_namespace', true );
 	$item['aliases']     = get_post_meta( $post_item->ID, '_wp_parser_aliases', true );
 	$item['source']      = sprintf( __( 'Source: %s', 'wporg-developer-child' ), $item['source_file'] );
+	$item['summary']     = \DevHub\get_summary( $post_item );
 
 	$json_file = str_replace( '/', '-', $item['source_file'] );
 	if ( substr( $json_file, -4 ) == '.php' ) {
@@ -132,7 +130,6 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 	$wp_parser_json       = is_array( $wp_parser_json ) ? $wp_parser_json : array();
 	$wp_parser_json_types = is_array( $wp_parser_json_types ) ? $wp_parser_json_types : array();
 
-
 	$slug = $item['slug'];
 	if ( $post_item->post_parent && ( 'wp-parser-method' === $post_item->post_type ) ) {
 		$parent = get_post( $post_item->post_parent );
@@ -141,12 +138,12 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		$item['parent'] = $parent->post_title;
 	}
 
-	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['html'] = $html;
-	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['methods'] = \DevHub\get_method_items();
-	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['related'] = \DevHub\get_related_items();
+	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['html']      = $html;
+	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['methods']   = \DevHub\get_method_items();
+	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['related']   = \DevHub\get_related_items();
 	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['changelog'] = \DevHub\get_changelog_items();
-
-	$wp_parser_json_types[ $post_types[ $post_item->post_type ] ][] = $slug;
+	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['signature'] = \DevHub\get_signature( $post_item->ID );
+	$wp_parser_json_types[ $post_types[ $post_item->post_type ] ][]     = $slug;
 
 	add_filter( 'the_title',         'wporg_filter_archive_title', 10, 2 );
 	add_filter( 'single_post_title', 'wporg_filter_archive_title', 10, 2 );
@@ -353,6 +350,30 @@ function wporg_developer_child_generate_files() {
 	} else {
 		if ( $wp_cli ) {
 			WP_CLI::success( "Moved JSON files to {$theme_dir}/json-files" );
+		}
+	}
+
+	$with_data = array();
+	foreach (wporg_developer_child_parse_post_types() as $post_type => $slug) {
+		if(is_readable( $theme_dir . "/json-files/{$post_type}.json") ) {
+			$content = file_get_contents($theme_dir . "/json-files/{$post_type}.json");
+			$content = json_decode($content, true);
+			if(isset($content['content']) && !empty($content['content'])) {
+				$with_data[] = $post_type;
+			}
+		}
+	}
+
+	if($with_data) {
+		$file = $theme_dir . '/json-files/with-data.json';
+		$content = json_encode( $with_data );
+		if ( $wp_cli ) {
+			WP_CLI::log( "Generating with-data.json file..." );
+		}
+		if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
+			$error = esc_html__( "Unable to create the file: with-data.json", 'wporg-developer-child' );
+			add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );
+			return false;
 		}
 	}
 
