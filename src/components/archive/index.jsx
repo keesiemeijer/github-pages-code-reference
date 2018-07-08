@@ -1,24 +1,30 @@
 import React from "react";
 
-import Loadable from 'react-loadable';
-
-import { getPostType } from "../../data/post-type-data";
-import LoadComponent from "../load-component";
 import { DataContext } from "../../contexts/DataContext";
-
-const ArchiveTemplate = Loadable({
-	loader: () =>
-		import ('./archive-template'),
-	loading: LoadComponent,
-	delay: 500,
-});
+import { getPostType } from "../../data/post-type-data";
+import PrimaryTemplate from "../primary-template";
+import TemplateLoader from "../template-loader";
 
 const Archive = props => {
-	const postTyped = getPostType(props.location.pathname, props.postTypeIndex);
+	const route = props.location.pathname;
+	const postTypeIndex = props.postTypeIndex;
+	const routePostType = getPostType(route, postTypeIndex);
 
-	return <DataContext.Consumer>
-			{({ postType, state, fetchData }) => (<ArchiveTemplate {...props} postType={postTyped} state={state} fetchData={fetchData} />)}
-			</DataContext.Consumer>
+	return (
+		<PrimaryTemplate {...props} postType={routePostType}>
+	<DataContext.Consumer>
+	{
+		({ postType, state, fetchData }) => (
+			<TemplateLoader {...props}
+				postType={routePostType}
+				state={state}
+				fetchData={fetchData}
+				type="archive"
+			/>)
+	}
+		</DataContext.Consumer>
+	</PrimaryTemplate>
+	)
 };
 
 export default Archive;

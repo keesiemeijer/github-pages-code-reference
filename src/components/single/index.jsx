@@ -1,22 +1,41 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import SingleTemplate from "./single-template";
 import { DataContext } from "../../contexts/DataContext";
-import { getPostType, isSingle } from "../../data/post-type-data";
+import { getPostType, getSlug, isSingle } from "../../data/post-type-data";
+import PrimaryTemplate from "../primary-template";
+import TemplateLoader from "../template-loader";
 
 const Single = props => {
 	const route = props.location.pathname;
 	const postTypeIndex = props.postTypeIndex;
+	const routePostType = getPostType(route, postTypeIndex);
 
 	if (!isSingle(route, postTypeIndex)) {
 		return <Redirect to={props.home} />;
 	}
 
-	const postTyped = getPostType(route, postTypeIndex);
-	return <DataContext.Consumer>
-			{({ postType, state, fetchData }) => (<SingleTemplate {...props} postType={postTyped} state={state} fetchData={fetchData} />)}
-			</DataContext.Consumer>
+	let slug = getSlug(route, postTypeIndex + 1);
+	if ("methods" === routePostType) {
+		slug += "::" + getSlug(route, postTypeIndex + 2);
+	}
+
+	return (
+		<PrimaryTemplate {...props} postType={routePostType}>
+	<DataContext.Consumer>
+	{
+		({ postType, state, fetchData }) => (
+			<TemplateLoader {...props}
+				postType={routePostType}
+				state={state}
+				fetchData={fetchData}
+				type="single"
+				slug={slug}
+			/>)
+	}
+		</DataContext.Consumer>
+	</PrimaryTemplate>
+	);
 }
 
 export default Single;

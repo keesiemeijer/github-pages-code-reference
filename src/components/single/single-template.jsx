@@ -1,10 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
-import { findIndex, isEmpty } from "lodash";
 
-import { getPostClass, getSlug } from "../../data/post-type-data";
-import LoadComponent from "../load-component";
-import PrimaryTemplate from "../primary-template";
+import { findIndex, isEmpty } from "lodash";
 import Signature from "../../templates/signature";
 import Summary from "../../templates/summary";
 import Content from "../../templates/content";
@@ -13,65 +10,48 @@ import Related from "../../templates/related";
 import Changelog from "../../templates/changelog";
 import Methods from "../../templates/methods";
 
-export default class SingleTemplate extends Component {
+export default class SingleTemplate extends React.Component {
+
+	getElement() {
+		const index = findIndex(this.props.content, value => value.slug === this.props.slug);
+
+		if (-1 === index) {
+			return (<Redirect to={this.props.home} />);
+		} else {
+			this.element = this.props.content[index];
+		}
+	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.postType !== this.props.postType) {
-			if (isEmpty(this.props.state[this.props.postType])) {
-				this.props.fetchData(this.props.postType);
-			}
+		if (prevProps.slug !== this.props.slug) {
+			this.getElement();
+			this.props.fetchData(this.props.postType, this.element['json_file']);
 		}
 	}
 
 	componentDidMount() {
-		if (isEmpty(this.props.state[this.props.postType])) {
-			this.props.fetchData(this.props.postType);
-		}
+		this.getElement();
+		this.props.fetchData(this.props.postType, this.element['json_file']);
 	}
+
 
 	render() {
 		window.scrollTo(0, 0);
 
-		if (isEmpty(this.props.state[this.props.postType])) {
-			return (<LoadComponent />);
+		if (isEmpty(this.props.state['file']) || isEmpty(this.element)) {
+			return null;
 		}
-
-		let typeElements = this.props['state'][this.props.postType]['content'];
-		if (!typeElements.length) {
-			return (<Redirect to={this.props.home} />);
-		}
-
-		const route = this.props.location.pathname;
-		const postTypeIndex = this.props.postTypeIndex;
-
-		let slug = getSlug(route, postTypeIndex + 1);
-		if ("methods" === this.props.postType) {
-			slug += "::" + getSlug(route, postTypeIndex + 2);
-		}
-		const index = findIndex(typeElements, value => value.slug === slug);
-
-		let element;
-		if (-1 === index) {
-			return (<Redirect to={this.props.home} />);
-		} else {
-			element = typeElements[index];
-		}
-
-		let postClass = getPostClass(this.props.postType);
-		const data = require('../../json-files/files/' + element.json_file + '.json');
 
 		return (
-			<PrimaryTemplate {...this.props} >
-			<article className={postClass}>
-				<Signature element={element} data={data} />
-				<Summary element={element} data={data} />
-				<Source {...this.props} element={element} slug={slug} />
-				<Content element={element} data={data} />
-				<Changelog element={element} data={data} />
-				<Methods element={element} data={data} home={this.props.home} />
-				<Related element={element} data={data} home={this.props.home} />
+			<article className={this.props.postClass}>
+				<Signature element={this.element} data={this.props['state']['file']} />
+				<Summary element={this.element} data={this.props['state']['file']} />
+				<Source {...this.props} element={this.element} slug={this.props.slug} />
+				<Content element={this.element} data={this.props['state']['file']} />
+				<Changelog element={this.element} data={this.props['state']['file']} />
+				<Methods element={this.element} data={this.props['state']['file']} home={this.props.home} />
+				<Related element={this.element} data={this.props['state']['file']} home={this.props.home} />
 			</article>
-		</PrimaryTemplate>
 		);
 	}
-};
+}

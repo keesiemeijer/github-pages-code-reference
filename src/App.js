@@ -1,28 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import Loadable from 'react-loadable';
 import { trim } from 'lodash';
 
 import PackageData from '../package.json';
-import LoadComponent from "./components/load-component";
+import Home from "./components/home/";
+import Router from "./components/router";
 
 import './devhub.css';
 import './index.css';
-
-const Home = Loadable({
-	loader: () =>
-		import ('./components/home/'),
-	loading: LoadComponent,
-	delay: 500,
-});
-
-const Router = Loadable({
-	loader: () =>
-		import ('./components/router'),
-	loading: LoadComponent,
-	delay: 500,
-});
-
 
 const App = (props) => {
 	const appName = PackageData['reference']['app_basename'];

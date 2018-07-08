@@ -15,15 +15,37 @@ export class DataProvider extends React.Component {
 			classes: {},
 			hooks: {},
 			methods: {},
-
+			file: {},
 		}
 	};
 
-	fetchData = postType => {
+	getFileData = (single) => {
+		try {
+			import ('../json-files/files/' + single + '.json').then((data) => {
+				this.setState({
+					file: data,
+					status: 'done',
+				});
+			});
+		} catch (error) {
+			this.setState({
+				status: "error",
+				file: {},
+			});
+		}
+	}
+
+	fetchData = (postType, single) => {
 		this.setState({
 			status: "searching",
 			postType: postType,
+			file: {},
 		});
+
+		if (!isEmpty(single)) {
+			this.getFileData(single);
+			return;
+		}
 
 		if (!isEmpty(this.state[postType])) {
 			this.setState({

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import Autosuggest from 'react-autosuggest';
-import { findIndex } from 'lodash';
+import { findIndex, isEmpty } from 'lodash';
 
 const filterContains = function(text, input) {
 	return RegExp(regExpEscape(input.trim()), "i").test(text);
@@ -73,16 +73,22 @@ class Search extends Component {
 			value: '',
 			suggestions: [],
 			typing: false,
+			isLoading: false,
+			functions: {},
+			classes: {},
+			hooks: {},
 		};
+
+		this.lastRequestId = null;
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
 
 		let location = this.props.home + '/' + this.props.postType;
-		let index = findIndex(this.props.searchData.content, value => value.title === this.state.value);
+		let index = findIndex(this.state[this.props.postType].content, value => value.title === this.state.value);
 		if (-1 !== index) {
-			location = location + '/' + this.props.searchData.content[index].slug;
+			location = location + '/' + this.state[this.props.postType].content[index].slug;
 		} else {
 			location = location + '/' + this.state.value;
 		}
@@ -90,12 +96,36 @@ class Search extends Component {
 		this.props.history.push(location);
 	}
 
-	getSuggestions(value) {
+	loadSuggestions(value) {
+		let postType = this.props.postType;
+
+		if (!isEmpty(this.state[postType])) {
+			this.setState({
+				isLoading: false,
+				suggestions: this.getSuggestions(value, this.state[postType])
+			});
+			return;
+		}
+
+		this.setState({
+			isLoading: true
+		});
+
+		import ('../json-files/' + postType + '.json').then((data) => {
+			this.setState({
+				[postType]: data,
+				isLoading: false,
+				suggestions: this.getSuggestions(value, data)
+			});
+		});
+	}
+
+	getSuggestions(value, data) {
 		const inputValue = value.trim().toLowerCase();
 		const inputLength = inputValue.length;
 
 		return inputLength === 0 ? [] :
-			this.props.searchData.content.filter(value =>
+			data.content.filter(value =>
 				getSuggestions(value.title.toLowerCase(), inputValue)
 			).sort(sortByLength);
 	};
@@ -115,13 +145,9 @@ class Search extends Component {
 		});
 	};
 
-	// Autosuggest will call this function every time you need to update suggestions.
-	// You already implemented this logic above, so just use it.
+
 	onSuggestionsFetchRequested = ({ value }) => {
-		this.setState({
-			typing: false,
-			suggestions: this.getSuggestions(value)
-		});
+		this.loadSuggestions(value);
 	};
 
 	// Autosuggest will call this function every time you need to clear suggestions.

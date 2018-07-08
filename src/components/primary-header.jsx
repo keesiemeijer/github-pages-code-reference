@@ -1,18 +1,12 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { isEmpty } from 'lodash';
 
 import Search from './search'
 import withData from '../json-files/with-data.json';
 
 const PrimaryHeader = (props) => {
 	let searchPostType = props.postType;
-	let searchData = props.state[searchPostType];
-
-	if (!isEmpty(props.searchData) && ('methods' === props.postType)) {
-		searchPostType = 'classes';
-		searchData = props.searchData
-	}
+	searchPostType = ('methods' === searchPostType) ? 'classes' : searchPostType;
 
 	const { parsed_name, parsed_version } = props.packageData.reference
 	const { isHome } = props;
@@ -33,7 +27,6 @@ const PrimaryHeader = (props) => {
 			<h1 className="site-title">{title}</h1>
 			{-1 !== withData.indexOf( searchPostType ) && <Search
 				postType={searchPostType}
-				searchData={searchData}
 				strings={props.strings}
 				home={archiveHome}
 			/>}
