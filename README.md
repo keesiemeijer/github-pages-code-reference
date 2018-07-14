@@ -53,7 +53,7 @@ sites:
 
 You should now be able to visit the [wp-reference.test](http://wp-reference.test) site. 
 
-This new site can now be used as a WordPress PHP code reference. But for our purposes its used to generate the PHP code reference for GitHub pages.
+This new site can now be used as a WordPress PHP code reference. But for our purposes its used to generate the JSON files for the GitHub pages reference.
 
 In the `vvv-custom.yml` file change `parse_source_code: false` to `parse_source_code: true`. Be aware that with the current `vvv-custom.yml` settings the post data (posts, terms, meta, etc) is deleted every time (before) you parse PHP code.
 
