@@ -32,7 +32,9 @@ You should now be able to visit the GitHub page `https://user-name.github.io/rep
 
 ## Installation with VVV
 
-If VVV is installed add a new reference site with this in your [vvv-custom.yml file](https://varyingvagrantvagrants.org/docs/en-US/adding-a-new-site/).
+If VVV is installed add a new reference site with the [wp-reference](https://github.com/keesiemeijer/wp-reference) script.
+
+Put this in your [vvv-custom.yml file](https://varyingvagrantvagrants.org/docs/en-US/adding-a-new-site/) and run `vagrant up --provision` from the Vagrant directory.
 
 ```
 sites:
@@ -49,9 +51,9 @@ sites:
     theme: "github-pages-code-reference"
 ```
 
-If your Vagrant is running, from the Vagrant directory run `vagrant halt`. To setup the reference site run `vagrant up --provision`. This new site is used to create a WordPress PHP code reference. But for our purposes its used to generate the PHP code reference for GitHub pages.
-
 You should now be able to visit the [wp-reference.test](http://wp-reference.test) site. 
+
+This new site can now be used as a WordPress PHP code reference. But for our purposes its used to generate the PHP code reference for GitHub pages.
 
 In the `vvv-custom.yml` file change `parse_source_code: false` to `parse_source_code: true`. Be aware that with the current `vvv-custom.yml` settings the post data (posts, terms, meta, etc) is deleted every time (before) you parse PHP code.
 
