@@ -31,38 +31,6 @@ function wporg_developer_child_init_prority_10() {
 	}
 }
 
-add_action( 'init', 'wporg_developer_child_init_prority_11', 11 );
-
-function wporg_developer_child_init_prority_11() {
-	remove_filter( 'post_type_link', 'DevHub\method_permalink', 9, 2 );
-	add_filter( 'post_type_link', 'wporg_developer_child_method_permalink', 9, 2 );
-}
-
-
-function wporg_developer_child_method_permalink( $link, $post ) {
-	global $wp_rewrite;
-
-	if ( ! $wp_rewrite->using_permalinks() || ( 'wp-parser-method' !== $post->post_type ) ) {
-		return $link;
-	}
-
-	$parent = get_post( $post->post_parent );
-	if ( ! $parent ) {
-		return $link;
-	}
-
-	$method = basename( $link );
-	$name   = $parent->post_name . '-';
-
-	if ( substr( $method, 0, strlen( $name ) ) == $name ) {
-		$method = substr( $method, strlen( $name ) );
-	}
-
-	$link = home_url( user_trailingslashit( "reference/classes/{$parent->post_name}/$method" ) );
-	return $link;
-}
-
-
 add_action( 'shutdown', 'wporg_developer_child_shutdown' );
 
 function wporg_developer_child_shutdown() {
