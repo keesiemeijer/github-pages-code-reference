@@ -1,18 +1,24 @@
 import { trim } from 'lodash';
 
+export function getPathParts(route) {
+	return trim(route, '/').split('/').filter(value => value !== '');
+}
+
 export function getPostType(route, postTypeIndex) {
 	let postType = '';
 	let pathParts = getPathParts(route);
 
 	if (postTypeIndex + 1 <= pathParts.length) {
-		postType = pathParts[postTypeIndex].toLowerCase();
+		postType = getSlug(route, postTypeIndex).toLowerCase();
 	}
 
 	if (!postType || !postTypeExists(postType)) {
 		return '';
 	}
 
-	postType = (postTypeIndex + 3 === pathParts.length) ? 'methods' : postType;
+	if (('classes' === postType) && (postTypeIndex + 3 === pathParts.length)) {
+		postType = 'methods';
+	}
 
 	return postType;
 }
@@ -33,10 +39,6 @@ export function getPostClass(postType) {
 	post_class = ('classe' === post_class) ? 'class' : post_class;
 
 	return 'wp-parser-' + post_class;
-}
-
-export function getPathParts(route) {
-	return trim(route, '/').split('/').filter(value => value !== '');
 }
 
 export function getSlug(route, index) {
