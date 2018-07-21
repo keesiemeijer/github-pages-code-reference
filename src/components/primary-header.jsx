@@ -9,13 +9,13 @@ const PrimaryHeader = (props) => {
 	searchPostType = ('methods' === searchPostType) ? 'classes' : searchPostType;
 
 	const { parsed_name, parsed_version } = props.packageData.reference
-	const { isHome } = props;
+	const { request } = props;
 
 	let title = props.strings.page_title
 	if (parsed_name.length) {
 		title = parsed_name;
 		title += parsed_version.length ? ' ' + parsed_version : '';
-		if (!isHome) {
+		if ('home' !== request) {
 			title = (<Link to={props.home}>{title}</Link>);
 		}
 	}

@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 import { DataContext } from "../../contexts/DataContext";
-import { getPostType, getSlug, isSingle } from "../../data/post-type-data";
+import { getPostType, getSlug, isSingle } from "../../data/post-data";
 import PrimaryTemplate from "../primary-template";
 import TemplateLoader from "../template-loader";
 
@@ -12,7 +12,7 @@ const Single = props => {
 	const routePostType = getPostType(route, postTypeIndex);
 
 	if (!isSingle(route, postTypeIndex)) {
-		return <Redirect to={props.home} />;
+		return (<Redirect to={props.home} />);
 	}
 
 	let slug = getSlug(route, postTypeIndex + 1);
@@ -24,12 +24,12 @@ const Single = props => {
 		<PrimaryTemplate {...props} postType={routePostType}>
 	<DataContext.Consumer>
 	{
-		({ postType, state, fetchData }) => (
+		({ postType, postTypeData, fetchData }) => (
 			<TemplateLoader {...props}
 				postType={routePostType}
-				state={state}
+				postTypeData={postTypeData}
 				fetchData={fetchData}
-				type="single"
+				request="single"
 				slug={slug}
 			/>)
 	}

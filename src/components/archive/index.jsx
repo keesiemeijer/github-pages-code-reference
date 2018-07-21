@@ -1,7 +1,7 @@
 import React from "react";
 
 import { DataContext } from "../../contexts/DataContext";
-import { getPostType } from "../../data/post-type-data";
+import { getPostType } from "../../data/post-data";
 import PrimaryTemplate from "../primary-template";
 import TemplateLoader from "../template-loader";
 
@@ -14,12 +14,12 @@ const Archive = props => {
 		<PrimaryTemplate {...props} postType={routePostType}>
 	<DataContext.Consumer>
 	{
-		({ postType, state, fetchData }) => (
+		({ postType, postTypeData, fetchData }) => (
 			<TemplateLoader {...props}
 				postType={routePostType}
-				state={state}
+				postTypeData={postTypeData}
 				fetchData={fetchData}
-				type="archive"
+				request="archive"
 			/>)
 	}
 		</DataContext.Consumer>

@@ -7,15 +7,15 @@ import TemplateLoader from "../template-loader";
 
 const Home = props => {
 	return (
-		<PrimaryTemplate {...props} postType="functions">
+		<PrimaryTemplate {...props} postType="functions" request="home">
 	<DataContext.Consumer>
 	{
-		({ postType, state, fetchData }) => (
+		({ postType, postTypeData, fetchData }) => (
 			<TemplateLoader {...props}
 				postType="functions"
-				state={state}
+				postTypeData={postTypeData}
 				fetchData={fetchData}
-				type="home"
+				request="home"
 			/>)
 	}
 	</DataContext.Consumer>

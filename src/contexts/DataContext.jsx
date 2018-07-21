@@ -5,12 +5,9 @@ export const DataContext = React.createContext();
 
 export class DataProvider extends React.Component {
 
-
 	constructor(props) {
 		super(props);
 		this.state = {
-			searchData: {},
-			isMounted: false,
 			functions: {},
 			classes: {},
 			hooks: {},
@@ -19,9 +16,9 @@ export class DataProvider extends React.Component {
 		}
 	};
 
-	getFileData = (single) => {
+	getFileData = (fileName) => {
 		try {
-			import ('../json-files/files/' + single + '.json').then((data) => {
+			import ('../json-files/files/' + fileName + '.json').then((data) => {
 				this.setState({
 					file: data,
 					status: 'done',
@@ -35,15 +32,15 @@ export class DataProvider extends React.Component {
 		}
 	}
 
-	fetchData = (postType, single) => {
+	fetchData = (postType, fileName) => {
 		this.setState({
 			status: "searching",
 			postType: postType,
 			file: {},
 		});
 
-		if (!isEmpty(single)) {
-			this.getFileData(single);
+		if (!isEmpty(fileName)) {
+			this.getFileData(fileName);
 			return;
 		}
 
@@ -71,7 +68,7 @@ export class DataProvider extends React.Component {
 
 	render() {
 		return (
-			<DataContext.Provider value={{ postType: this.state.postType, state: this.state, fetchData: this.fetchData }} >
+			<DataContext.Provider value={{ postType: this.state.postType, postTypeData: this.state, fetchData: this.fetchData }} >
 				{this.props.children}
 	  		</DataContext.Provider>
 		);

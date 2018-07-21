@@ -72,7 +72,6 @@ class Search extends Component {
 		this.state = {
 			value: '',
 			suggestions: [],
-			typing: false,
 			isLoading: false,
 			functions: {},
 			classes: {},
@@ -141,10 +140,8 @@ class Search extends Component {
 	onChange = (event, { newValue }) => {
 		this.setState({
 			value: newValue,
-			typing: true,
 		});
 	};
-
 
 	onSuggestionsFetchRequested = ({ value }) => {
 		this.loadSuggestions(value);
