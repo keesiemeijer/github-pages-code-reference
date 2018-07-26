@@ -66,7 +66,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 	}
 
 	$item['since']       = $first_version;
-	$item['deprecated']  = \DevHub\is_deprecated( $post_item->ID );
+	$item['deprecated']  =  \DevHub\is_deprecated( $post_item->ID );
 	$item['source_file'] = \DevHub\get_source_file( $post_item->ID );
 	$item['line_num']    = get_post_meta( $post_item->ID, '_wp-parser_line_num', true );
 	$item['namespace']   = get_post_meta( $post_item->ID, '_wp_parser_namespace', true );
@@ -106,12 +106,15 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		$item['parent'] = $parent->post_title;
 	}
 
-	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['html']      = $html;
-	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['methods']   = \DevHub\get_method_items();
-	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['related']   = \DevHub\get_related_items();
-	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['changelog'] = \DevHub\get_changelog_items();
-	$wp_parser_json[ $item['json_file'] ][ $item['slug'] ]['signature'] = \DevHub\get_signature( $post_item->ID );
+	$JSON_key =  $item['slug'] . '-' . $item['line_num'];
+
+	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['html']     = $html;
+	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['methods']   = \DevHub\get_method_items();
+	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['related']   = \DevHub\get_related_items();
+	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['changelog'] = \DevHub\get_changelog_items($post_item->ID );
+	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['signature'] = \DevHub\get_signature( $post_item->ID );
 	$wp_parser_json_types[ $post_types[ $post_item->post_type ] ][]     = $slug;
+
 
 	add_filter( 'the_title',         'wporg_filter_archive_title', 10, 2 );
 	add_filter( 'single_post_title', 'wporg_filter_archive_title', 10, 2 );

@@ -4,7 +4,8 @@ import { isEmpty } from 'lodash';
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Changelog = props => {
-	const changelog = props.data[props.element.slug]['changelog'];
+	const key = props.element.slug + '-' + props.element['line_num'];
+	const changelog = props.data[ key ]['changelog'];
 	if (isEmpty(changelog)) {
 		return null;
 	}

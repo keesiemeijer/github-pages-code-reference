@@ -5,7 +5,8 @@ import { isEmpty } from 'lodash';
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Related = props => {
-	const related = props.data[props.element.slug]['related'];
+	const key = props.element.slug + '-' + props.element['line_num'];
+	const related = props.data[key]['related'];
 	if (isEmpty(related)) {
 		return null;
 	}

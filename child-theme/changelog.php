@@ -1,10 +1,10 @@
 <?php
 namespace DevHub;
 
-function get_changelog_items() {
+function get_changelog_items( $post_id ) {
 	$items = array();
 
-	$changelog_data = get_changelog_data();
+	$changelog_data = get_changelog_data($post_id);
 	if ( empty( $changelog_data ) ) {
 		return $items;
 	}

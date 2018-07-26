@@ -56,7 +56,7 @@ export default class SingleTemplate extends React.Component {
 				<Summary element={this.element} data={data} />
 				<Source {...this.props} element={this.element} slug={this.props.slug} />
 				<Content element={this.element} data={data} />
-				<Changelog element={this.element} data={data} />
+				<Changelog element={this.element}  data={data} />
 				<Methods element={this.element} data={data} home={this.props.home} />
 				<Related element={this.element} data={data} home={this.props.home} />
 			</article>

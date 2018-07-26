@@ -5,7 +5,8 @@ import { isEmpty } from 'lodash';
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Methods = props => {
-	const methods = props.data[ props.element.slug ]['methods'];
+	const key = props.element.slug + '-' + props.element['line_num'];
+	const methods = props.data[ key ]['methods'];
 	if (isEmpty(methods)) {
 		return null;
 	}
