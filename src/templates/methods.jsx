@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { isEmpty } from 'lodash';
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Methods = props => {
-	const key = props.element.slug + '-' + props.element['line_num'];
-	const methods = props.data[ key ]['methods'];
-	if (isEmpty(methods)) {
+	const home = ('/' === props.home) ? '' : props.home;
+
+	if (! props.data.hasOwnProperty('methods')) {
 		return null;
 	}
 
-	const methodsHome = ('/' === props.home) ? '' : props.home;
+	const methods = props.data.methods;
 
 	return (
 		<div>
@@ -21,7 +20,7 @@ const Methods = props => {
 				<ul>
 				{ methods.map( (item, index) =>
 					<li key={index}>
-						<Link to={methodsHome + item.url}>{item.title}</Link>
+						<Link to={home + item.url}>{item.title}</Link>
 						{' — '}
 						<div className="class-methods-excerpt" dangerouslySetInnerHTML={{ __html: item.excerpt }}></div>			
 					</li>		

@@ -1,24 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { isEmpty } from 'lodash';
+import { isEmpty, get } from 'lodash';
+
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Related = props => {
-	const key = props.element.slug + '-' + props.element['line_num'];
-	const related = props.data[key]['related'];
-	if (isEmpty(related)) {
-		return null;
-	}
+	const home = ('/' === props.home) ? '' : props.home;
 
-	const uses = related.uses;
-	const usedBy = related.used_by;
+	const uses = get(props, 'data.related.uses', {});
+	const usedBy = get(props, 'data.related.used_by', {});
 
 	if (isEmpty(uses) && isEmpty(usedBy)) {
 		return null;
 	}
-
-	const relatedHome = ('/' === props.home) ? '' : props.home;
 
 	let usesElements = '';
 	if (!isEmpty(uses)) {
@@ -29,7 +24,7 @@ const Related = props => {
 					{ uses.map( (item, index) =>
 						<li key={index} >
 							<span>{item.source}</span>{' '}
-							<Link to={relatedHome + item.url}>{item.text}</Link>
+							<Link to={home + item.url}>{item.text}</Link>
 						</li>
 					)}
 			    </ul>
@@ -48,7 +43,7 @@ const Related = props => {
 					{ usedBy.map( (item, index) =>
 						<li key={index}>
 							<span>{item.source}</span>{' '}
-							<Link to={relatedHome + item.url}>{item.text}</Link>
+							<Link to={home + item.url}>{item.text}</Link>
 						</li>
 					)}
 			    </ul>

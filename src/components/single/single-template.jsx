@@ -1,7 +1,8 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import { findIndex, isEmpty } from "lodash";
+import { findIndex, isEmpty, get } from "lodash";
+
 import Signature from "../../templates/signature";
 import Summary from "../../templates/summary";
 import Content from "../../templates/content";
@@ -41,23 +42,38 @@ export default class SingleTemplate extends React.Component {
 	}
 
 	render() {
-		if (isEmpty(this.props.postTypeData['file']) || isEmpty(this.element)) {
+		const file = get(this.props, 'postTypeData.file', {});
+		if (isEmpty(file) || isEmpty(this.element)) {
 			if (this.failedRequest) {
 				return (<Redirect to={this.props.home} />);
 			}
 			return null;
 		}
 
-		const data = this.props['postTypeData']['file'];
+		const slug = get( this.element, 'slug', '');
+		const line_num = get(this.element, 'line_num', '');
+		if (!slug.length || !line_num.length) {
+			return null;
+		}
+
+		const data = get(file, slug + '-' + line_num, {});
+		if(isEmpty(data)) {
+			return null;
+		}
+
+		let methods = '';
+		if('classes' === this.props.postType) {
+			methods = (<Methods element={this.element} data={data} home={this.props.home} />);
+		}
 
 		return (
 			<article className={this.props.postClass}>
 				<Signature element={this.element} data={data} />
 				<Summary element={this.element} data={data} />
-				<Source {...this.props} element={this.element} slug={this.props.slug} />
+				<Source  element={this.element} {...this.props} />
 				<Content element={this.element} data={data} />
 				<Changelog element={this.element}  data={data} />
-				<Methods element={this.element} data={data} home={this.props.home} />
+		        {methods}
 				<Related element={this.element} data={data} home={this.props.home} />
 			</article>
 		);

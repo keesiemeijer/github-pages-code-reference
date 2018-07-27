@@ -6,8 +6,7 @@ import Strings from '../json-files/wp-parser-json-strings.json';
 const Source = props => {
 	const { line_num, source_file, parent, namespace } = props.element;
 	const { repo_release_url } = props.packageData.reference;
-	const { slug, home } = props;
-	const postTypeHome = ('/' === home) ? '' : home;
+	const home = ('/' === props.home) ? '' : props.home;
 
 	if (!source_file.length) {
 		return null;
@@ -32,9 +31,9 @@ const Source = props => {
 
 	if (parent && ('methods' === props.postType)) {
 		parentEl = parent;
-		let parentSlug = slug.split('::');
+		let parentSlug = props.slug.split('::');
 		if (2 === parentSlug.length) {
-			parentEl = (<Link to={postTypeHome + '/classes/' + parentSlug[0]}>{parent}</Link>);
+			parentEl = (<Link to={home + '/classes/' + parentSlug[0]}>{parent}</Link>);
 		}
 		parentClass = (<li>{Strings.class}: {parentEl}</li>)
 	}

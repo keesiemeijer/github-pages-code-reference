@@ -1,14 +1,13 @@
 import React from 'react';
-import { isEmpty } from 'lodash';
 
 import Strings from '../json-files/wp-parser-json-strings.json';
 
-const Changelog = props => {
-	const key = props.element.slug + '-' + props.element['line_num'];
-	const changelog = props.data[ key ]['changelog'];
-	if (isEmpty(changelog)) {
+const Changelog = props => {	
+	if (! props.data.hasOwnProperty('changelog')) {
 		return null;
 	}
+
+	const changelog = props.data.changelog;
 
 	return (
 		<div>

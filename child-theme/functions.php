@@ -66,7 +66,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 	}
 
 	$item['since']       = $first_version;
-	$item['deprecated']  =  \DevHub\is_deprecated( $post_item->ID );
+	$item['deprecated']  = \DevHub\is_deprecated( $post_item->ID );
 	$item['source_file'] = \DevHub\get_source_file( $post_item->ID );
 	$item['line_num']    = get_post_meta( $post_item->ID, '_wp-parser_line_num', true );
 	$item['namespace']   = get_post_meta( $post_item->ID, '_wp_parser_namespace', true );
