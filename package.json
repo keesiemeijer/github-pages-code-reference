@@ -20,7 +20,7 @@
     "react-loadable": "^5.4.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,6 +32,12 @@
     "deploy": "gh-pages -d build --repo=https://github.com/username/example-repository.git"
   },
   "devDependencies": {
-    "gh-pages": "^1.1.0"
-  }
+    "gh-pages": "^2.0.1"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
