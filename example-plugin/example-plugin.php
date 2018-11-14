@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: Example Plugin.
-Description: Change the default values of a GitHub Pages Code Reference.
+Plugin Name: GitHub Pages Code Reference Settings.
+Description: Settings for a GitHub Pages Code Reference.
 Version: 1.0.0
 Author:
 Author URI:
@@ -14,7 +14,7 @@ add_filter( 'github_pages_code_reference', function( $reference ) {
 	/*
 	 * 1 - Edit the values below for your own GitHub pages reference.
 	 * 2 - Copy this plugin to the plugins folder and activate it.
-	 * 3 - Genarate a reference with the `wp parser-json generate` command.
+	 * 3 - Genarate the reference with the `wp parser-json generate` command.
 	 * 4 - Deploy the reference with the `npm run deploy` command.
 	 *
 	 * For more information see: https://github.com/keesiemeijer/github-pages-code-reference
