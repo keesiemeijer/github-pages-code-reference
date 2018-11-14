@@ -1,9 +1,30 @@
 <?php
 
+function wporg_developer_reference() {
+	$defaults  = wporg_developer_reference_default();
+	$reference = apply_filters( 'github_pages_code_reference', $defaults );
+
+	return array_merge( $defaults, $reference );
+}
+
+function wporg_developer_reference_default() {
+	return array(
+		'homepage'         => 'https://username.github.io/example-repository',
+		'app_basename'     => 'example-repository',
+		'app_url'          => 'https://example.com/code-homepage',
+		'repo_url'         => 'https://github.com/username/example-repository',
+		'repo_release_url' => 'https://github.com/username/example-repository/tree/1.0.0',
+		'repo_gh_pages'    => 'https://github.com/username/example-repository.git',
+		'docs_url'         => '',
+		'parsed_name'      => 'Example Repository Reference',
+		'parsed_version'   => 'v1.0',
+		'parsed_type'      => 'plugin',
+	);
+}
+
 function wporg_developer_child_get_localized_strings() {
 	// Edit the localized strings to suit your needs.
-
-	return array(
+	$strings = array(
 		'page_title'       => __( 'Search The Code Reference!', 'wporg-developer-child' ),
 		'home_desc'        => __( 'Want to know what\'s going on inside this %1$s.', 'wporg-developer-child' ),
 		'home_desc-2'      => __( 'Search the Code Reference for more information about functions, classes, methods, and hooks.', 'wporg-developer-child' ),
@@ -37,14 +58,18 @@ function wporg_developer_child_get_localized_strings() {
 		'error'            => __( 'Error!', 'wporg-developer-child' ),
 		'namespace'        => __( 'Namespace: %1$s', 'wporg-developer-child' ),
 	);
+
+	return apply_filters( 'github_pages_code_reference_strings', $strings );
 }
 
 function wporg_developer_child_get_post_types_to_parse() {
 	// Edit the post types to suit your needs.
-	return array(
+	$post_types = array(
 		'functions' => 'wp-parser-function',
 		'hooks'     => 'wp-parser-hook',
 		'classes'   => 'wp-parser-class',
 		'methods'   => 'wp-parser-method',
 	);
+
+	return apply_filters( 'github_pages_code_reference_post_types', $post_types );
 }

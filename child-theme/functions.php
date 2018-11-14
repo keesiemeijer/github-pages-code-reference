@@ -1,5 +1,5 @@
 <?php
-global $wp_parser_json, $wp_parser_json_types, $wp_parser_json_package;
+global $wp_parser_json, $wp_parser_json_types;
 
 include 'settings.php';
 include 'related.php';
@@ -72,7 +72,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 	$item['namespace']   = get_post_meta( $post_item->ID, '_wp_parser_namespace', true );
 	$item['aliases']     = get_post_meta( $post_item->ID, '_wp_parser_aliases', true );
 	$item['source']      = sprintf( __( 'Source: %s', 'wporg-developer-child' ), $item['source_file'] );
-	$item['summary']     = \DevHub\get_summary( $post_item );
+	$item['summary']     = sanitize_html( \DevHub\get_summary( $post_item ) );
 
 	$json_file = str_replace( '/', '-', $item['source_file'] );
 	if ( substr( $json_file, -4 ) == '.php' ) {
@@ -93,7 +93,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		$html .= wporg_developer_child_get_template( $part, $post_item );
 	}
 
-	$post_types =  wporg_developer_child_get_post_types();
+	$post_types = wporg_developer_child_get_post_types();
 
 	$wp_parser_json       = is_array( $wp_parser_json ) ? $wp_parser_json : array();
 	$wp_parser_json_types = is_array( $wp_parser_json_types ) ? $wp_parser_json_types : array();
@@ -108,10 +108,10 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 
 	$JSON_key =  $item['slug'] . '-' . $item['line_num'];
 
-	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['html']     = $html;
+	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['html']      = sanitize_html( $html );
 	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['methods']   = \DevHub\get_method_items();
 	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['related']   = \DevHub\get_related_items();
-	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['changelog'] = \DevHub\get_changelog_items($post_item->ID );
+	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['changelog'] = \DevHub\get_changelog_items( $post_item->ID );
 	$wp_parser_json[ $item['json_file'] ][ $JSON_key ]['signature'] = \DevHub\get_signature( $post_item->ID );
 	$wp_parser_json_types[ $post_types[ $post_item->post_type ] ][]     = $slug;
 
@@ -128,19 +128,13 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 }
 
 function wporg_developer_child_update_site_permalink( $permalink ) {
-	global $wp_parser_json_package;
+	$reference = wporg_developer_reference();
 
-	if ( ! is_array( $wp_parser_json_package ) ) {
-		$wp_parser_json_package = wporg_developer_child_get_package();
-	}
-
-	$has_homepage = isset( $wp_parser_json_package['homepage'] );
-
-	if ( ! ( $has_homepage && $wp_parser_json_package['homepage'] ) ) {
+	if ( ! $reference['homepage'] ) {
 		return $permalink;
 	}
 
-	$homepage = $wp_parser_json_package['homepage'];
+	$homepage = $reference['homepage'];
 
 	$method = site_url( '/method/' );
 
@@ -149,6 +143,11 @@ function wporg_developer_child_update_site_permalink( $permalink ) {
 	$url = site_url( '/reference/' );
 	$permalink = str_replace( $url, trailingslashit( $homepage ), $permalink );
 	return $permalink;
+}
+
+function sanitize_html( $html ) {
+	$html = preg_replace( '/[\t\n]+/', '', $html );
+	return preg_replace( '/[\s]+/', ' ', $html );
 }
 
 function wporg_developer_child_get_template( $template, $post_item ) {
@@ -173,9 +172,9 @@ function wporg_developer_child_get_post_types() {
 function wporg_developer_child_get_permalink( $post ) {
 
 	$post = get_post( $post );
-	$package = wporg_developer_child_get_package();
+	$reference = wporg_developer_reference();
 
-	$app_name = $package['reference']['app_basename'];
+	$app_name = $reference['app_basename'];
 	$location = '/' . $app_name;
 	$location = ( '/' === $location ) ? '' : $location;
 	$home = ! $location ? '/' . $app_name : $location;
@@ -192,25 +191,6 @@ function wporg_developer_child_get_permalink( $post ) {
 	$post_type = ( 'methods' === $post_type ) ? 'classes' : $post_type;
 
 	return '/' . $post_type . '/' . $slug;
-}
-
-function wporg_developer_child_get_package() {
-	global $wp_parser_json_package;
-
-	if ( is_array( $wp_parser_json_package ) ) {
-		return $wp_parser_json_package;
-	}
-
-	$package_file = get_stylesheet_directory() . '/package.json';
-
-	if ( ! is_readable( $package_file ) ) {
-		return array();
-	}
-
-	$package = file_get_contents( $package_file );
-	$package_json = json_decode( $package, true );
-
-	return is_array( $package_json ) ? $package_json : array();
 }
 
 function wporg_developer_child_copy_dir( $old, $new ) {
@@ -325,17 +305,17 @@ function wporg_developer_child_generate_files() {
 	}
 
 	$with_data = array();
-	foreach (wporg_developer_child_parse_post_types() as $post_type => $slug) {
-		if(is_readable( $theme_dir . "/json-files/{$post_type}.json") ) {
-			$content = file_get_contents($theme_dir . "/json-files/{$post_type}.json");
-			$content = json_decode($content, true);
-			if(isset($content['content']) && !empty($content['content'])) {
+	foreach ( wporg_developer_child_parse_post_types() as $post_type => $slug ) {
+		if ( is_readable( $theme_dir . "/json-files/{$post_type}.json" ) ) {
+			$content = file_get_contents( $theme_dir . "/json-files/{$post_type}.json" );
+			$content = json_decode( $content, true );
+			if ( isset( $content['content'] ) && ! empty( $content['content'] ) ) {
 				$with_data[] = $post_type;
 			}
 		}
 	}
 
-	if($with_data) {
+	if ( $with_data ) {
 		$file = $theme_dir . '/json-files/with-data.json';
 		$content = json_encode( $with_data );
 		if ( $wp_cli ) {
@@ -364,6 +344,16 @@ function wporg_developer_child_generate_files() {
 
 	$file = $theme_dir . '/json-files/wp-parser-json-strings.json';
 	$content = json_encode( wporg_developer_child_get_localized_strings() );
+
+	// Create the strings file
+	if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
+		$error = esc_html__( "Unable to create the file: {$file}", 'wporg-developer-child' );
+		add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );
+		return false;
+	}
+
+	$file = $theme_dir . '/reference.json';
+	$content = json_encode( wporg_developer_reference() );
 
 	// Create the strings file
 	if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {

@@ -3,7 +3,7 @@ import React from 'react';
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const HomeContent = props => {
-	const { parsed_name, repo_url, app_url, parsed_type } = props.packageData.reference;
+	const { parsed_name, repo_url, app_url, parsed_type } = props.packageData;
 	let title = '';
 
 	if (parsed_name.length) {

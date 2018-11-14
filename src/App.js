@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { trim } from 'lodash';
 
-import PackageData from '../package.json';
+import PackageData from './reference.json';
 import Home from "./components/home/";
 import Router from "./components/router";
 
@@ -10,7 +10,7 @@ import './devhub.css';
 import './index.css';
 
 const App = (props) => {
-	const appName = PackageData['reference']['app_basename'];
+	const appName = PackageData['app_basename'];
 
 	let location = trim('/' + appName);
 

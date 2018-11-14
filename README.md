@@ -73,27 +73,9 @@ npm install
 ```
 
 ### Code Reference Settings
-Open the package.json file in the `www/wp-reference/public/wp-content/themes/github-pages-code-reference` directory and change these values for your code reference.
+For your reference we have to change the default settings with a filter. See the [example plugin](https://github.com/keesiemeijer/github-pages-code-reference/blob/master/example-plugin/example-plugin.php) for more information.
 
-* `homepage` - Point it to your GitHub pages
-  * for example `https://username.github.io/example-repository`
-* `reference`
-  * `app_basename` - Basename of your GitHup pages slug
-    * for example `example-repository`
-  * `app_url` - For linking to code home page (with link text `parsed_name` below)
-    * for example: `https://example.com/code-homepage`
-  * `repo_url` - For linking to a repository
-    * for example: `https://github.com/username/example-repository`
-  * `repo_release_url` - For linking to code in a GitHub repository 
-    * for example (tags): `https://github.com/username/example-repository/tree/1.0.0`.
-    * for example (branch): `https://github.com/username/example-repository/tree/master`.
-  * `parsed_name` - The name of the parsed code.
-  * `parsed_type` - The type of code that was parsed ("plugin" or "theme")
-  * `parsed_version` - The version of the code that was parsed (e.g. "1.0.0")
-* `scripts`
-  * `deploy` - Change the repository in `--repo=https://github.com/username/example-repository.git`
-
-Now we are set up to parse some PHP code and generate the code reference for GitHub pages.
+If your settings plugin is activated you're set up to parse some PHP code and generate the code reference for GitHub pages.
 
 ## Generate the Code Reference
 Put the code you want to parse in the `/www/wp-reference/source-code` directory.  
@@ -114,23 +96,17 @@ Go the public directory.
 cd /vagrant/www/wp-reference/public/
 ```
 
-Activate the WP Parser and WP Parser JSON plugin.
-```bash
-# Activate WP Parser
-wp plugin activate wp-parser
-
+Activate the WP Parser JSON plugin (if not already activated).
+```
 # Activate WP Parser JSON
 wp plugin activate wp-parser-json
 ```
-
-**Note** Check before generating the JSON files if the [settings in the package.json](#code-reference-settings) file are correct.
 
 Generate the JSON files for the reference.
 ```
 wp parser-json generate
 ```
-
-To see the code reference before deploying open your terminal and go to this repository in the themes directory (`www/wp-reference/public/wp-content/themes/github-pages-code-reference`)
+To see the code reference before deploying it, open a new terminal window and go to this repository in the themes directory (`www/wp-reference/public/wp-content/themes/github-pages-code-reference`)
 
 With this command a new tab is opened in your browser with the locally generated code reference.
 ```
@@ -140,11 +116,9 @@ npm run start
 ## Deploy the Generated Code Reference
 Deploy your reference to GitHub pages after you've generated the [JSON files](#generate-the-code-reference). 
 
-**NOTE** Check before deploying if the [settings in the package.json](#code-reference-settings) file were correct before generating the reference.
-
 Open your terminal and and go to this repository in the themes directory (`www/wp-reference/public/wp-content/themes/github-pages-code-reference`).
 
-Deploy (push) the generated code reference to the GitHub pages branch (in the packagage.json file).
+Deploy (push) the generated code reference to the  gh-pages branch.
 ```
 npm run deploy
 ```

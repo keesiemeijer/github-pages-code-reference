@@ -8,7 +8,7 @@ const PrimaryHeader = (props) => {
 	let searchPostType = props.postType;
 	searchPostType = ('methods' === searchPostType) ? 'classes' : searchPostType;
 
-	const { parsed_name, parsed_version } = props.packageData.reference
+	const { parsed_name, parsed_version } = props.packageData
 	const { request } = props;
 
 	let title = props.strings.page_title

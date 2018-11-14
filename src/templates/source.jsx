@@ -5,7 +5,7 @@ import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Source = props => {
 	const { line_num, source_file, parent, namespace } = props.element;
-	const { repo_release_url } = props.packageData.reference;
+	const { repo_release_url } = props.packageData;
 	const home = ('/' === props.home) ? '' : props.home;
 
 	if (!source_file.length) {
