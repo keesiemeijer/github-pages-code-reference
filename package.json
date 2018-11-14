@@ -19,7 +19,7 @@
     "eject": "react-scripts eject",
     "generate": "bash generate.sh",
     "predeploy": "npm run build",
-    "deploy": "node ./scripts/deploy.js"
+    "deploy": "node scripts/deploy.js"
   },
   "devDependencies": {
     "gh-pages": "^2.0.1"
