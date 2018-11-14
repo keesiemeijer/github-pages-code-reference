@@ -2,7 +2,7 @@
 
 function wporg_developer_reference() {
 	$defaults  = wporg_developer_reference_default();
-	$reference = apply_filters( 'github_pages_code_reference', $defaults );
+	$reference = apply_filters( 'github_pages_code_reference_settings', $defaults );
 
 	return array_merge( $defaults, $reference );
 }
