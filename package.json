@@ -1,33 +1,33 @@
 {
-  "name": "github-pages-code-reference",
-  "version": "2.0.0",
-  "private": true,
-  "homepage": "https://github.com/keesiemeijer/github-pages-code-reference",
-  "dependencies": {
-    "react": "^16.4.1",
-    "react-autosuggest": "^9.3.4",
-    "react-dom": "^16.4.1",
-    "react-loadable": "^5.4.0",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "generate": "bash generate.sh",
-    "predeploy": "npm run build",
-    "deploy": "node scripts/deploy.js"
-  },
-  "devDependencies": {
-    "gh-pages": "^2.0.1"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+    "name": "github-pages-code-reference",
+    "version": "2.0.0",
+    "private": true,
+    "homepage": "https://github.com/keesiemeijer/github-pages-code-reference",
+    "dependencies": {
+        "react": "^16.4.1",
+        "react-autosuggest": "^9.3.4",
+        "react-dom": "^16.4.1",
+        "react-loadable": "^5.4.0",
+        "react-router": "^4.3.1",
+        "react-router-dom": "^4.3.1",
+        "react-scripts": "2.1.1"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject",
+        "generate": "bash generate.sh",
+        "predeploy": "npm run build",
+        "deploy": "node scripts\/deploy.js"
+    },
+    "devDependencies": {
+        "gh-pages": "^2.0.1"
+    },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all"
+    ]
 }

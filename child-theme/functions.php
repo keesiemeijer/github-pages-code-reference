@@ -384,6 +384,25 @@ function wporg_developer_child_generate_files() {
 		return false;
 	}
 
+	$file = $theme_dir . '/package.json';
+
+	if ( is_readable( $file ) ) {
+		if ( $wp_cli ) {
+			WP_CLI::log( "Updating package.json file..." );
+		}
+		$content = file_get_contents( $file );
+		$content = json_decode( $content, true );
+		$content['homepage'] = $settings['homepage'];
+		$content = json_encode( $content, JSON_PRETTY_PRINT );
+
+		// Update title in index.html
+		if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
+			$error = esc_html__( "Unable to create the file: {$file}", 'wporg-developer-child' );
+			add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );
+			return false;
+		}
+	}
+
 	$file = $theme_dir . '/public/index.html';
 
 	if ( is_readable( $file ) ) {
