@@ -128,7 +128,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 }
 
 function wporg_developer_child_update_site_permalink( $permalink ) {
-	$reference = wporg_developer_reference();
+	$reference = wporg_developer_child_get_reference();
 
 	if ( ! $reference['homepage'] ) {
 		return $permalink;
@@ -172,7 +172,7 @@ function wporg_developer_child_get_post_types() {
 function wporg_developer_child_get_permalink( $post ) {
 
 	$post = get_post( $post );
-	$reference = wporg_developer_reference();
+	$reference = wporg_developer_child_get_reference();
 
 	$app_name = $reference['app_basename'];
 	$location = '/' . $app_name;
@@ -246,6 +246,7 @@ function wporg_developer_child_generate_files() {
 	$form_fields = array();
 	$method      = ''; // TODO TESTING
 	$theme_dir   = get_stylesheet_directory() . '/src';
+	$settings    = wporg_developer_child_get_reference();
 
 	$url = wp_nonce_url( 'options-general.php?page=wp-parser-json', 'wp-parser-json_nonce' );
 	if ( false === ( $creds = request_filesystem_credentials( $url, $method, false, false, $form_fields ) ) ) {
@@ -342,6 +343,9 @@ function wporg_developer_child_generate_files() {
 		}
 	}
 
+	if ( $wp_cli ) {
+		WP_CLI::log( "Generating wp-parser-json-strings.json file..." );
+	}
 	$file = $theme_dir . '/json-files/wp-parser-json-strings.json';
 	$content = json_encode( wporg_developer_child_get_localized_strings() );
 
@@ -352,14 +356,49 @@ function wporg_developer_child_generate_files() {
 		return false;
 	}
 
+	if ( $wp_cli ) {
+		WP_CLI::log( "Generating reference.json file..." );
+	}
 	$file = $theme_dir . '/reference.json';
-	$content = json_encode( wporg_developer_reference() );
+	$content = json_encode( $settings );
 
-	// Create the strings file
+	// Create the reference file
 	if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
 		$error = esc_html__( "Unable to create the file: {$file}", 'wporg-developer-child' );
 		add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );
 		return false;
+	}
+
+	$theme_dir   = get_stylesheet_directory();
+
+	if ( $wp_cli ) {
+		WP_CLI::log( "Generating manifest.json file..." );
+	}
+	$file = $theme_dir . '/public/manifest.json';
+	$content = json_encode( wporg_developer_child_get_manifest() );
+
+	// Create the manifest file
+	if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
+		$error = esc_html__( "Unable to create the file: {$file}", 'wporg-developer-child' );
+		add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );
+		return false;
+	}
+
+	$file = $theme_dir . '/public/index.html';
+
+	if ( is_readable( $file ) ) {
+		if ( $wp_cli ) {
+			WP_CLI::log( "Updating index.html file..." );
+		}
+		$content = file_get_contents( $file );
+		$content = preg_replace( '/<title>(.*?)<\/title>/', "<title>{$settings['parsed_name']}</title>" , $content );
+
+		// Update title in index.html
+		if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
+			$error = esc_html__( "Unable to create the file: {$file}", 'wporg-developer-child' );
+			add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );
+			return false;
+		}
 	}
 
 	if ( $wp_cli ) {

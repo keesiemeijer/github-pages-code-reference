@@ -8,7 +8,7 @@ const PrimaryHeader = (props) => {
 	let searchPostType = props.postType;
 	searchPostType = ('methods' === searchPostType) ? 'classes' : searchPostType;
 
-	const { parsed_name, parsed_version } = props.packageData
+	const { parsed_name, parsed_version, app_description } = props.packageData
 	const { request } = props;
 
 	let title = props.strings.page_title
@@ -20,11 +20,17 @@ const PrimaryHeader = (props) => {
 		}
 	}
 
+	let desc = '';
+	if(app_description.length) {
+		desc = (<p className="site-description">{app_description}</p>);
+	}
+
 	const archiveHome = ('/' === props.home) ? '' : props.home;
 
 	return (
 		<header className="site-header">
 			<h1 className="site-title">{title}</h1>
+			{desc}
 			{-1 !== withData.indexOf( searchPostType ) && <Search
 				postType={searchPostType}
 				strings={props.strings}

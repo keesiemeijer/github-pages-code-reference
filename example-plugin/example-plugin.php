@@ -21,12 +21,12 @@ add_filter( 'github_pages_code_reference_settings', function( $settings ) {
 	 */
 
 	// The name of the reference.
-	$settings['parsed_name'] = 'Example Repository Reference';
+	$settings['parsed_name'] = 'Example Reference';
 
 	// Reference home page (for the gh-pages branch).
 	$settings['homepage'] = 'https://username.github.io/example-repository';
 
-	// Base name of the app (Usually the basename of the `homepage` variable above).
+	// Base name of the reference (Usually the basename of the `homepage` variable above).
 	$settings['app_basename'] = 'example-repository';
 
 	// Url used for linking to the (GitHub) repository of the reference.
@@ -43,10 +43,13 @@ add_filter( 'github_pages_code_reference_settings', function( $settings ) {
 	// See the `homepage` variable above.
 	$settings['repo_gh_pages'] = 'https://github.com/username/example-repository.git';
 
-	// Url used for linking to a home page of the parsed code.
+	// Url used for linking to an external home page of the parsed code.
 	// The `parsed_name` variable (above) is used as the text for this link.
 	// Leave empty to not link to a home page
 	$settings['app_url'] = 'https://example.com/code-homepage';
+
+	// The description of the reference.
+	$settings['app_description'] = 'Code Reference';
 
 	// Url to documentation.
 	// Leave empty to not link to a documentation page.
