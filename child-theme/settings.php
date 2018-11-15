@@ -1,22 +1,28 @@
 <?php
 
-function wporg_developer_reference() {
-	$defaults  = wporg_developer_reference_default();
+function wporg_developer_child_get_reference() {
+	$defaults  = wporg_developer_child_get_defaults();
 	$reference = apply_filters( 'github_pages_code_reference_settings', $defaults );
+	$desc = '';
+
+	if ( ! $reference['parsed_name'] ) {
+		$reference['parsed_name'] = __('Code Reference', 'wporg-developer-child');
+	}
 
 	return array_merge( $defaults, $reference );
 }
 
-function wporg_developer_reference_default() {
+function wporg_developer_child_get_defaults() {
 	return array(
 		'homepage'         => 'https://username.github.io/example-repository',
 		'app_basename'     => 'example-repository',
+		'app_description'  => 'Code Reference',
 		'app_url'          => 'https://example.com/code-homepage',
+		'app_docs_url'     => '',
 		'repo_url'         => 'https://github.com/username/example-repository',
 		'repo_release_url' => 'https://github.com/username/example-repository/tree/1.0.0',
 		'repo_gh_pages'    => 'https://github.com/username/example-repository.git',
-		'docs_url'         => '',
-		'parsed_name'      => 'Example Repository Reference',
+		'parsed_name'      => 'Example Reference',
 		'parsed_version'   => 'v1.0',
 		'parsed_type'      => 'plugin',
 	);
@@ -60,6 +66,27 @@ function wporg_developer_child_get_localized_strings() {
 	);
 
 	return apply_filters( 'github_pages_code_reference_strings', $strings );
+}
+
+function wporg_developer_child_get_manifest() {
+	$settings = wporg_developer_child_get_reference();
+	$manifest = array (
+		"short_name" => "code reference",
+		"name"       => $settings['parsed_name'],
+		"icons"      => array(
+			array(
+				"src"   => "favicon.ico",
+				"sizes" => "64x64 32x32 24x24 16x16",
+				"type"  => "image/x-icon"
+			)
+		),
+		"start_url"        => "./index.html",
+		"display"          => "standalone",
+		"theme_color"      => "#000000",
+		"background_color" => "#ffffff"
+	);
+
+	return apply_filters( 'github_pages_code_reference_manifest', $manifest );
 }
 
 function wporg_developer_child_get_post_types_to_parse() {
