@@ -73,7 +73,7 @@ npm install
 ```
 
 ### Code Reference Settings
-Open the reference.json file in the `www/wp-reference/public/wp-content/themes/github-pages-code-reference` directory and change these values for your code reference.
+Open the [reference.json](https://github.com/keesiemeijer/github-pages-code-reference/blob/master/reference.json) file in the `www/wp-reference/public/wp-content/themes/github-pages-code-reference` directory and change these values for your code reference.
 
 * `homepage` - Url used for the reference home page (gh-pages branch).
   * for example `https://username.github.io/example-repository`

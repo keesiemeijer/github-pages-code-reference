@@ -372,7 +372,7 @@ function wporg_developer_child_generate_files() {
 	$theme_dir = get_stylesheet_directory();
 
 	if ( $wp_cli ) {
-		WP_CLI::log( "Generating manifest.json file..." );
+		WP_CLI::log( "Updating manifest.json file..." );
 	}
 	$file = $theme_dir . '/public/manifest.json';
 	$content = json_encode( wporg_developer_child_get_manifest(), JSON_PRETTY_PRINT );
