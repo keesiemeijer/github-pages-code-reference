@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/keesiemeijer/github-pages-code-reference/precache-manifest.a6993f57122acfb6cedff24a4ae45692.js"
+  "/related-posts-by-taxonomy/precache-manifest.ebbd54ce51bdf5d34a2eb7b0fc81b333.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/keesiemeijer/github-pages-code-reference/index.html", {
+workbox.routing.registerNavigationRoute("/related-posts-by-taxonomy/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
