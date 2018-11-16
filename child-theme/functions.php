@@ -45,6 +45,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 	add_filter( 'the_permalink', 'wporg_developer_child_update_site_permalink', 101 );
 	add_filter( 'post_link', 'wporg_developer_child_update_site_permalink', 101 );
 	add_filter( 'post_type_link', 'wporg_developer_child_update_site_permalink', 101 );
+	add_filter( 'post_type_archive_link', 'wporg_developer_child_update_site_permalink', 101 );
 
 	remove_filter( 'the_title',         'wporg_filter_archive_title', 10, 2 );
 	remove_filter( 'single_post_title', 'wporg_filter_archive_title', 10, 2 );
@@ -122,6 +123,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 	remove_filter( 'the_permalink', 'wporg_developer_child_update_site_permalink', 101 );
 	remove_filter( 'post_link', 'wporg_developer_child_update_site_permalink', 101 );
 	remove_filter( 'post_type_link', 'wporg_developer_child_update_site_permalink', 101 );
+	remove_filter( 'post_type_archive_link', 'wporg_developer_child_update_site_permalink', 101 );
 	wp_reset_postdata();
 
 	return $item;
