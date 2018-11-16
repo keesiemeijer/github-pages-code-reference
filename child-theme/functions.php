@@ -359,8 +359,8 @@ function wporg_developer_child_generate_files() {
 	if ( $wp_cli ) {
 		WP_CLI::log( "Generating reference.json file..." );
 	}
-	$file = $theme_dir . '/reference.json';
-	$content = json_encode( $settings );
+	$file = $theme_dir . '/json-files/reference.json';
+	$content = json_encode( $settings, JSON_PRETTY_PRINT );
 
 	// Create the reference file
 	if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
@@ -369,13 +369,13 @@ function wporg_developer_child_generate_files() {
 		return false;
 	}
 
-	$theme_dir   = get_stylesheet_directory();
+	$theme_dir = get_stylesheet_directory();
 
 	if ( $wp_cli ) {
 		WP_CLI::log( "Generating manifest.json file..." );
 	}
 	$file = $theme_dir . '/public/manifest.json';
-	$content = json_encode( wporg_developer_child_get_manifest() );
+	$content = json_encode( wporg_developer_child_get_manifest(), JSON_PRETTY_PRINT );
 
 	// Create the manifest file
 	if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
@@ -393,9 +393,9 @@ function wporg_developer_child_generate_files() {
 		$content = file_get_contents( $file );
 		$content = json_decode( $content, true );
 		$content['homepage'] = $settings['homepage'];
-		$content = json_encode( $content, JSON_PRETTY_PRINT );
+		$content = wp_json_encode( $content, JSON_PRETTY_PRINT );
 
-		// Update title in index.html
+		// Update homepage in package.json
 		if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
 			$error = esc_html__( "Unable to create the file: {$file}", 'wporg-developer-child' );
 			add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );

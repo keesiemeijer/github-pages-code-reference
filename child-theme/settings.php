@@ -1,15 +1,37 @@
 <?php
 
 function wporg_developer_child_get_reference() {
-	$defaults  = wporg_developer_child_get_defaults();
+	$defaults         = wporg_developer_child_get_defaults();
+	$reference_config = wporg_developer_child_get_reference_config();
+	$defaults         = array_merge( $defaults, $reference_config );
+
 	$reference = apply_filters( 'github_pages_code_reference_settings', $defaults );
-	$desc = '';
 
 	if ( ! $reference['parsed_name'] ) {
-		$reference['parsed_name'] = __('Code Reference', 'wporg-developer-child');
+		$reference['parsed_name'] = __( 'Code Reference', 'wporg-developer-child' );
 	}
 
 	return array_merge( $defaults, $reference );
+}
+
+function wporg_developer_child_get_reference_config() {
+	global $wp_parser_reference_config;
+	if ( is_array( $wp_parser_reference_config ) ) {
+		return $wp_parser_reference_config;
+	}
+
+	$wp_parser_reference_config = array();
+
+	$reference_file = get_stylesheet_directory() . '/reference.json';
+	if ( is_readable( $reference_file ) ) {
+		$content = file_get_contents( $reference_file );
+		$content = json_decode( $content, true );
+		if ( is_array( $content ) ) {
+			$wp_parser_reference_config = $content;
+		}
+	}
+
+	return $wp_parser_reference_config;
 }
 
 function wporg_developer_child_get_defaults() {

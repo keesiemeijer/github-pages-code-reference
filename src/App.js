@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { trim } from 'lodash';
 
-import PackageData from './reference.json';
+import PackageData from './json-files/reference.json';
 import Home from "./components/home/";
 import Router from "./components/router";
 

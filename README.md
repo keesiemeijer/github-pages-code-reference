@@ -73,9 +73,25 @@ npm install
 ```
 
 ### Code Reference Settings
-For your reference we have to change the default settings with a filter. See the [example plugin](https://github.com/keesiemeijer/github-pages-code-reference/blob/master/example-plugin/example-plugin.php) for more information.
+Open the reference.json file in the `www/wp-reference/public/wp-content/themes/github-pages-code-reference` directory and change these values for your code reference.
 
-If your settings plugin is activated you're set up to parse some PHP code and generate the code reference for GitHub pages.
+* `homepage` - Url used for the reference home page (gh-pages branch).
+  * for example `https://username.github.io/example-repository`
+* `app_basename` - Basename of your gh-pages branch slug (usually the basename of the `homepage` variable above)
+  * for example `example-repository`
+* `app_description` - Short description for the reference.
+* `app_url` - Url for linking to the home page of the parsed code (with link text `parsed_name` below)
+  * for example: `https://example.com/code-homepage`
+* `repo_url` - Url for linking to the repository of the parsed code
+  * for example: `https://github.com/username/example-repository`
+* `repo_release_url` - Url for linking to code in the GitHub repository of the parsed code.
+  * for example tags(recommended): `https://github.com/username/example-repository/tree/1.0.0`.
+  * for example a branch: `https://github.com/username/example-repository/tree/master`.
+* `parsed_name` - The name of the parsed code used by the reference.
+* `parsed_type` - The type of code that was parsed ("plugin" or "theme" or something else)
+* `parsed_version` - The version of the code that was parsed (e.g. "1.0.0")
+
+Now we are set up to parse some PHP code and generate the code reference for GitHub pages.
 
 ## Generate the Code Reference
 Put the code you want to parse in the `/www/wp-reference/source-code` directory.  
@@ -84,7 +100,7 @@ From the Vagrant directory run `vagrant ssh` and go the site root directory.
 cd /vagrant/www/wp-reference/
 ```
 
-And parse the code with the following command.
+Check if your settings are correct in the [reference.json](#code-reference-settings) file and parse the code with the following command.
 ```
 bash vvv-init.sh
 ```
@@ -102,7 +118,7 @@ Activate the WP Parser JSON plugin (if not already activated).
 wp plugin activate wp-parser-json
 ```
 
-Generate the JSON files for the reference.
+Check if your settings are correct in the [reference.json](#code-reference-settings) file and generate the JSON files for the reference with the following command.
 ```
 wp parser-json generate
 ```
@@ -118,7 +134,7 @@ Deploy your reference to GitHub pages after you've generated the [JSON files](#g
 
 Open your terminal and and go to this repository in the themes directory (`www/wp-reference/public/wp-content/themes/github-pages-code-reference`).
 
-Deploy (push) the generated code reference to the  gh-pages branch.
+Deploy (push) the generated code reference to the gh-pages branch.
 ```
 npm run deploy
 ```

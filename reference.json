@@ -1,0 +1,13 @@
+{
+    "homepage": "https://username.github.io/example-repository",
+    "app_basename": "example-repository",
+    "app_description": "Code Reference",
+    "app_url": "https://example.com/code-homepage",
+    "app_docs_url": "",
+    "repo_url": "https://github.com/username/example-repository",
+    "repo_release_url": "https://github.com/username/example-repository/tree/1.0.0",
+    "repo_gh_pages": "https://github.com/username/example-repository.git",
+    "parsed_name": "Example Reference",
+    "parsed_version": "v1.0",
+    "parsed_type": "plugin"
+}

@@ -1,4 +1,4 @@
-var reference = require('../src/reference.json');
+var reference = require('../src/json-files/reference.json');
 var ghpages = require('gh-pages');
 
 console.log('Start deploy...');
@@ -10,7 +10,7 @@ if (reference.repo_gh_pages) {
 		if(err) {
 			console.log(err)
 		} else {
-			console.log('Deployed successfully');
+			console.log('Published successfully');
 		}
 	});
 } else {
