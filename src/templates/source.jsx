@@ -37,7 +37,7 @@ const Source = props => {
 		}
 		parentClass = (<li>{Strings.class}: {parentEl}</li>)
 	}
-	if (namespace.length && ('global' !== namespace.toLowerCase()) ) {
+	if (namespace.length && ('global' !== namespace.toLowerCase())) {
 		namespaceEl = (<li>{Strings['namespace'].replace('%1$s', namespace )}</li>);
 	}
 

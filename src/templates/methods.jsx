@@ -6,7 +6,7 @@ import Strings from '../json-files/wp-parser-json-strings.json';
 const Methods = props => {
 	const home = ('/' === props.home) ? '' : props.home;
 
-	if (! props.data.hasOwnProperty('methods')) {
+	if (!props.data.hasOwnProperty('methods')) {
 		return null;
 	}
 

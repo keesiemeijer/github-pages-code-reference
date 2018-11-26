@@ -82,6 +82,10 @@ form {
   border-radius: 0.25em;
 }
 
+select {
+  margin: 0 .5em;
+}
+
 .devhub-wrap .wp-parser-class,
 .devhub-wrap .wp-parser-function, 
 .devhub-wrap .wp-parser-hook,
@@ -159,3 +163,31 @@ form {
   color: red;
   font-weight: bold;
 }
+
+.callout {
+  text-align: center;
+  padding: 1em 3em 1em 3em;
+  margin-bottom: 1.5em;
+  overflow: auto;
+  position: relative;
+  border-width: 0 0 0 5px;
+  border-style: solid;
+  min-width: 170px;
+}
+.callout p {
+  margin-bottom: 0.6em !important;
+  margin-top: 0.5em !important;
+}
+.callout p ~ p {
+  margin-top: 1em;
+}
+
+.callout .screen-reader-text + br {
+  display: none;
+}
+
+.callout-info     { background: #e5f5fa; border-color: #00a0d2; }
+.callout-tip      { background: #eff7ed; border-color: #64b450; }
+.callout-alert    { background: #fff8e5; border-color: #ffb900; }
+.callout-tutorial { background: #f2f0f7; border-color: #826eb4; }
+.callout-warning  { background: #fbeaea; border-color: #dc3232; }

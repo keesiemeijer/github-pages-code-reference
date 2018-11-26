@@ -16,7 +16,7 @@ function get_related_items() {
 	$has_uses    = ( post_type_has_uses_info()  && ( $uses    = get_uses()    ) && $uses->have_posts()    );
 	$has_used_by = ( post_type_has_usage_info() && ( $used_by = get_used_by() ) && $used_by->have_posts() );
 
-	if ( $has_uses ) {	
+	if ( $has_uses ) {
 		while ( $uses->have_posts() ) {
 			$uses->the_post();
 
@@ -30,7 +30,7 @@ function get_related_items() {
 
 			$related['uses'][] = array(
 				'source' => get_source_file(),
-				'url'    => wporg_developer_child_get_permalink(get_the_ID()),
+				'url'    => wporg_developer_child_get_permalink( get_the_ID() ),
 				'text'   => get_the_title() . $suffix,
 			);
 		}
@@ -51,7 +51,7 @@ function get_related_items() {
 
 			$related['used_by'][] = array(
 				'source' => get_source_file(),
-				'url'    => wporg_developer_child_get_permalink(get_the_ID()),
+				'url'    => wporg_developer_child_get_permalink( get_the_ID() ),
 				'text'   => get_the_title() . $suffix,
 			);
 		}

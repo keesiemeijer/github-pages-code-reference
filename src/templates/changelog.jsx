@@ -1,14 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+import { isEmpty } from "lodash";
 
 import Strings from '../json-files/wp-parser-json-strings.json';
 
-const Changelog = props => {	
-	if (! props.data.hasOwnProperty('changelog')) {
+const Changelog = props => {
+	if (!props.data.hasOwnProperty('changelog')) {
+		return null;
+	}
+
+	if (isEmpty(props.data.changelog)) {
 		return null;
 	}
 
 	const changelog = props.data.changelog;
-
 	return (
 		<div>
 			<hr />
@@ -25,7 +31,7 @@ const Changelog = props => {
 					<tbody>
 						{ changelog.map( (item, index) =>
 						<tr key={index}>
-							<td>{item.version}</td>
+							<td><Link to={props.archiveUrl + '?since=' + item.version}>{item.version}</Link></td>
 							<td dangerouslySetInnerHTML={{ __html: item.description }}></td>
 						</tr>
 						) }			

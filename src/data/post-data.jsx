@@ -4,19 +4,39 @@ export function getPathParts(route) {
 	return trim(route, '/').split('/').filter(value => value !== '');
 }
 
-export function getPostType(route, postTypeIndex) {
+export function getQueryStringParams(query) {
+	return query ?
+		(/^[?#]/.test(query) ? query.slice(1) : query)
+		.split('&')
+		.reduce((params, param) => {
+			let [key, value] = param.split('=');
+			params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
+			return params;
+		}, {}) :
+		{}
+};
+
+export function getQueryVar(query, queryVar) {
+	const queryVars = getQueryStringParams(query);
+	if (queryVars.hasOwnProperty(queryVar) && queryVars[queryVar].length) {
+		return queryVars[queryVar];
+	}
+	return '';
+}
+
+export function getPostType(route, routeIndex) {
 	let postType = '';
 	let pathParts = getPathParts(route);
 
-	if (postTypeIndex + 1 <= pathParts.length) {
-		postType = getSlug(route, postTypeIndex).toLowerCase();
+	if (routeIndex + 1 <= pathParts.length) {
+		postType = getSlug(route, routeIndex).toLowerCase();
 	}
 
 	if (!postType || !postTypeExists(postType)) {
 		return '';
 	}
 
-	if (('classes' === postType) && (postTypeIndex + 3 === pathParts.length)) {
+	if (('classes' === postType) && (routeIndex + 3 === pathParts.length)) {
 		postType = 'methods';
 	}
 
@@ -28,6 +48,13 @@ export function postTypeExists(postType) {
 	const postTypes = allowed.filter((item) => postType === item);
 
 	return postTypes.length === 1;
+}
+
+export function statusExists(status) {
+	const allowed = ['introduced', 'modified', 'deprecated'];
+	const stati = allowed.filter((value) => status === value);
+
+	return stati.length === 1;
 }
 
 export function getPostClass(postType) {
@@ -52,20 +79,30 @@ export function getSlug(route, index) {
 	return slug
 }
 
-export function isSingle(route, postTypeIndex) {
+export function isValidRouteLength(route, length) {
 	const pathParts = getPathParts(route);
-	const postType = getPostType(route, postTypeIndex);
+
+	if (length === pathParts.length) {
+		return true;
+	}
+
+	return false;
+}
+
+export function isSingle(route, routeIndex) {
+	const pathParts = getPathParts(route);
+	const postType = getPostType(route, routeIndex);
 
 	if (!postType.length) {
 		return false;
 	}
 
 	if ('methods' === postType) {
-		if ((postTypeIndex + 3) === pathParts.length) {
+		if ((routeIndex + 3) === pathParts.length) {
 			return true
 		}
 	} else {
-		if ((postTypeIndex + 2) === pathParts.length) {
+		if ((routeIndex + 2) === pathParts.length) {
 			return true;
 		}
 	}

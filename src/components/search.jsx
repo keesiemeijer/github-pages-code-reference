@@ -73,9 +73,6 @@ class Search extends Component {
 			value: '',
 			suggestions: [],
 			isLoading: false,
-			functions: {},
-			classes: {},
-			hooks: {},
 		};
 
 		this.lastRequestId = null;
@@ -85,9 +82,10 @@ class Search extends Component {
 		event.preventDefault();
 
 		let location = this.props.home + '/' + this.props.postType;
-		let index = findIndex(this.state[this.props.postType].content, value => value.title === this.state.value);
+		const data = this.props.postTypeData[this.props.postType];
+		let index = findIndex(data.content, value => value.title === this.state.value);
 		if (-1 !== index) {
-			location = location + '/' + this.state[this.props.postType].content[index].slug;
+			location = location + '/' + data.content[index].slug;
 		} else {
 			location = location + '/' + this.state.value;
 		}
@@ -96,27 +94,21 @@ class Search extends Component {
 	}
 
 	loadSuggestions(value) {
-		let postType = this.props.postType;
-
-		if (!isEmpty(this.state[postType])) {
-			this.setState({
-				isLoading: false,
-				suggestions: this.getSuggestions(value, this.state[postType])
-			});
-			return;
-		}
+		const postType = this.props.postType;
 
 		this.setState({
 			isLoading: true
 		});
 
-		import ('../json-files/' + postType + '.json').then((data) => {
+		this.props.fetchData(postType);
+
+		if (!isEmpty(this.props.postTypeData[postType])) {
 			this.setState({
-				[postType]: data,
 				isLoading: false,
-				suggestions: this.getSuggestions(value, data)
+				suggestions: this.getSuggestions(value, this.props.postTypeData[postType])
 			});
-		});
+			return;
+		}
 	}
 
 	getSuggestions(value, data) {

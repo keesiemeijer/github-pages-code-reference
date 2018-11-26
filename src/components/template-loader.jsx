@@ -46,6 +46,7 @@ export default class TemplateLoader extends Component {
 			return (<HomeTemplate {...this.props} content={content} />);
 		}
 
+
 		const postClass = getPostClass(this.props.postType);
 
 		if ('archive' === this.props.request) {

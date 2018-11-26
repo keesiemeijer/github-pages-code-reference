@@ -6,11 +6,11 @@ import { DataProvider, DataContext } from "./contexts/DataContext";
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <DataProvider>
+	<DataProvider>
     <DataContext.Consumer>
       {({ fetchData }) => <App fetchData={fetchData} />}
     </DataContext.Consumer>
   </DataProvider>,
-  document.getElementById("root")
+	document.getElementById("root")
 );
 registerServiceWorker();

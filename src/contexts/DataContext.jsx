@@ -12,48 +12,24 @@ export class DataProvider extends React.Component {
 			classes: {},
 			hooks: {},
 			methods: {},
-			file: {},
 		}
 	};
 
-	getFileData = (fileName) => {
-		try {
-			import ('../json-files/files/' + fileName + '.json').then((data) => {
-				this.setState({
-					file: data,
-					status: 'done',
-				});
-			});
-		} catch (error) {
-			this.setState({
-				status: "error",
-				file: {},
-			});
-		}
-	}
-
-	fetchData = (postType, fileName) => {
+	fetchData = (postType) => {
 		this.setState({
 			status: "searching",
 			postType: postType,
-			file: {},
 		});
-
-		if (!isEmpty(fileName)) {
-			this.getFileData(fileName);
-			return;
-		}
 
 		if (!isEmpty(this.state[postType])) {
 			this.setState({
 				status: 'done',
 			});
-
 			return;
 		}
 
 		try {
-			import ('../json-files/' + postType + '.json').then((data) => {
+			import ('../json-files/post-types/' + postType + '.json').then((data) => {
 				this.setState({
 					[postType]: data,
 					status: 'done',
@@ -61,7 +37,7 @@ export class DataProvider extends React.Component {
 			});
 		} catch (error) {
 			this.setState({
-				status: "error"
+				status: "error",
 			});
 		}
 	};

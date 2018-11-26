@@ -3,6 +3,8 @@ import { NavLink, Link } from 'react-router-dom';
 
 import Search from './search'
 import withData from '../json-files/with-data.json';
+import { DataContext } from "../contexts/DataContext";
+
 
 const PrimaryHeader = (props) => {
 	let searchPostType = props.postType;
@@ -21,7 +23,7 @@ const PrimaryHeader = (props) => {
 	}
 
 	let desc = '';
-	if(app_description.length) {
+	if (app_description.length) {
 		desc = (<p className="site-description">{app_description}</p>);
 	}
 
@@ -31,15 +33,25 @@ const PrimaryHeader = (props) => {
 		<header className="site-header">
 			<h1 className="site-title">{title}</h1>
 			{desc}
-			{-1 !== withData.indexOf( searchPostType ) && <Search
-				postType={searchPostType}
-				strings={props.strings}
-				home={archiveHome}
-			/>}
+			{-1 !== withData.indexOf( searchPostType ) &&
+			<DataContext.Consumer>
+				{
+					({ postType, postTypeData, fetchData }) => (
+						<Search {...props}
+							postType={searchPostType}
+							postTypeData={postTypeData}
+							fetchData={fetchData}
+							strings={props.strings}
+							home={archiveHome}
+						/>
+					)
+				}
+			</DataContext.Consumer>
+			}
 			<nav>
 				<NavLink to={props.home} exact activeClassName="active">{props.strings.home}</NavLink>
 				{ withData.map( (item, index) =>
-					'methods' !== item && <NavLink to={archiveHome + '/' + item} key={index} activeClassName="active">{props.strings[item]}</NavLink>
+					'methods' !== item && <NavLink to={archiveHome + '/' + item } key={index} activeClassName="active">{props.strings[item]}</NavLink>
 				)}
 			</nav>
 	  </header>

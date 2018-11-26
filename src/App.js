@@ -18,7 +18,7 @@ const App = (props) => {
 		appName: appName,
 		packageData: PackageData,
 		home: location,
-		postTypeIndex: ('/' === location) ? 0 : 1,
+		routeIndex: ('/' === location) ? 0 : 1,
 	};
 
 	location = ('/' === location) ? '' : location;

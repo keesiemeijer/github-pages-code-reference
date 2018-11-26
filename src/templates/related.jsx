@@ -6,8 +6,6 @@ import { isEmpty, get } from 'lodash';
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Related = props => {
-	const home = ('/' === props.home) ? '' : props.home;
-
 	const uses = get(props, 'data.related.uses', {});
 	const usedBy = get(props, 'data.related.used_by', {});
 
@@ -24,7 +22,7 @@ const Related = props => {
 					{ uses.map( (item, index) =>
 						<li key={index} >
 							<span>{item.source}</span>{' '}
-							<Link to={home + item.url}>{item.text}</Link>
+							<Link to={props.home + item.url}>{item.text}</Link>
 						</li>
 					)}
 			    </ul>
@@ -43,7 +41,7 @@ const Related = props => {
 					{ usedBy.map( (item, index) =>
 						<li key={index}>
 							<span>{item.source}</span>{' '}
-							<Link to={home + item.url}>{item.text}</Link>
+							<Link to={props.home + item.url}>{item.text}</Link>
 						</li>
 					)}
 			    </ul>

@@ -7,22 +7,23 @@ import TemplateLoader from "../template-loader";
 
 const Archive = props => {
 	const route = props.location.pathname;
-	const postTypeIndex = props.postTypeIndex;
-	const routePostType = getPostType(route, postTypeIndex);
+	const routeIndex = props.routeIndex;
+	const routePostType = getPostType(route, routeIndex);
 
 	return (
 		<PrimaryTemplate {...props} postType={routePostType}>
-	<DataContext.Consumer>
-	{
-		({ postType, postTypeData, fetchData }) => (
-			<TemplateLoader {...props}
-				postType={routePostType}
-				postTypeData={postTypeData}
-				fetchData={fetchData}
-				request="archive"
-			/>)
-	}
-		</DataContext.Consumer>
+			<DataContext.Consumer>
+			{
+				({ postType, postTypeData, fetchData }) => (
+					<TemplateLoader {...props}
+						postType={routePostType}
+						postTypeData={postTypeData}
+						fetchData={fetchData}
+						request="archive"
+					/>
+				)
+			}
+			</DataContext.Consumer>
 	</PrimaryTemplate>
 	)
 };

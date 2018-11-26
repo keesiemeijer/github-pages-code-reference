@@ -8,33 +8,34 @@ import TemplateLoader from "../template-loader";
 
 const Single = props => {
 	const route = props.location.pathname;
-	const postTypeIndex = props.postTypeIndex;
-	const routePostType = getPostType(route, postTypeIndex);
+	const routeIndex = props.routeIndex;
+	const routePostType = getPostType(route, routeIndex);
 
-	if (!isSingle(route, postTypeIndex)) {
+	if (!isSingle(route, routeIndex)) {
 		return (<Redirect to={props.home} />);
 	}
 
-	let slug = getSlug(route, postTypeIndex + 1);
+	let slug = getSlug(route, routeIndex + 1);
 	if ("methods" === routePostType) {
-		slug += "::" + getSlug(route, postTypeIndex + 2);
+		slug += "::" + getSlug(route, routeIndex + 2);
 	}
 
 	return (
 		<PrimaryTemplate {...props} postType={routePostType}>
-	<DataContext.Consumer>
-	{
-		({ postType, postTypeData, fetchData }) => (
-			<TemplateLoader {...props}
-				postType={routePostType}
-				postTypeData={postTypeData}
-				fetchData={fetchData}
-				request="single"
-				slug={slug}
-			/>)
-	}
-		</DataContext.Consumer>
-	</PrimaryTemplate>
+			<DataContext.Consumer>
+				{
+					({ postType, postTypeData, fetchData }) => (
+						<TemplateLoader {...props}
+							postType={routePostType}
+							postTypeData={postTypeData}
+							fetchData={fetchData}
+							request="single"
+							slug={slug}
+						/>
+					)
+				}
+			</DataContext.Consumer>
+		</PrimaryTemplate>
 	);
 }
 

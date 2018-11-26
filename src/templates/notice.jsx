@@ -8,7 +8,6 @@ const Notice = props => {
 	if (!props.data.notice.length) {
 		return null;
 	}
-	console.log('notice', props.data);
 
 	return (
 		<div dangerouslySetInnerHTML={{ __html: props.data.notice }}></div>

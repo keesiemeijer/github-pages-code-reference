@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Content = props => {
-	if (! props.data.hasOwnProperty('html')) {
+	if (!props.data.hasOwnProperty('html')) {
 		return null;
 	}
 
