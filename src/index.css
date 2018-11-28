@@ -200,7 +200,11 @@ select {
 .callout-alert    { background: #fff8e5; border-color: #ffb900; }
 .callout-tutorial { background: #f2f0f7; border-color: #826eb4; }
 .callout-warning  { background: #fbeaea; border-color: #dc3232; }
+
+
 .loader { overflow: hidden; }
+
+/* https://projects.lukehaas.me/css-loaders */
 .loader,
 .loader:after {
   border-radius: 50%;

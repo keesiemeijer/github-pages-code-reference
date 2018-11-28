@@ -240,7 +240,8 @@ class ArchiveTemplate extends React.Component {
 				{items.map( (item, index) => {
 					let deprecated = '';
 					if(item.deprecated) {
-						deprecated = (<span>{' — '}<span className="deprecated-item">{Strings['deprecated']}</span></span>)
+						const deprecatedVersion = Strings['deprecated_in'].replace('%1$s', item.deprecated);
+						deprecated = (<span>{' — '}<span className="deprecated-item">{deprecatedVersion}</span></span>)
 					}
 					return (<article key={index} className={this.props.postClass}>
 					<h1><Link to={home + '/' + this.props.postType + '/' + item.slug}>{item.title}</Link>{deprecated}</h1>

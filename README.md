@@ -6,8 +6,12 @@ Generate a PHP code reference of a repository and host it on GitHub pages (gh-pa
 
 This reference generator is WordPress oriented because I use it for my plugins, but it can be used to generate a reference for any PHP code base. The [WP Parser](https://github.com/WordPress/phpdoc-parser) plugin is used for parsing PHP DocBlocks in files.
 
+**Note**: I use this project to learn the basics of [React](https://reactjs.org/). It doesn't scale for larger code bases. That being said I use it for several plugins successfuly.
+
 ## Requirements
-[VVV](https://github.com/Varying-Vagrant-Vagrants/VVV) or [Local by Flywheel](https://local.getflywheel.com/).
+* [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV) or [Local by Flywheel](https://local.getflywheel.com/).
+* [WP Reference](https://github.com/keesiemeijer/wp-reference)
+* [WP Parser JSON](https://github.com/keesiemeijer/wp-parser-json)
 
 ## Setup GitHub Pages
 Open a terminal and go to a local repository where you would like to have GitHub pages (reference). Create the `gh-pages` branch and add an index.html file.
