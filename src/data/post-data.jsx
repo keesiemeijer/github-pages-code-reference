@@ -50,7 +50,7 @@ export function postTypeExists(postType) {
 	return postTypes.length === 1;
 }
 
-export function statusExists(status) {
+export function filterTypeExists(status) {
 	const allowed = ['introduced', 'modified', 'deprecated'];
 	const stati = allowed.filter((value) => status === value);
 

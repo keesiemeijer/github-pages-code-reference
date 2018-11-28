@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 import { isEmpty, get } from "lodash";
 
-import { getQueryVar, statusExists } from "../../data/post-data";
+import { getQueryVar, filterTypeExists } from "../../data/post-data";
 import Strings from '../../json-files/wp-parser-json-strings.json';
 
 class ArchiveTemplate extends React.Component {
@@ -11,27 +11,27 @@ class ArchiveTemplate extends React.Component {
 		super(props);
 
 		this.state = {
-			status: '',
+			type: '',
 			version: '',
 			terms: {},
 			failedRequest: false,
 		};
 
-		this.handleChangeStatus = this.handleChangeStatus.bind(this);
+		this.handleChangeType = this.handleChangeType.bind(this);
 		this.handleChangeVersion = this.handleChangeVersion.bind(this);
 	}
 
 	/**
 	 * Set the state from query vars.
 	 *
-	 * This allows linking to an archive with a specific version and status
+	 * This allows linking to an archive with a specific version and type
 	 */
 	setStateFromQuery() {
 		const search = this.props.location.search
-		const status = getQueryVar(search, 'status');
+		const type = getQueryVar(search, 'type');
 
 		this.setState({
-			status: statusExists(status) ? status : 'none',
+			type: filterTypeExists(type) ? type : 'none',
 			version: getQueryVar(search, 'since')
 		});
 	}
@@ -62,11 +62,11 @@ class ArchiveTemplate extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.postType !== this.props.postType) {
-			this.setState({ status: 'none', version: '' });
+			this.setState({ type: 'none', version: '' });
 		}
 
-		if (('undocumented' === this.state.version) && ('none' !== this.state.status)) {
-			this.setState({ status: 'none' });
+		if (('undocumented' === this.state.version) && ('none' !== this.state.type)) {
+			this.setState({ type: 'none' });
 		}
 
 		if (this.props.location.search.length) {
@@ -81,9 +81,9 @@ class ArchiveTemplate extends React.Component {
 		this.remove_query_vars();
 	}
 
-	handleChangeStatus(event) {
-		const status = statusExists(event.target.value) ? event.target.value : 'none';
-		this.setState({ status: status });
+	handleChangeType(event) {
+		const type = filterTypeExists(event.target.value) ? event.target.value : 'none';
+		this.setState({ type: type });
 	}
 
 	handleChangeVersion(event) {
@@ -91,15 +91,15 @@ class ArchiveTemplate extends React.Component {
 	}
 
 	handleSubmit(event) {
-		//alert('Your favorite flavor is: ' + this.state.status);
+		//alert('Your favorite flavor is: ' + this.state.type);
 		event.preventDefault();
 	}
 
-	filterByVersion(items, version, status = 'none') {
-		let allVersions = !version.length;
-		const filterByStatus = !(status.length && ('none' === status));
+	filterByVersion(items, version, type = 'none') {
+		const allVersions = !version.length;
+		const filterByType = !(type.length && ('none' === type));
 
-		if (allVersions && !filterByStatus) {
+		if (allVersions && !filterByType) {
 			return items;
 		}
 
@@ -109,7 +109,7 @@ class ArchiveTemplate extends React.Component {
 			const isDeprecatedTerm = (-1 !== item.terms.indexOf(item.deprecated));
 			const isUndocumentedTerm = (-1 !== item.terms.indexOf('undocumented'));
 
-			switch (status) {
+			switch (type) {
 				case 'deprecated':
 					return allVersions ? item.deprecated : item.deprecated === version;
 				case 'introduced':
@@ -153,52 +153,56 @@ class ArchiveTemplate extends React.Component {
 			);
 		}
 
+		const hasType = !isEmpty(this.state.type) && 'none' !== this.state.type;
+		const isUndocumented = ('undocumented' === this.state.version);
 
 		// Set version if it exists.
 		let version = '';
 		if (!isEmpty(terms) && !isEmpty(this.state.version)) {
 			version = -1 === terms.indexOf(this.state.version) ? '' : this.state.version;
 		}
+		console.log('hasType', hasType)
+		console.log('vesion', version)
+
 
 		// Title
 		let title = Strings[this.props.postType];
-		if (!isEmpty(version)) {
-			title = Strings[this.props.postType + '_label'].replace('%1$s', this.state.version);
-		}
 
-		// Filter items by version and status
-		let items = this.filterByVersion(this.props.content, version, this.state.status);
+		// Filter items
+		let items = this.filterByVersion(this.props.content, version, this.state.type);
 
-		// Found items information
-		let found = '';
-
+		// Plural or single post type string
 		let single = this.props.postType.substring(0, this.props.postType.length - 1);
 		single = ('classe' === single) ? 'class' : single;
-		const postType = (1 < items.length) ? this.props.postType : single;
+		let postType = !items.length || (1 < items.length) ? this.props.postType : single;
+		postType = Strings[postType].toLowerCase();
 
-		const isUndocumented = ('undocumented' === this.state.version);
+		// Replace placeholders
+		// Todo: use https://www.npmjs.com/package/sprintf-js ?
+		let replacePostType = items.length ? '%2$s' : '%1$s';
+		let replaceVersion = items.length ? '%3$s' : '%2$s';
+		let replaceType = items.length ? '%2$s' : '%1$s';
+		const not = items.length ? '' : 'not_';
+		let filter = version.length ? `filter_version_${not}found` : `${not}found`;
+		let info = Strings[filter];
+		if (hasType || isUndocumented) {
+			const type = isUndocumented ? Strings['undocumented'] : this.state.type;
 
-		const versionStatus = isUndocumented ? Strings[this.state.version] : Strings[this.state.status];
+			filter = `filter_type_${not}found`
+			if (version.length && !isUndocumented) {
+				filter = `filter_all_${not}found`;
+				replaceVersion = items.length ? '%4$s' : '%3$s';
+			}
+
+			replacePostType = items.length ? '%3$s' : '%2$s';
+			info = Strings[filter].replace(replaceType, type);
+		}
 
 		if (items.length) {
-			found = Strings['status_found']
-				.replace('%1$d', items.length)
-				.replace('%2$s', versionStatus)
-				.replace('%3$s', Strings[postType].toLowerCase());
-
-			if ('none' === this.state.status && !isUndocumented) {
-				found = Strings.found
-					.replace('%1$d', items.length)
-					.replace('%2$s', Strings[postType].toLowerCase());
-			}
-		} else {
-			found = Strings.status_not_found
-				.replace('%1$s', versionStatus)
-				.replace('%2$s', Strings[this.props.postType].toLowerCase());
-			if ('none' === this.state.status && !isUndocumented) {
-				found = Strings.not_found.replace('%1$s', this.props.postType.toLowerCase());
-			}
+			info = info.replace('%1$d', items.length);
 		}
+
+		info = info.replace(replacePostType, postType).replace(replaceVersion, version);
 
 		return (
 			<div>
@@ -207,7 +211,7 @@ class ArchiveTemplate extends React.Component {
 				<form onSubmit={this.handleSubmit}>
 					{!isEmpty(terms) && options.length &&
 						<label>
-						{Strings.filter_version}
+						{Strings.filter_by_version}
 						<select value={this.state.version} onChange={this.handleChangeVersion}>
 						<option key="none" value="" >{Strings.none}</option>
 						{options}
@@ -216,8 +220,8 @@ class ArchiveTemplate extends React.Component {
 					}
 					{ !isEmpty(terms) && !isUndocumented &&
 					<label>
-						{Strings.filter_status}
-						<select value={this.state.status} onChange={this.handleChangeStatus}>
+						{Strings.filter_by_type}
+						<select value={this.state.type} onChange={this.handleChangeType}>
 							<option value="none">{Strings.none}</option>
 							<option value="introduced">{Strings.introduced}</option>
 							<option value="modified">{Strings.modified}</option>
@@ -228,15 +232,20 @@ class ArchiveTemplate extends React.Component {
 				</form>
 
 				{!items.length ? (<hr/>) : ''}
-				<p>{found}</p>
+				<p>{info}</p>
 				{items.length ? (<hr/>) : ''}
 
-				{items.map( (item, index) =>
-					<article key={index} className={this.props.postClass}>
-					<h1><Link to={home + '/' + this.props.postType + '/' + item.slug}>{item.title}</Link></h1>
+				{items.map( (item, index) => {
+					let deprecated = '';
+					if(item.deprecated) {
+						deprecated = (<span>{' — '}<span className="deprecated-item">{Strings['deprecated']}</span></span>)
+					}
+					return (<article key={index} className={this.props.postClass}>
+					<h1><Link to={home + '/' + this.props.postType + '/' + item.slug}>{item.title}</Link>{deprecated}</h1>
 					<div className="description" dangerouslySetInnerHTML={{ __html: item.summary}}></div>
 					<div className="sourcefile"><p>{Strings['source_file'].replace( '%1$s', item.source_file )}</p></div>
-					</article>
+					</article>)
+				  }
 				)}
 			</div>
 		)
