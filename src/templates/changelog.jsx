@@ -6,15 +6,13 @@ import { isEmpty } from "lodash";
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 const Changelog = props => {
-	if (!props.data.hasOwnProperty('changelog')) {
-		return null;
-	}
+	const { changelog } = props.data;
+	const { archiveUrl } = props;
 
 	if (isEmpty(props.data.changelog)) {
 		return null;
 	}
 
-	const changelog = props.data.changelog;
 	return (
 		<div>
 			<hr />
@@ -29,11 +27,18 @@ const Changelog = props => {
 						</tr>
 					</thead>
 					<tbody>
-						{ changelog.map( (item, index) =>
-						<tr key={index}>
-							<td><Link to={props.archiveUrl + '?since=' + item.version}>{item.version}</Link></td>
-							<td dangerouslySetInnerHTML={{ __html: item.description }}></td>
-						</tr>
+						{ changelog.map( (item, index) => {
+							let version = item.version;
+							if(!isEmpty( archiveUrl )) {
+								version = (<Link to={archiveUrl + '?since=' + version}>{version}</Link>);
+							}
+							return (
+								<tr key={index}>
+									<td>{version}</td>
+									<td dangerouslySetInnerHTML={{ __html: item.description }}></td>
+								</tr>
+							) 
+						}
 						) }			
 					</tbody>
 				</table>

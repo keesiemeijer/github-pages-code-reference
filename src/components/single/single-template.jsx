@@ -90,7 +90,7 @@ export default class SingleTemplate extends React.Component {
 		const home = ('/' === this.props.home) ? '' : this.props.home;
 		let archive = home + '/' + this.props.postType;
 		if ('methods' === this.props.postType) {
-			archive = home + '/classes';
+			archive = '';
 		}
 
 		return (
