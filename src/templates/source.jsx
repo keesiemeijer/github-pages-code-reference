@@ -43,7 +43,7 @@ const Source = props => {
 
 	if (url.length && urlText) {
 		link = (<a href={url} target="_blank" rel="noopener noreferrer">{urlText}</a>);
-		return (<ul className="source-info">{parentClass}{namespaceEl}<li>{view}{' ('}{link}{')'}</li></ul>);
+		return (<ul className="source-info">{parentClass}{namespaceEl}<li>{view}{' — '}{link}</li></ul>);
 	}
 
 	return (<ul className="source-info">{parentClass}{namespaceEl}<li>{view}</li></ul>);
