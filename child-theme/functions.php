@@ -89,7 +89,7 @@ function wporg_developer_child_get_plugin_data( $item, $post_item ) {
 		$terms[] = 'undocumented';
 	}
 
-	$item['since']       = $first_version;
+	//$item['post_type']   = $post_item->post_type;
 	$item['introduced']  = $introduced;
 	$item['deprecated']  = $deprecated;
 	$item['terms']       = $terms;
