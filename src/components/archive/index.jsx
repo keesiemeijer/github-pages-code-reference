@@ -11,7 +11,7 @@ const Archive = props => {
 	const routePostType = getPostType(route, routeIndex);
 
 	return (
-		<PrimaryTemplate {...props} postType={routePostType}>
+		<PrimaryTemplate {...props} postType={routePostType} page="archive">
 			<DataContext.Consumer>
 			{
 				({ postType, postTypeData, fetchData }) => (

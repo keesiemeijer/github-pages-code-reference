@@ -5,7 +5,7 @@ import HomeTemplate from "./home-template.jsx";
 
 const Home = props => {
 	return (
-		<PrimaryTemplate {...props} postType="functions" request="home">
+		<PrimaryTemplate {...props} postType="functions" page="home">
 			<HomeTemplate {...props} />
 		</PrimaryTemplate>
 	);

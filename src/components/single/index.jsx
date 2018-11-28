@@ -21,7 +21,7 @@ const Single = props => {
 	}
 
 	return (
-		<PrimaryTemplate {...props} postType={routePostType}>
+		<PrimaryTemplate {...props} postType={routePostType} page="single">
 			<DataContext.Consumer>
 				{
 					({ postType, postTypeData, fetchData }) => (
