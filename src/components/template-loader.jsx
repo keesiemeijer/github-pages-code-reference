@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash';
 import ArchiveTemplate from "./archive/archive-template.jsx";
 import HomeTemplate from "./home/home-template.jsx";
 import SingleTemplate from "./single/single-template.jsx";
+import Spinner from "./spinner.jsx";
 
 import { getPostClass } from "../data/post-data";
 
@@ -28,7 +29,7 @@ export default class TemplateLoader extends Component {
 		window.scrollTo(0, 0);
 
 		if (isEmpty(this.props.postTypeData[this.props.postType])) {
-			return null;
+			 return <Spinner />;
 		}
 
 		let content = this.props['postTypeData'][this.props.postType]['content'];

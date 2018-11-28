@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { isEmpty, get } from "lodash";
 
 import { getQueryVar, filterTypeExists } from "../../data/post-data";
+import Spinner from "../spinner.jsx";
 import Strings from '../../json-files/wp-parser-json-strings.json';
 
 class ArchiveTemplate extends React.Component {
@@ -145,6 +146,10 @@ class ArchiveTemplate extends React.Component {
 
 		let options = '';
 		let terms = get(this.state.terms, this.props.postType, {});
+
+		if(isEmpty(this.state.terms)) {
+			return <Spinner />;
+		}
 
 		// Create term options if terms found
 		if (!this.state.failedRequest && !isEmpty(terms)) {

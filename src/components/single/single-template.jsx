@@ -3,6 +3,8 @@ import { Redirect } from "react-router-dom";
 
 import { findIndex, isEmpty, get } from "lodash";
 
+import Spinner from "../spinner.jsx";
+
 import Signature from "../../templates/signature";
 import Summary from "../../templates/summary";
 import Content from "../../templates/content";
@@ -68,7 +70,8 @@ export default class SingleTemplate extends React.Component {
 			if (this.state.failedRequest) {
 				return (<Redirect to={this.props.home} />);
 			}
-			return null;
+
+			return <Spinner />;
 		}
 
 		const slug = get(this.element, 'slug', '');
