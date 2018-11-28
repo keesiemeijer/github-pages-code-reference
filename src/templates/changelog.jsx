@@ -37,9 +37,9 @@ const Changelog = props => {
 									<td>{version}</td>
 									<td dangerouslySetInnerHTML={{ __html: item.description }}></td>
 								</tr>
-							) 
+							)
 						}
-						) }			
+						) }
 					</tbody>
 				</table>
 			</section>

@@ -6,7 +6,7 @@ import Strings from "../json-files/wp-parser-json-strings.json";
 const PrimaryTemplate = props => {
 	const {page, children} = props;
 	const classes = "hfeed site devhub-wrap";
-	const pageClass = page ? classes + ' ' + page : classes; 
+	const pageClass = page ? classes + ' ' + page : classes;
 	return (
 		<div id="page" className={pageClass}>
 			<PrimaryHeader {...props} strings={Strings} />

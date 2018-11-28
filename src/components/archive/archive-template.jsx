@@ -161,9 +161,6 @@ class ArchiveTemplate extends React.Component {
 		if (!isEmpty(terms) && !isEmpty(this.state.version)) {
 			version = -1 === terms.indexOf(this.state.version) ? '' : this.state.version;
 		}
-		console.log('hasType', hasType)
-		console.log('vesion', version)
-
 
 		// Title
 		let title = Strings[this.props.postType];
