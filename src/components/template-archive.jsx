@@ -167,7 +167,6 @@ class ArchiveTemplate extends React.Component {
 
 		// Title
 		let title = Strings[postType];
-		console.log('aaarchive',this.props)
 		
 		const items = this.filterByVersion(this.props.content, version, this.state.type);
 		const info = termsFoundInfo(version, postType, this.state.type, items.length);

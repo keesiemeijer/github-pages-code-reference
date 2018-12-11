@@ -17,7 +17,6 @@ export function WithData(WrappedComponent) {
 		}
 
 		componentDidMount() {
-			//console.log(this.props);
 			if (isEmpty(this.props.postTypeData[this.props.postType])) {
 				this.props.fetchData(this.props.postType);
 			}

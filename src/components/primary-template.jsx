@@ -4,7 +4,6 @@ import PrimaryHeader from "./primary-header";
 import Strings from "../json-files/wp-parser-json-strings.json";
 
 const PrimaryTemplate = props => {
-	console.log(props)
 	const { page, children } = props;
 	const classes = "hfeed site devhub-wrap";
 	const pageClass = page ? classes + ' ' + page : classes;

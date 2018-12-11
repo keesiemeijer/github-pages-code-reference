@@ -151,7 +151,6 @@ class Search extends Component {
 	};
 
 	render() {
-		console.log('search', this.props)
 		const { value, suggestions } = this.state;
 		const { postType } = this.props;
 

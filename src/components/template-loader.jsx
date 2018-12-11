@@ -11,7 +11,6 @@ import SingleTemplate from "./template-single.jsx";
 
 
 const TemplateLoader = props => {
-	console.log('teeest', props)
 
 	// Load archive or single component
 
@@ -35,16 +34,12 @@ const TemplateLoader = props => {
 		return (<Redirect to={props.home} />);
 	}
 
-	console.log('valid route ' + routePostType);
-
 	if ("methods" === routePostType) {
 		slug += "::" + getSlug(pathName, pathPart);
 	}
 
 	const postClass = getPostClass(routePostType);
-
 	const page = props.match.isExact ? 'archive' : 'single';
-	console.log('slug', path)
 
 	return (
 		<PrimaryTemplate {...props} postType={routePostType} page={page}>

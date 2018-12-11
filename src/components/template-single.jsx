@@ -39,7 +39,6 @@ export class SingleTemplate extends React.Component {
 
 	getPostData() {
 		const index = findIndex(this.props.content, value => value.slug === this.props.slug);
-		console.log(index)
 		if (-1 === index) {
 			this.failedRequest();
 		} else {
@@ -72,7 +71,6 @@ export class SingleTemplate extends React.Component {
 	}
 
 	render() {
-		console.log('single', this.props)
 		const { postType, home } = this.props;
 
 
