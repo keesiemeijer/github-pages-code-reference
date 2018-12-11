@@ -13,6 +13,8 @@ This reference generator is WordPress oriented because I use it for my plugins, 
 * [WP Reference](https://github.com/keesiemeijer/wp-reference)
 * [WP Parser JSON](https://github.com/keesiemeijer/wp-parser-json)
 
+See the [installation instructions](#installation-with-vvv) on how you should install the requirements.
+
 ## Setup GitHub Pages
 Open a terminal and go to a local repository where you would like to have GitHub pages (reference). Create the `gh-pages` branch and add an index.html file.
 ```bash

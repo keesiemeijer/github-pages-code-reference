@@ -4,13 +4,14 @@
     "private": true,
     "homepage": "https://github.com/keesiemeijer/github-pages-code-reference",
     "dependencies": {
-        "react": "^16.4.1",
+        "react": "^16.6.3",
         "react-autosuggest": "^9.3.4",
-        "react-dom": "^16.4.1",
+        "react-dom": "^16.6.3",
         "react-loadable": "^5.4.0",
         "react-router": "^4.3.1",
         "react-router-dom": "^4.3.1",
-        "react-scripts": "2.1.1"
+        "react-scripts": "2.1.1",
+        "recompose": "^0.30.0"
     },
     "scripts": {
         "start": "react-scripts start",

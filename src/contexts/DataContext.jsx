@@ -1,5 +1,6 @@
 import React from "react";
-import { isEmpty } from 'lodash';
+
+import isEmpty from 'lodash/isEmpty';
 
 export const DataContext = React.createContext();
 

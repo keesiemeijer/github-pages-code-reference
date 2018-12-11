@@ -4,9 +4,13 @@ import PrimaryHeader from "./primary-header";
 import Strings from "../json-files/wp-parser-json-strings.json";
 
 const PrimaryTemplate = props => {
-	const {page, children} = props;
+	console.log(props)
+	const { page, children } = props;
 	const classes = "hfeed site devhub-wrap";
 	const pageClass = page ? classes + ' ' + page : classes;
+
+	// Scroll to top of page
+	window.scrollTo(0, 0);
 	return (
 		<div id="page" className={pageClass}>
 			<PrimaryHeader {...props} strings={Strings} />

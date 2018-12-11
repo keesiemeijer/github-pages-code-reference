@@ -1,61 +1,58 @@
-import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import React from "react";
+import { NavLink, Link } from "react-router-dom";
 
-import Search from './search'
-import withData from '../json-files/with-data.json';
-import { DataContext } from "../contexts/DataContext";
+import Search from "./search";
+import withData from "../json-files/with-data.json";
+import { homeLink } from "../data/selectors";
 
+const PrimaryHeader = props => {
+	const { parsed_name, parsed_version, app_description } = props.referenceData;
+	const { page, postType, home } = props;
 
-const PrimaryHeader = (props) => {
-	let searchPostType = props.postType;
-	searchPostType = ('methods' === searchPostType) ? 'classes' : searchPostType;
+	const searchPostType = "methods" === postType ? "classes" : postType;
 
-	const { parsed_name, parsed_version, app_description } = props.packageData
-	const { page } = props;
-
-	let title = props.strings.page_title
+	let title = props.strings.page_title;
 	if (parsed_name.length) {
 		title = parsed_name;
-		title += parsed_version.length ? ' ' + parsed_version : '';
-		if ('home' !== page) {
-			title = (<Link to={props.home}>{title}</Link>);
+		title += parsed_version.length ? " " + parsed_version : "";
+		if ("home" !== page) {
+			title = <Link to={home}>{title}</Link>;
 		}
 	}
 
-	let desc = '';
+	let desc = "";
 	if (app_description.length) {
-		desc = (<p className="site-description">{app_description}</p>);
+		desc = <p className="site-description">{app_description}</p>;
 	}
-
-	const archiveHome = ('/' === props.home) ? '' : props.home;
 
 	return (
 		<header className="site-header">
 			<h1 className="site-title">{title}</h1>
 			{desc}
-			{-1 !== withData.indexOf( searchPostType ) &&
-			<DataContext.Consumer>
-				{
-					({ postType, postTypeData, fetchData }) => (
-						<Search {...props}
-							postType={searchPostType}
-							postTypeData={postTypeData}
-							fetchData={fetchData}
-							strings={props.strings}
-							home={archiveHome}
-						/>
-					)
-				}
-			</DataContext.Consumer>
-			}
+			{-1 !== withData.indexOf(searchPostType) && (
+				<Search {...props} postType={searchPostType} />
+			)}
 			<nav>
-				<NavLink to={props.home} exact activeClassName="active">{props.strings.home}</NavLink>
-				{ withData.map( (item, index) =>
-					'methods' !== item && <NavLink to={archiveHome + '/' + item } key={index} activeClassName="active">{props.strings[item]}</NavLink>
-				)}
+				<NavLink to={home} exact activeClassName="active">
+					{props.strings.home}
+				</NavLink>
+				{withData.map((archivePostType, index) => {
+					const archiveLink = homeLink(home, archivePostType);
+					return (
+						"methods" !== archivePostType && (
+							<NavLink
+								to={archiveLink}
+								key={index}
+								activeClassName="active"
+							>
+								{props.strings[archivePostType]}
+							</NavLink>
+						)
+					);
+				})}
 			</nav>
-	  </header>
-	)
-}
+		</header>
+	);
+};
 
 export default PrimaryHeader;

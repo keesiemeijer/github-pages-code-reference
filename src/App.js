@@ -1,40 +1,38 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { trim } from 'lodash';
+import React from "react";
+import { BrowserRouter, Switch, Redirect } from "react-router-dom";
+import trim from "lodash/trim";
 
-import PackageData from './json-files/reference.json';
-import Home from "./components/home/";
-import Router from "./components/router";
+import routes from "./data/routes.js";
+import { DoRoute } from './components/route.jsx';
+import referenceData from "./json-files/reference.json";
 
-import './devhub.css';
-import './index.css';
+import "./devhub.css";
+import "./index.css";
 
-const App = (props) => {
-	const appName = PackageData['app_basename'];
+const App = props => {
+	const appName = referenceData["app_basename"];
 
-	let location = trim('/' + appName);
+	let location = trim("/" + appName);
 
 	const data = {
 		appName: appName,
-		packageData: PackageData,
+		referenceData: referenceData,
 		home: location,
-		routeIndex: ('/' === location) ? 0 : 1,
+		routeIndex: "/" === location ? 0 : 1
 	};
-
-	location = ('/' === location) ? '' : location;
 
 	return (
 		<BrowserRouter>
 			<Switch>
-				<Route path={data['home']} exact render={(props) => (<Home {...props} {...data}/>)} />
-				<Route path={location + '/functions'} render={(props) => (<Router {...props} {...data} />)} />
-				<Route path={location + '/classes'} render={(props) => (<Router {...props} {...data} />)} />
-				<Route path={location + '/hooks'} render={(props) => (<Router {...props} {...data} />)}
-				/>
+				{routes.map(
+					(route) => {						
+						return DoRoute(route, data);
+					}
+				)}
 				<Redirect to={data['home']} />
 			</Switch>
 		</BrowserRouter>
-	)
-}
+	);
+};
 
 export default App;

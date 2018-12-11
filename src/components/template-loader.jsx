@@ -1,73 +1,71 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import React from 'react';
+import { Route, Switch, Redirect } from "react-router-dom";
 
-import { isEmpty } from 'lodash';
+import PrimaryTemplate from "./primary-template";
+import WithContext from "../data/with-context.jsx";
 
-import ArchiveTemplate from "./archive/archive-template.jsx";
-import HomeTemplate from "./home/home-template.jsx";
-import SingleTemplate from "./single/single-template.jsx";
-import Spinner from "./spinner.jsx";
+import { isValidRouteLength, getSlug, getPostClass, homeLink } from "../data/selectors";
 
-import { getPostClass } from "../data/post-data";
+import ArchiveTemplate from "./template-archive.jsx";
+import SingleTemplate from "./template-single.jsx";
 
-export default class TemplateLoader extends Component {
-	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.postType !== this.props.postType) {
-			if (isEmpty(this.props.postTypeData[this.props.postType])) {
-				this.props.fetchData(this.props.postType);
-			}
-		}
+
+const TemplateLoader = props => {
+	console.log('teeest', props)
+
+	// Load archive or single component
+
+	const pathName = props.location.pathname;
+	const routeIndex = props.routeIndex;
+	let routePostType = props.route.postType;
+
+	const path = homeLink( props.home, props.route.path );
+
+	let pathPart = props.match.isExact ? 1 : 2;
+	let isValidRoute = isValidRouteLength(pathName, routeIndex + pathPart);
+	let slug = getSlug(pathName, pathPart);
+
+	if (!isValidRoute && ('classes' === routePostType)) {
+		++pathPart;
+		isValidRoute = isValidRouteLength(pathName, routeIndex + pathPart);
+		routePostType = isValidRoute ? 'methods' : routePostType;
 	}
 
-	componentDidMount() {
-		if (isEmpty(this.props.postTypeData[this.props.postType])) {
-			this.props.fetchData(this.props.postType);
-		}
+	if (!isValidRoute) {
+		return (<Redirect to={props.home} />);
 	}
 
-	render() {
-		window.scrollTo(0, 0);
+	console.log('valid route ' + routePostType);
 
-		if (isEmpty(this.props.postTypeData[this.props.postType])) {
-			 return <Spinner />;
-		}
+	if ("methods" === routePostType) {
+		slug += "::" + getSlug(pathName, pathPart);
+	}
 
-		let content = this.props['postTypeData'][this.props.postType]['content'];
-		if (!content.length || !this.props.request.length) {
-			return (<Redirect to={this.props.home} />);
-		}
+	const postClass = getPostClass(routePostType);
 
-		content = content.sort(function(a, b) {
-			var textA = a.title.toUpperCase();
-			var textB = b.title.toUpperCase();
-			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-		});
+	const page = props.match.isExact ? 'archive' : 'single';
+	console.log('slug', path)
 
-		if ('home' === this.props.request) {
-			return (<HomeTemplate {...this.props} content={content} />);
-		}
+	return (
+		<PrimaryTemplate {...props} postType={routePostType} page={page}>
+			<Switch>
+				<Route path={path} exact render={(route) => (
+					<ArchiveTemplate {...props}
+						postType={routePostType}
+						postClass={postClass}
 
-
-		const postClass = getPostClass(this.props.postType);
-
-		if ('archive' === this.props.request) {
-			return (
-				<ArchiveTemplate {...this.props}
-					content={content}
-					postClass={postClass}
+					/>)}
 				/>
-			);
-		}
-
-		if ('single' === this.props.request) {
-			return (
-				<SingleTemplate {...this.props}
-					content={content}
-					postClass={postClass}
+				<Route path={path + '/:slug' } render={(route) => (
+					<SingleTemplate {...props}
+						postType={routePostType}
+						postClass={postClass}
+						slug={slug}
+					/>)}
 				/>
-			);
-		}
+			</Switch>
+		</PrimaryTemplate>
+	);
+}
 
-		return (<Redirect to={this.props.home} />);
-	}
-};
+export default WithContext(TemplateLoader);
