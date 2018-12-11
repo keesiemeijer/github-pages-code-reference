@@ -1,20 +1,25 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import { findIndex, isEmpty, get } from "lodash";
+import get from "lodash/get";
+import isEmpty from 'lodash/isEmpty';
+import findIndex from 'lodash/findIndex';
 
-import Spinner from "../spinner.jsx";
+import {homeLink} from '../data/selectors';
 
-import Signature from "../../templates/signature";
-import Summary from "../../templates/summary";
-import Content from "../../templates/content";
-import Source from "../../templates/source";
-import Related from "../../templates/related";
-import Changelog from "../../templates/changelog";
-import Methods from "../../templates/methods";
-import Notice from "../../templates/notice";
+import Spinner from "./spinner.jsx";
 
-export default class SingleTemplate extends React.Component {
+import Signature from './template-parts/signature';
+import Summary from './template-parts/summary';
+import Content from './template-parts/content';
+import Source from './template-parts/source';
+import Related from './template-parts/related';
+import Changelog from './template-parts/changelog';
+import Methods from './template-parts/methods';
+import Notice from './template-parts/notice';
+import WithData from '../data/with-data.jsx';
+
+export class SingleTemplate extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -34,6 +39,7 @@ export default class SingleTemplate extends React.Component {
 
 	getPostData() {
 		const index = findIndex(this.props.content, value => value.slug === this.props.slug);
+		console.log(index)
 		if (-1 === index) {
 			this.failedRequest();
 		} else {
@@ -43,7 +49,7 @@ export default class SingleTemplate extends React.Component {
 
 	getFileData(file) {
 		try {
-			import ('../../json-files/files/' + file + '.json').then((data) => {
+			import ('../json-files/files/' + file + '.json').then((data) => {
 				this.setState({
 					file: data,
 				});
@@ -66,9 +72,13 @@ export default class SingleTemplate extends React.Component {
 	}
 
 	render() {
+		console.log('single', this.props)
+		const { postType, home } = this.props;
+
+
 		if (isEmpty(this.state.file) || isEmpty(this.element)) {
 			if (this.state.failedRequest) {
-				return (<Redirect to={this.props.home} />);
+				return (<Redirect to={home} />);
 			}
 
 			return <Spinner />;
@@ -87,13 +97,12 @@ export default class SingleTemplate extends React.Component {
 
 		let methods = '';
 		if ('classes' === this.props.postType) {
-			methods = (<Methods element={this.element} data={data} home={this.props.home} />);
+			methods = (<Methods element={this.element} data={data} home={home} />);
 		}
 
-		const home = ('/' === this.props.home) ? '' : this.props.home;
-		let archive = home + '/' + this.props.postType;
-		if ('methods' === this.props.postType) {
-			archive = '';
+		let archiveUrl = homeLink( home, postType );
+		if ('methods' === postType) {
+			archiveUrl = '';
 		}
 
 		return (
@@ -103,10 +112,12 @@ export default class SingleTemplate extends React.Component {
 				<Summary element={this.element} data={data} />
 				<Source  element={this.element} {...this.props} />
 				<Content element={this.element} data={data} />
-				<Changelog element={this.element}  data={data} archiveUrl={archive} />
+				<Changelog element={this.element}  data={data} archiveUrl={archiveUrl} />
 		        {methods}
 				<Related element={this.element} data={data} home={home} />
 			</article>
 		);
 	}
 }
+
+export default WithData( SingleTemplate )

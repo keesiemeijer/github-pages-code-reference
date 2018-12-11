@@ -1,11 +1,14 @@
 import React from "react"
 import { Link, withRouter } from 'react-router-dom';
+import { compose } from 'recompose'
 
-import { isEmpty, get } from "lodash";
+import get from "lodash/get";
+import isEmpty from 'lodash/isEmpty';
 
-import { getQueryVar, filterTypeExists } from "../../data/post-data";
-import Spinner from "../spinner.jsx";
-import Strings from '../../json-files/wp-parser-json-strings.json';
+import { getQueryVar, homeLink, filterTypeExists } from "../data/selectors";
+import { termsFoundInfo } from "../data/i18n";
+import WithData from "../data/with-data.jsx";
+import Strings from '../json-files/wp-parser-json-strings.json';
 
 class ArchiveTemplate extends React.Component {
 	constructor(props) {
@@ -43,7 +46,7 @@ class ArchiveTemplate extends React.Component {
 		}
 
 		try {
-			import ('../../json-files/terms.json').then((data) => {
+			import ('../json-files/terms.json').then((data) => {
 				this.setState({
 					terms: data,
 				});
@@ -142,23 +145,18 @@ class ArchiveTemplate extends React.Component {
 	}
 
 	render() {
-		const home = ('/' === this.props.home) ? '' : this.props.home;
+		const { postType, home } = this.props;
 
 		let options = '';
-		let terms = get(this.state.terms, this.props.postType, {});
-
-		if(isEmpty(this.state.terms)) {
-			return <Spinner />;
-		}
+		let terms = get(this.state.terms, postType, {});
 
 		// Create term options if terms found
 		if (!this.state.failedRequest && !isEmpty(terms)) {
-			options = this.state.terms[this.props.postType].map((version, index) =>
+			options = this.state.terms[postType].map((version, index) =>
 				<option key={index} value={version} >{'undocumented' === version ? Strings.undocumented_version : version}</option>
 			);
 		}
 
-		const hasType = !isEmpty(this.state.type) && 'none' !== this.state.type;
 		const isUndocumented = ('undocumented' === this.state.version);
 
 		// Set version if it exists.
@@ -168,43 +166,11 @@ class ArchiveTemplate extends React.Component {
 		}
 
 		// Title
-		let title = Strings[this.props.postType];
-
-		// Filter items
-		let items = this.filterByVersion(this.props.content, version, this.state.type);
-
-		// Plural or single post type string
-		let single = this.props.postType.substring(0, this.props.postType.length - 1);
-		single = ('classe' === single) ? 'class' : single;
-		let postType = !items.length || (1 < items.length) ? this.props.postType : single;
-		postType = Strings[postType].toLowerCase();
-
-		// Replace placeholders
-		// Todo: use https://www.npmjs.com/package/sprintf-js ?
-		let replacePostType = items.length ? '%2$s' : '%1$s';
-		let replaceVersion = items.length ? '%3$s' : '%2$s';
-		let replaceType = items.length ? '%2$s' : '%1$s';
-		const not = items.length ? '' : 'not_';
-		let filter = version.length ? `filter_version_${not}found` : `${not}found`;
-		let info = Strings[filter];
-		if (hasType || isUndocumented) {
-			const type = isUndocumented ? Strings['undocumented'] : this.state.type;
-
-			filter = `filter_type_${not}found`
-			if (version.length && !isUndocumented) {
-				filter = `filter_all_${not}found`;
-				replaceVersion = items.length ? '%4$s' : '%3$s';
-			}
-
-			replacePostType = items.length ? '%3$s' : '%2$s';
-			info = Strings[filter].replace(replaceType, type);
-		}
-
-		if (items.length) {
-			info = info.replace('%1$d', items.length);
-		}
-
-		info = info.replace(replacePostType, postType).replace(replaceVersion, version);
+		let title = Strings[postType];
+		console.log('aaarchive',this.props)
+		
+		const items = this.filterByVersion(this.props.content, version, this.state.type);
+		const info = termsFoundInfo(version, postType, this.state.type, items.length);
 
 		return (
 			<div>
@@ -239,12 +205,13 @@ class ArchiveTemplate extends React.Component {
 
 				{items.map( (item, index) => {
 					let deprecated = '';
+					const itemLink = homeLink(home, postType + '/' + item.slug);
 					if(item.deprecated) {
 						const deprecatedVersion = Strings['deprecated_in'].replace('%1$s', item.deprecated);
 						deprecated = (<span>{' — '}<span className="deprecated-item">{deprecatedVersion}</span></span>)
 					}
 					return (<article key={index} className={this.props.postClass}>
-					<h1><Link to={home + '/' + this.props.postType + '/' + item.slug}>{item.title}</Link>{deprecated}</h1>
+					<h1><Link to={itemLink}>{item.title}</Link>{deprecated}</h1>
 					<div className="description" dangerouslySetInnerHTML={{ __html: item.summary}}></div>
 					<div className="sourcefile"><p>{Strings['source_file'].replace( '%1$s', item.source_file )}</p></div>
 					</article>)
@@ -255,4 +222,7 @@ class ArchiveTemplate extends React.Component {
 	}
 }
 
-export default withRouter(ArchiveTemplate);
+export default compose(
+  WithData,
+  withRouter,
+)(ArchiveTemplate);

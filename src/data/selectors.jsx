@@ -1,4 +1,4 @@
-import { trim } from 'lodash';
+import trim from 'lodash/trim';
 
 export function getPathParts(route) {
 	return trim(route, '/').split('/').filter(value => value !== '');
@@ -12,8 +12,7 @@ export function getQueryStringParams(query) {
 			let [key, value] = param.split('=');
 			params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
 			return params;
-		}, {}) :
-		{}
+		}, {}) : {}
 };
 
 export function getQueryVar(query, queryVar) {
@@ -24,23 +23,16 @@ export function getQueryVar(query, queryVar) {
 	return '';
 }
 
-export function getPostType(route, routeIndex) {
-	let postType = '';
-	let pathParts = getPathParts(route);
-
-	if (routeIndex + 1 <= pathParts.length) {
-		postType = getSlug(route, routeIndex).toLowerCase();
+export function homeLink(home, path = '') {
+	if (!path.length) {
+		return home;
 	}
 
-	if (!postType || !postTypeExists(postType)) {
-		return '';
-	}
-
-	if (('classes' === postType) && (routeIndex + 3 === pathParts.length)) {
-		postType = 'methods';
-	}
-
-	return postType;
+	// trim slashes and spaces.
+	home = trim( home, ' /' );
+	path = trim( path, ' /' );
+	
+	return '/' + home + ('' === path ? '' : '/') + path;
 }
 
 export function postTypeExists(postType) {
@@ -84,27 +76,6 @@ export function isValidRouteLength(route, length) {
 
 	if (length === pathParts.length) {
 		return true;
-	}
-
-	return false;
-}
-
-export function isSingle(route, routeIndex) {
-	const pathParts = getPathParts(route);
-	const postType = getPostType(route, routeIndex);
-
-	if (!postType.length) {
-		return false;
-	}
-
-	if ('methods' === postType) {
-		if ((routeIndex + 3) === pathParts.length) {
-			return true
-		}
-	} else {
-		if ((routeIndex + 2) === pathParts.length) {
-			return true;
-		}
 	}
 
 	return false;

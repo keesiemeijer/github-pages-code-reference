@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { trim } from 'lodash';
-import Strings from '../json-files/wp-parser-json-strings.json';
+
+import trim from 'lodash/trim';
+
+import Strings from '../../json-files/wp-parser-json-strings.json';
+import {homeLink} from '../../data/selectors';
+
 
 const Source = props => {
 	const { line_num, source_file, parent, namespace } = props.element;
-	const { repo_release_url } = props.packageData;
-	const home = ('/' === props.home) ? '' : props.home;
+	const { repo_release_url } = props.referenceData;
 
 	if (!source_file.length) {
 		return null;
@@ -33,7 +36,7 @@ const Source = props => {
 		parentEl = parent;
 		let parentSlug = props.slug.split('::');
 		if (2 === parentSlug.length) {
-			parentEl = (<Link to={home + '/classes/' + parentSlug[0]}>{parent}</Link>);
+			parentEl = (<Link to={homeLink(props.home, '/classes/' + parentSlug[0])}>{parent}</Link>);
 		}
 		parentClass = (<li>{Strings.class}: {parentEl}</li>)
 	}

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { isEmpty, get } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import get from "lodash/get";
 
-import Strings from '../json-files/wp-parser-json-strings.json';
+import Strings from '../../json-files/wp-parser-json-strings.json';
 
 const Related = props => {
 	const uses = get(props, 'data.related.uses', {});

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { isEmpty } from "lodash";
+import isEmpty from 'lodash/isEmpty';
 
-import Strings from '../json-files/wp-parser-json-strings.json';
+import Strings from '../../json-files/wp-parser-json-strings.json';
 
 const Changelog = props => {
 	const { changelog } = props.data;
