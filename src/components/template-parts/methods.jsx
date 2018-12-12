@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Strings from '../../json-files/wp-parser-json-strings.json';
-import {homeLink} from '../../data/selectors';
+import {getLink} from '../../data/selectors';
 
 
 const Methods = props => {
@@ -18,7 +18,7 @@ const Methods = props => {
 				<ul>
 				{ props.data.methods.map( (item, index) =>
 					<li key={index}>
-						<Link to={homeLink(props.home, item.url)}>{item.title}</Link>
+						<Link to={getLink(props.home, item.url)}>{item.title}</Link>
 						{' — '}
 						<div className="class-methods-excerpt" dangerouslySetInnerHTML={{ __html: item.excerpt }}></div>			
 					</li>		

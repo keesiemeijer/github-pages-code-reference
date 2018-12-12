@@ -2,10 +2,10 @@ import React from "react";
 import { Route } from "react-router-dom";
 
 import withData from "../json-files/with-data.json";
-import { homeLink } from "../data/selectors";
+import { getLink } from "../data/selectors";
 
 export const DoRoute = (route, data) => {
-	const path = homeLink(data.home, route.path);
+	const path = getLink(data.home, route.path);
 
 	// Check if parsed post type has content
 	if (!(data.home === path || -1 !== withData.indexOf(route.postType))) {

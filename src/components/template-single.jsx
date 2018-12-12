@@ -5,7 +5,7 @@ import get from "lodash/get";
 import isEmpty from 'lodash/isEmpty';
 import findIndex from 'lodash/findIndex';
 
-import {homeLink} from '../data/selectors';
+import {getLink} from '../data/selectors';
 
 import Spinner from "./spinner.jsx";
 
@@ -98,7 +98,7 @@ export class SingleTemplate extends React.Component {
 			methods = (<Methods element={this.element} data={data} home={home} />);
 		}
 
-		let archiveUrl = homeLink( home, postType );
+		let archiveUrl = getLink( home, postType );
 		if ('methods' === postType) {
 			archiveUrl = '';
 		}

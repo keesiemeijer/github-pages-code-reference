@@ -5,9 +5,9 @@ import { compose } from 'recompose'
 import get from "lodash/get";
 import isEmpty from 'lodash/isEmpty';
 
-import { getQueryVar, homeLink, filterTypeExists } from "../data/selectors";
-import { termsFoundInfo } from "../data/i18n";
+import { getQueryVar, getLink, filterTypeExists } from "../data/selectors";
 import WithData from "../data/with-data.jsx";
+import {ArchiveFilterForm} from "./template-parts/archive-filter.jsx";
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 class ArchiveTemplate extends React.Component {
@@ -85,18 +85,17 @@ class ArchiveTemplate extends React.Component {
 		this.remove_query_vars();
 	}
 
-	handleChangeType(event) {
-		const type = filterTypeExists(event.target.value) ? event.target.value : 'none';
-		this.setState({ type: type });
+	handleChangeType(type) {
+		type = filterTypeExists(type) ? type : 'none';
+		if(type !== this.state.type) {
+			this.setState({ type: type });
+		}
 	}
 
-	handleChangeVersion(event) {
-		this.setState({ version: event.target.value });
-	}
-
-	handleSubmit(event) {
-		//alert('Your favorite flavor is: ' + this.state.type);
-		event.preventDefault();
+	handleChangeVersion(version) {
+		if(version !== this.state.version) {
+			this.setState({ version: version });
+		}
 	}
 
 	filterByVersion(items, version, type = 'none') {
@@ -146,18 +145,7 @@ class ArchiveTemplate extends React.Component {
 
 	render() {
 		const { postType, home } = this.props;
-
-		let options = '';
-		let terms = get(this.state.terms, postType, {});
-
-		// Create term options if terms found
-		if (!this.state.failedRequest && !isEmpty(terms)) {
-			options = this.state.terms[postType].map((version, index) =>
-				<option key={index} value={version} >{'undocumented' === version ? Strings.undocumented_version : version}</option>
-			);
-		}
-
-		const isUndocumented = ('undocumented' === this.state.version);
+		const terms = get(this.state.terms, postType, {});
 
 		// Set version if it exists.
 		let version = '';
@@ -165,46 +153,26 @@ class ArchiveTemplate extends React.Component {
 			version = -1 === terms.indexOf(this.state.version) ? '' : this.state.version;
 		}
 
-		// Title
-		let title = Strings[postType];
-		
 		const items = this.filterByVersion(this.props.content, version, this.state.type);
-		const info = termsFoundInfo(version, postType, this.state.type, items.length);
 
 		return (
 			<div>
-				<h2>{title}</h2>
-
-				<form onSubmit={this.handleSubmit}>
-					{!isEmpty(terms) && options.length &&
-						<label>
-						{Strings.filter_by_version}
-						<select value={this.state.version} onChange={this.handleChangeVersion}>
-						<option key="none" value="" >{Strings.none}</option>
-						{options}
-						</select>
-					</label>
-					}
-					{ !isEmpty(terms) && !isUndocumented &&
-					<label>
-						{Strings.filter_by_type}
-						<select value={this.state.type} onChange={this.handleChangeType}>
-							<option value="none">{Strings.none}</option>
-							<option value="introduced">{Strings.introduced}</option>
-							<option value="modified">{Strings.modified}</option>
-							<option value="deprecated">{Strings.deprecated}</option>
-						</select>
-					</label>
-					}
-				</form>
-
-				{!items.length ? (<hr/>) : ''}
-				<p>{info}</p>
-				{items.length ? (<hr/>) : ''}
+				<h2>{Strings[postType]}</h2>
+				{!this.state.failedRequest && !isEmpty(terms) &&
+					<ArchiveFilterForm
+						onChangeType={(value) => this.handleChangeType(value)}
+						onChangeVersion={(value) => this.handleChangeVersion(value)}
+						postType={postType}
+						terms={terms}
+						version={version}
+						filter={this.state.type}
+						postCount={items.length}
+					/>
+				}
 
 				{items.map( (item, index) => {
 					let deprecated = '';
-					const itemLink = homeLink(home, postType + '/' + item.slug);
+					const itemLink = getLink(home, postType + '/' + item.slug);
 					if(item.deprecated) {
 						const deprecatedVersion = Strings['deprecated_in'].replace('%1$s', item.deprecated);
 						deprecated = (<span>{' — '}<span className="deprecated-item">{deprecatedVersion}</span></span>)

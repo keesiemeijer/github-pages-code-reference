@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import trim from 'lodash/trim';
 
 import Strings from '../../json-files/wp-parser-json-strings.json';
-import {homeLink} from '../../data/selectors';
+import {getLink} from '../../data/selectors';
 
 
 const Source = props => {
@@ -36,7 +36,7 @@ const Source = props => {
 		parentEl = parent;
 		let parentSlug = props.slug.split('::');
 		if (2 === parentSlug.length) {
-			parentEl = (<Link to={homeLink(props.home, '/classes/' + parentSlug[0])}>{parent}</Link>);
+			parentEl = (<Link to={getLink(props.home, '/classes/' + parentSlug[0])}>{parent}</Link>);
 		}
 		parentClass = (<li>{Strings.class}: {parentEl}</li>)
 	}

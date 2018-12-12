@@ -6,7 +6,7 @@ import Autosuggest from 'react-autosuggest';
 import isEmpty from 'lodash/isEmpty';
 import findIndex from 'lodash/findIndex';
 
-import { homeLink } from "../data/selectors";
+import { getLink } from "../data/selectors";
 
 const filterContains = function(text, input) {
 	return RegExp(regExpEscape(input.trim()), "i").test(text);
@@ -85,7 +85,7 @@ class Search extends Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		let location = homeLink( this.props.home, this.props.postType);
+		let location = getLink( this.props.home, this.props.postType);
 		const data = this.props.postTypeData[this.props.postType];
 		let index = findIndex(data.content, value => value.title === this.state.value);
 		if (-1 !== index) {

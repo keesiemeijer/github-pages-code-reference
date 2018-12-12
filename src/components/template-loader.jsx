@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import PrimaryTemplate from "./primary-template";
 import WithContext from "../data/with-context.jsx";
 
-import { isValidRouteLength, getSlug, getPostClass, homeLink } from "../data/selectors";
+import { isValidRouteLength, getSlug, getPostClass, getLink } from "../data/selectors";
 
 import ArchiveTemplate from "./template-archive.jsx";
 import SingleTemplate from "./template-single.jsx";
@@ -18,7 +18,7 @@ const TemplateLoader = props => {
 	const routeIndex = props.routeIndex;
 	let routePostType = props.route.postType;
 
-	const path = homeLink( props.home, props.route.path );
+	const path = getLink( props.home, props.route.path );
 
 	let pathPart = props.match.isExact ? 1 : 2;
 	let isValidRoute = isValidRouteLength(pathName, routeIndex + pathPart);

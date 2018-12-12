@@ -4,7 +4,7 @@ import WithContext from "../data/with-context.jsx";
 import PrimaryTemplate from "./primary-template";
 import HomeContent from "./template-parts/home-content";
 
-const Home = props => {
+const HomeTemplate = props => {
 	return (
 		<PrimaryTemplate {...props} page="home">
 			<HomeContent {...props} />
@@ -12,4 +12,4 @@ const Home = props => {
 	);
 };
 
-export default WithContext(Home);
+export default WithContext(HomeTemplate);

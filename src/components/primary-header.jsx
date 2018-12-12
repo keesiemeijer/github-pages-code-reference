@@ -3,7 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 
 import Search from "./search";
 import withData from "../json-files/with-data.json";
-import { homeLink } from "../data/selectors";
+import { getLink } from "../data/selectors";
 
 const PrimaryHeader = props => {
 	const { parsed_name, parsed_version, app_description } = props.referenceData;
@@ -37,7 +37,7 @@ const PrimaryHeader = props => {
 					{props.strings.home}
 				</NavLink>
 				{withData.map((archivePostType, index) => {
-					const archiveLink = homeLink(home, archivePostType);
+					const archiveLink = getLink(home, archivePostType);
 					return (
 						"methods" !== archivePostType && (
 							<NavLink

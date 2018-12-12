@@ -23,7 +23,7 @@ export function getQueryVar(query, queryVar) {
 	return '';
 }
 
-export function homeLink(home, path = '') {
+export function getLink(home, path = '') {
 	if (!path.length) {
 		return home;
 	}
@@ -37,16 +37,16 @@ export function homeLink(home, path = '') {
 
 export function postTypeExists(postType) {
 	const allowed = ['functions', 'hooks', 'classes', 'methods'];
-	const postTypes = allowed.filter((item) => postType === item);
+	const exists = allowed.filter((value) => postType === value);
 
-	return postTypes.length === 1;
+	return exists.length === 1;
 }
 
-export function filterTypeExists(status) {
+export function filterTypeExists(type) {
 	const allowed = ['introduced', 'modified', 'deprecated'];
-	const stati = allowed.filter((value) => status === value);
+	const exists = allowed.filter((value) => type === value);
 
-	return stati.length === 1;
+	return exists.length === 1;
 }
 
 export function getPostClass(postType) {

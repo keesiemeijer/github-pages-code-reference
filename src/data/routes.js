@@ -1,10 +1,11 @@
-import Home from "../components/template-home";
+import HomeTemplate from "../components/template-home";
 import TemplateLoader from "../components/template-loader";
 
+// Routes used in this app
 const routes = [{
 	path: '/',
 	postType: "functions",
-	component: Home,
+	component: HomeTemplate,
 	exact: true,
 },
 {
