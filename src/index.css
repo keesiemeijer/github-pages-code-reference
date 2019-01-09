@@ -102,6 +102,17 @@ select {
     border-bottom: none;
     margin-bottom: 2em;
 }
+.devhub-wrap .wp-parser-class .parameters dd .desc .type,
+.devhub-wrap .wp-parser-function .parameters dd .desc .type,
+.devhub-wrap .wp-parser-hook .parameters dd .desc .type,
+.devhub-wrap .wp-parser-method .parameters dd .desc .type, 
+.devhub-wrap .wp-parser-class .parameters dd .desc .required,
+.devhub-wrap .wp-parser-function .parameters dd .desc .required,
+.devhub-wrap .wp-parser-hook .parameters dd .desc .required,
+.devhub-wrap .wp-parser-method .parameters dd .desc .required {
+  display: inline-block;
+  padding-right: 5px;
+}
 
 .devhub-wrap .react-autosuggest__container {
   position: relative;
