@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 
 import get from "lodash/get";
 import isEmpty from 'lodash/isEmpty';
 import findIndex from 'lodash/findIndex';
 
-import {getLink} from '../data/selectors';
+import { getLink } from '../data/selectors';
 
 import Spinner from "./spinner.jsx";
 
@@ -19,103 +19,79 @@ import Methods from './template-parts/methods';
 import Notice from './template-parts/notice';
 import WithData from '../data/with-data.jsx';
 
-export class SingleTemplate extends React.Component {
-	constructor(props) {
-		super(props);
+export function SingleTemplate(props) {
+	const { postType, home, slug, content } = props;
+	let fileData = {};
 
-		this.state = {
-			file: {},
-			failedRequest: false,
-		}
+	const index = findIndex(content, value => value.slug === slug);
+	const element = (-1 !== index) ? content[index] : {};
+	const json_file = get(element, 'json_file', '');
 
-		this.element = {};
+	if (json_file.length) {
+		fileData = useFileData(json_file);
 	}
 
-	failedRequest() {
-		this.setState({
-			failedRequest: true,
-		});
+	if (isEmpty(fileData.data) || isEmpty(element)) {
+		if (fileData.failedRequest) {
+			return (<Redirect to={home} />);
+		}
+
+		return <Spinner />;
 	}
 
-	getPostData() {
-		const index = findIndex(this.props.content, value => value.slug === this.props.slug);
-		if (-1 === index) {
-			this.failedRequest();
-		} else {
-			this.element = this.props.content[index];
-		}
+	const elementSlug = get(element, 'slug', '');
+	const line_num = get(element, 'line_num', '');
+	if (!elementSlug.length || !line_num.length) {
+		return null;
 	}
 
-	getFileData(file) {
-		try {
-			import ('../json-files/files/' + file + '.json').then((data) => {
-				this.setState({
-					file: data,
-				});
-			});
-		} catch (error) {
-			this.failedRequest();
-		}
+	const data = get(fileData.data, elementSlug + '-' + line_num, {});
+	if (isEmpty(data)) {
+		return null;
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.slug !== this.props.slug) {
-			this.getPostData();
-			this.getFileData(this.element['json_file']);
-		}
+	let methods = '';
+	if ('classes' === postType) {
+		methods = (<Methods element={element} data={data} home={home} />);
 	}
 
-	componentDidMount() {
-		this.getPostData();
-		this.getFileData(this.element['json_file']);
+	let archiveUrl = getLink(home, postType);
+	if ('methods' === postType) {
+		archiveUrl = '';
 	}
 
-	render() {
-		const { postType, home } = this.props;
-
-
-		if (isEmpty(this.state.file) || isEmpty(this.element)) {
-			if (this.state.failedRequest) {
-				return (<Redirect to={home} />);
-			}
-
-			return <Spinner />;
-		}
-
-		const slug = get(this.element, 'slug', '');
-		const line_num = get(this.element, 'line_num', '');
-		if (!slug.length || !line_num.length) {
-			return null;
-		}
-
-		const data = get(this.state.file, slug + '-' + line_num, {});
-		if (isEmpty(data)) {
-			return null;
-		}
-
-		let methods = '';
-		if ('classes' === this.props.postType) {
-			methods = (<Methods element={this.element} data={data} home={home} />);
-		}
-
-		let archiveUrl = getLink( home, postType );
-		if ('methods' === postType) {
-			archiveUrl = '';
-		}
-
-		return (
-			<article className={this.props.postClass}>
-				<Notice element={this.element} data={data} />
-				<Signature element={this.element} data={data} />
-				<Summary element={this.element} data={data} />
-				<Source  element={this.element} {...this.props} />
-				<Content element={this.element} data={data} />
-				<Changelog element={this.element}  data={data} archiveUrl={archiveUrl} />
+	return (
+		<article className={props.postClass}>
+				<Notice element={element} data={data} />
+				<Signature element={element} data={data} />
+				<Summary element={element} data={data} />
+				<Source  element={element} {...props} />
+				<Content element={element} data={data} />
+				<Changelog element={element}  data={data} archiveUrl={archiveUrl} />
 		        {methods}
-				<Related element={this.element} data={data} home={home} />
+				<Related element={element} data={data} home={home} />
 			</article>
-		);
-	}
+	);
 }
 
-export default WithData( SingleTemplate )
+export default WithData(SingleTemplate);
+
+function useFileData(fileName) {
+	const [data, setData] = useState(fileName);
+	const [failedRequest, setfailedRequest] = useState(false);
+
+	useEffect(() => {
+		try {
+			import ('../json-files/files/' + fileName + '.json').then((data) => {
+				setData(data);
+				setfailedRequest(false);
+			});
+		} catch (error) {
+			setData(null)
+			setfailedRequest(true);
+		}
+
+	}, [fileName]);
+
+	return { data, failedRequest };
+}

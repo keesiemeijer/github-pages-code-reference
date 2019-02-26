@@ -1,27 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-export default class Spinner extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			timePassed: false
-		};
-	}
+export default function Spinner() {
+	const [timePassed, setTimePassed] = useState(false);
 
-	componentWillUnmount() {
-		clearTimeout(this.timer);
-	}
-
-	componentDidMount() {
-		this.timer = setTimeout(() => {
-			this.setState({ timePassed: true });
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setTimePassed(true);
 		}, 500);
+
+		return () => clearTimeout(timer);
+	}, [timePassed]);
+
+	if (!timePassed) {
+		return null;
 	}
 
-	render() {
-		if (!this.state.timePassed) {
-			return null;
-		}
-		return <div className="loader">Loading...</div>;
-	}
+	return <div className="loader">Loading...</div>;
 }
