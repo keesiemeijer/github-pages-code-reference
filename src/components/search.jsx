@@ -7,65 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import findIndex from 'lodash/findIndex';
 
 import { getLink } from "../data/selectors";
-
-const filterContains = function(text, input) {
-	return RegExp(regExpEscape(input.trim()), "i").test(text);
-};
-
-const regExpEscape = function(s) {
-	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
-}
-
-const sortByLength = function(a, b) {
-	a = a.title;
-	b = b.title;
-	if (a.length !== b.length) {
-		return a.length - b.length;
-	}
-
-	return a < b ? -1 : 1;
-};
-
-const getSuggestions = function(text, input) {
-	// Filter autocomplete matches
-
-	// Full match
-	if (filterContains(text, input)) {
-		// mark
-		return true;
-	}
-
-	// Replace - _ and whitespace with a single space
-	var _text = regExpEscape(text.trim().toLowerCase().replace(/[_\-\s]+/g, ' '));
-	var _input = regExpEscape(input.trim().toLowerCase().replace(/[_\-\s]+/g, ' '));
-
-	// Matches with with single spaces between words
-	if (filterContains(_text, _input)) {
-		return true;
-	}
-
-	_input = _input.split(" ");
-	var words = _input.length;
-
-	if (1 >= words) {
-		return false;
-	}
-
-	// Partial matches
-	var partials = 0;
-	for (let i = 0; i < words; i++) {
-		if (_text.indexOf(_input[i].trim()) !== -1) {
-			partials++;
-		}
-	}
-
-	if (partials === words) {
-		return true;
-	}
-
-	return false;
-}
-
+import { filterSearchItems } from "../data/filter-search";
 
 class Search extends Component {
 	constructor(props) {
@@ -85,13 +27,13 @@ class Search extends Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		let location = getLink( this.props.home, this.props.postType);
+		let location = getLink(this.props.home, this.props.postType);
 		const data = this.props.postTypeData[this.props.postType];
 		let index = findIndex(data.content, value => value.title === this.state.value);
 		if (-1 !== index) {
 			location = location + '/' + data.content[index].slug;
 		} else {
-			location = location + '/' + this.state.value;
+			location = location + '/?search=' + this.state.value.trim().replace(/\s+/g, '+');
 		}
 
 		this.props.history.push(location);
@@ -107,23 +49,14 @@ class Search extends Component {
 		this.props.fetchData(postType);
 
 		if (!isEmpty(this.props.postTypeData[postType])) {
+			const items = this.props.postTypeData[postType]['content'];
 			this.setState({
 				isLoading: false,
-				suggestions: this.getSuggestions(value, this.props.postTypeData[postType])
+				suggestions: filterSearchItems(items, value)
 			});
 			return;
 		}
 	}
-
-	getSuggestions(value, data) {
-		const inputValue = value.trim().toLowerCase();
-		const inputLength = inputValue.length;
-
-		return inputLength === 0 ? [] :
-			data.content.filter(value =>
-				getSuggestions(value.title.toLowerCase(), inputValue)
-			).sort(sortByLength);
-	};
 
 	renderSuggestion(suggestion) {
 		return (

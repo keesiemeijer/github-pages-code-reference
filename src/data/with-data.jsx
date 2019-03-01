@@ -33,7 +33,7 @@ export function WithData(WrappedComponent) {
 				});
 				return (<WrappedComponent {...this.props} content={content} />)
 			}
-			
+
 			return <Spinner />;
 		}
 	}

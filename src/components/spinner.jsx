@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-export default function Spinner() {
+export default function Spinner(props) {
 	const [timePassed, setTimePassed] = useState(false);
 
 	useEffect(() => {
-		const timer = setTimeout(() => {
+		let timer = setTimeout(() => {
 			setTimePassed(true);
 		}, 500);
 
@@ -15,5 +15,10 @@ export default function Spinner() {
 		return null;
 	}
 
-	return <div className="loader">Loading...</div>;
+	const message = props.hasOwnProperty('message') ? props['message'] : '';
+	if (!message.length) {
+		return (<div className="loader">Loading...</div>);
+	} else {
+		return (<div>{message}</div>)
+	}
 }

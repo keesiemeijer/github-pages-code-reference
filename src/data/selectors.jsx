@@ -23,6 +23,14 @@ export function getQueryVar(query, queryVar) {
 	return '';
 }
 
+export function queryVarExists(query, queryVar) {
+	const queryVars = getQueryStringParams(query);
+	if (queryVars.hasOwnProperty(queryVar)) {
+		return true;
+	}
+	return false;
+}
+
 export function getLink(home, path = '') {
 	if (!path.length) {
 		return home;
@@ -42,11 +50,13 @@ export function postTypeExists(postType) {
 	return exists.length === 1;
 }
 
-export function filterTypeExists(type) {
-	const allowed = ['introduced', 'modified', 'deprecated'];
-	const exists = allowed.filter((value) => type === value);
+export function getPostTypeSingle(postType) {
+	if (!postType.length || !postTypeExists(postType)) {
+		return '';
+	}
 
-	return exists.length === 1;
+	let single = postType.substring(0, postType.length - 1);
+	return ('classe' === single) ? 'class' : single;
 }
 
 export function getPostClass(postType) {
@@ -79,4 +89,14 @@ export function isValidRouteLength(route, length) {
 	}
 
 	return false;
+}
+
+export function sortByLength(a, b) {
+	a = a.title;
+	b = b.title;
+	if (a.length !== b.length) {
+		return a.length - b.length;
+	}
+
+	return a < b ? -1 : 1;
 }

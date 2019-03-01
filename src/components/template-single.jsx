@@ -24,6 +24,11 @@ export function SingleTemplate(props) {
 	let fileData = {};
 
 	const index = findIndex(content, value => value.slug === slug);
+	if (-1 === index) {
+		// Index doesnt exist
+		return (<Redirect to={home} />);
+	}
+
 	const element = (-1 !== index) ? content[index] : {};
 	const json_file = get(element, 'json_file', '');
 
