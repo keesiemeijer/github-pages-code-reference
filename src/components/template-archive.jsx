@@ -6,14 +6,12 @@ import get from "lodash/get";
 import isEmpty from 'lodash/isEmpty';
 import trim from "lodash/trim";
 
+import ArchiveFilterForm from "./template-parts/archive-filter.jsx";
 import { getQueryVar, queryVarExists, getLink, getPostTypeSingle } from "../data/selectors";
 import { filterArchiveItems, filterTypeExists } from "../data/filter-archive.jsx";
 import { filterSearchItems } from "../data/filter-search";
 import { postsFoundInfo } from "../data/i18n";
-
-
 import WithData from "../data/with-data.jsx";
-import ArchiveFilterForm from "./template-parts/archive-filter.jsx";
 import Strings from '../json-files/wp-parser-json-strings.json';
 
 class ArchiveTemplate extends React.Component {
@@ -89,6 +87,7 @@ class ArchiveTemplate extends React.Component {
 		let query = this.state['version'].length ? 'since=' + this.state.version + '&' : '';
 		query += type.length ? 'type=' + type + '&' : '';
 
+		// Search overrides type and version.
 		if (this.isSearch()) {
 			const search = getQueryVar(queryString, 'search');
 			query = 'search=' + search
@@ -101,6 +100,7 @@ class ArchiveTemplate extends React.Component {
 
 		query = '?' + trim(query, ' &');
 		if (query.length && queryString !== query) {
+			// Push it for back and foreward button history.
 			this.props.history.push(location + query);
 
 			this.props.history.replace({
@@ -116,6 +116,7 @@ class ArchiveTemplate extends React.Component {
 		const isTypeChange = (prevState.type !== this.state.type)
 
 		if (isVersionChange || isTypeChange) {
+			// Update query string if version or type was updated.
 			this.update_query_string();
 			return;
 		}
@@ -125,6 +126,7 @@ class ArchiveTemplate extends React.Component {
 		const isQueryTypeChange = (queryState.type !== this.state.type)
 
 		if (isQueryVersionChange || isQueryTypeChange) {
+			// Update state is it differs from the query string.
 			this.setState(queryState);
 			return;
 		}
@@ -153,11 +155,13 @@ class ArchiveTemplate extends React.Component {
 		const terms = get(this.state.terms, postType, {});
 		const postTypeSingle = getPostTypeSingle(postType);
 		const isSearch = this.isSearch();
+		const search = this.getSearch();
+		const searchResults = Strings['results_for'].replace('%1$s', search );
 		let title = Strings[postType];
 		let items = [];
-		let search = '';
 		let version = '';
 		let searchInfo = '';
+
 
 		// Set version if it exists.
 		if (!isEmpty(terms) && !isEmpty(this.state.version)) {
@@ -166,8 +170,7 @@ class ArchiveTemplate extends React.Component {
 
 		// Filter items if needed.
 		if (isSearch) {
-			title = "Search Results";
-			search = this.getSearch();
+			title = Strings['search_results'];
 			items = filterSearchItems(content, search);
 			searchInfo = postsFoundInfo('', postType, '', items.length);
 		} else {
@@ -177,7 +180,7 @@ class ArchiveTemplate extends React.Component {
 		return (
 			<div>
 				<h2>{title}</h2>
-				{isSearch ? (<p>Search results for {postTypeSingle}: {search}</p>) : ''}
+				{isSearch ? (<p>{searchResults}</p>) : ''}
 				{isSearch && !items.length ? (<hr/>) : ''}
 				{isSearch ? (<p>{searchInfo}</p>) : ''}
 				{isSearch && items.length ? (<hr/>) : ''}

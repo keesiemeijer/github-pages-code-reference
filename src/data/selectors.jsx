@@ -37,9 +37,9 @@ export function getLink(home, path = '') {
 	}
 
 	// trim slashes and spaces.
-	home = trim( home, ' /' );
-	path = trim( path, ' /' );
-	
+	home = trim(home, ' /');
+	path = trim(path, ' /');
+
 	return '/' + home + ('' === path ? '' : '/') + path;
 }
 
@@ -60,14 +60,12 @@ export function getPostTypeSingle(postType) {
 }
 
 export function getPostClass(postType) {
-	if (!postTypeExists(postType)) {
+	const postClass = getPostTypeSingle(postType);
+	if (!postClass.length) {
 		return '';
 	}
 
-	let post_class = postType.substring(0, postType.length - 1);
-	post_class = ('classe' === post_class) ? 'class' : post_class;
-
-	return 'wp-parser-' + post_class;
+	return 'wp-parser-' + postClass;
 }
 
 export function getSlug(route, index) {
