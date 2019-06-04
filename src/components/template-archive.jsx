@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import trim from "lodash/trim";
 
 import ArchiveFilterForm from "./template-parts/archive-filter.jsx";
-import { getQueryVar, queryVarExists, getLink, getPostTypeSingle } from "../data/selectors";
+import { getQueryVar, queryVarExists, getLink } from "../data/selectors";
 import { filterArchiveItems, filterTypeExists } from "../data/filter-archive.jsx";
 import { filterSearchItems } from "../data/filter-search";
 import { postsFoundInfo } from "../data/i18n";
@@ -153,7 +153,6 @@ class ArchiveTemplate extends React.Component {
 	render() {
 		const { postType, home, content } = this.props;
 		const terms = get(this.state.terms, postType, {});
-		const postTypeSingle = getPostTypeSingle(postType);
 		const isSearch = this.isSearch();
 		const search = this.getSearch();
 		const searchResults = Strings['results_for'].replace('%1$s', search );

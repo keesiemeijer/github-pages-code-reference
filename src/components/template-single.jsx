@@ -24,17 +24,12 @@ export function SingleTemplate(props) {
 	let fileData = {};
 
 	const index = findIndex(content, value => value.slug === slug);
-	if (-1 === index) {
-		// Index doesnt exist
-		return (<Redirect to={home} />);
-	}
 
 	const element = (-1 !== index) ? content[index] : {};
 	const json_file = get(element, 'json_file', '');
 
-	if (json_file.length) {
-		fileData = useFileData(json_file);
-	}
+	// Custom hook
+	fileData = useFileData(json_file);
 
 	if (isEmpty(fileData.data) || isEmpty(element)) {
 		if (fileData.failedRequest) {
@@ -87,10 +82,15 @@ function useFileData(fileName) {
 
 	useEffect(() => {
 		try {
-			import ('../json-files/files/' + fileName + '.json').then((data) => {
-				setData(data);
-				setfailedRequest(false);
-			});
+			if( isEmpty(fileName) ) {
+				setData(null)
+				setfailedRequest(true);
+			} else {
+				import ('../json-files/files/' + fileName + '.json').then((data) => {
+					setData(data);
+					setfailedRequest(false);
+				});
+			}
 		} catch (error) {
 			setData(null)
 			setfailedRequest(true);
