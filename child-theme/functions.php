@@ -482,6 +482,23 @@ function wporg_developer_child_generate_files() {
 		}
 	}
 
+	$file = $theme_dir . '/public/404.html';
+
+	if ( is_readable( $file ) ) {
+		if ( $wp_cli ) {
+			WP_CLI::log( "Updating 404.html file..." );
+		}
+		$content = file_get_contents( $file );
+		$content = preg_replace( '/<title>(.*?)<\/title>/', "<title>{$settings['parsed_name']}</title>" , $content );
+
+		// Update title in 404.html
+		if ( ! $wp_filesystem->put_contents( $file, $content, FS_CHMOD_FILE ) ) {
+			$error = esc_html__( "Unable to create the file: {$file}", 'wporg-developer-child' );
+			add_settings_error( 'wp-parser-json', 'create_file', $error, 'error' );
+			return false;
+		}
+	}
+
 	if ( $wp_cli ) {
 		WP_CLI::success( 'JSON files generated' );
 	}
